@@ -1,8 +1,34 @@
-{% extends './base.html' %} {% block content %}
+{% extends './base.html' %} 
+{% load static %}
+
+{% block stylesheets %}
+        <link rel="stylesheet" href="{% static 'chat/css/main.css' %}">
+{% endblock  %}
+
+{% block content %}
+<header>
+    <div>
+        <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+        <span class="profile-name">User</span>
+    </div>
+    <div>
+        <input type="text" >
+        <input type="button" value="+">
+    </div>
+</header>
 
 <section>
-    <img src="" alt="">
-    <h1>User</h1>
+    <div class="users">
+        <div>
+            <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+            <span> 
+               <div>UserName</div> 
+               <div>message preview</div>
+            </span>
+            <span>12:09</span>
+        </div>
+    </div>
+
 </section>
 
 {% endblock %}
