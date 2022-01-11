@@ -11,15 +11,56 @@
         <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
         <span class="profile-name">User</span>
     </div>
-    <div>
-        <input type="text" >
+    <div class ="search">
+        <input class ="form-control-sm" type="text" placeholder="search">
         <input type="button" value="+">
     </div>
 </header>
 
 <section>
-    <div class="users">
+    <div class = "stories">
+        <h4>Stories</h4>
         <div>
+            <div class = "story">
+                <div class="single-story">
+                    <p>User Anonymous</p>
+                </div>      
+            </div>
+            <div class = "story">
+                <div class="single-story">
+                    <p>User Anonymous</p>
+                </div>      
+            </div>
+            <div class = "story">
+                <div class="single-story">
+                    <p>User Anonymous</p>
+                </div>      
+            </div>
+            <div class = "story">
+                <div class="single-story">
+                    <p>User Anonymous</p>
+                </div>      
+            </div>
+        </div>   
+    </div>
+    <div class="users">
+        <div class = "single-user">
+            <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+            <span> 
+               <div>UserName</div> 
+               <div>message preview</div>
+            </span>
+            <span>12:09</span>
+        </div>
+        <div class = "single-user">
+            <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+            <span> 
+               <div>UserName</div> 
+               <div>message preview</div>
+            </span>
+            <span>12:09</span>
+        </div>
+        <div class = "single-user">
             <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
             <span> 
                <div>UserName</div> 

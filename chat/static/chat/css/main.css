@@ -1,6 +1,74 @@
+html {
+    padding: 0px 15px;
+    margin: 0;
+}
+
 body {
     color: white;
     background-color: #292F3F;
-    margin: 0;
-    padding: 0;
+}
+
+header {
+    font-size: 14px;
+}
+
+header div:nth-child(1) {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    padding: 5px 15px;
+    background-color: #323739;
+}
+
+.search [type="text"] {
+    border-radius: 30px;
+    width: 30%;
+    margin-top: 80px;
+}
+
+.stories {
+    margin-top: 20px;
+}
+
+.stories>div {
+    display: flex;
+    overflow: auto;
+}
+
+.stories .story {
+    margin-right: 16px;
+    background: linear-gradient(180deg, #FFE81D 0%, #00F0FF 100%);
+    width: 105px;
+    height: 160px;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.stories .story p {
+    color: black;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    top: 100px;
+}
+
+.users {
+    margin-top: 30px;
+}
+
+.single-user {
+    display: flex;
+    border-top: 1px solid grey;
+    padding: 10px 0;
+}
+
+.single-user:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.single-user span {
+    margin-left: 30px;
 }
