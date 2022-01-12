@@ -6,23 +6,25 @@ html {
 body {
     color: white;
     background-color: #292F3F;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 header {
     font-size: 14px;
 }
 
-header div:nth-child(1) {
+.chat-list header div:nth-child(1) {
     position: fixed;
     left: 0;
-    width: 100%;
+    width: 41.5%;
     padding: 5px 15px;
     background-color: #323739;
+    height: 60px;
 }
 
 .search [type="text"] {
     border-radius: 30px;
-    width: 30%;
+    width: 80%;
     margin-top: 80px;
 }
 
@@ -42,6 +44,11 @@ header div:nth-child(1) {
     height: 160px;
     border-radius: 30px;
     cursor: pointer;
+}
+
+.chat-list {
+    border-right: 1px solid grey;
+    height: 100vh;
 }
 
 .stories .story p {
@@ -71,4 +78,30 @@ header div:nth-child(1) {
 
 .single-user span {
     margin-left: 30px;
+}
+
+.chat-room h1 {
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    border: 3px dashed #1c87c9;
+}
+
+.chat-room {
+    padding: 0;
+    margin: 0;
+}
+
+.chat-room .header {
+    padding: 5px 15px;
+    background-color: #323739;
+    height: 60px;
+}
+
+.chat-interface {
+    margin-top: 35px;
+}
+
+.chat-interface .time {
+    font-weight: 100;
 }

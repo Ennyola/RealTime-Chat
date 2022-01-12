@@ -6,70 +6,91 @@
 {% endblock  %}
 
 {% block content %}
-<header>
-    <div>
-        <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-        <span class="profile-name">User</span>
-    </div>
-    <div class ="search">
-        <input class ="form-control-sm" type="text" placeholder="search">
-        <input type="button" value="+">
-    </div>
-</header>
-
-<section>
-    <div class = "stories">
-        <h4>Stories</h4>
-        <div>
-            <div class = "story">
-                <div class="single-story">
-                    <p>User Anonymous</p>
-                </div>      
+<section class="row">
+    <section class ="col-md-5 chat-list">
+        <header>
+            <div>
+                <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+                <span class="profile-name">User</span>
             </div>
-            <div class = "story">
-                <div class="single-story">
-                    <p>User Anonymous</p>
-                </div>      
+            <div class ="search">
+                <input class ="form-control-sm" type="text" placeholder="search">
+                <input type="button" value="+">
             </div>
-            <div class = "story">
-                <div class="single-story">
-                    <p>User Anonymous</p>
-                </div>      
-            </div>
-            <div class = "story">
-                <div class="single-story">
-                    <p>User Anonymous</p>
-                </div>      
-            </div>
-        </div>   
-    </div>
-    <div class="users">
-        <div class = "single-user">
-            <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-            <span> 
-               <div>UserName</div> 
-               <div>message preview</div>
-            </span>
-            <span>12:09</span>
+        </header>
+        <div class = "stories">
+            <h4>Stories</h4>
+            <div>
+                <div class = "story">
+                    <div class="single-story">
+                        <p>User Anonymous</p>
+                    </div>      
+                </div>
+                <div class = "story">
+                    <div class="single-story">
+                        <p>User Anonymous</p>
+                    </div>      
+                </div>
+                <div class = "story">
+                    <div class="single-story">
+                        <p>User Anonymous</p>
+                    </div>      
+                </div>
+                <div class = "story">
+                    <div class="single-story">
+                        <p>User Anonymous</p>
+                    </div>      
+                </div>
+            </div>   
         </div>
-        <div class = "single-user">
-            <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-            <span> 
-               <div>UserName</div> 
-               <div>message preview</div>
-            </span>
-            <span>12:09</span>
+        <div class="users">
+            <div class = "single-user">
+                <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+                <span> 
+                <div>UserName</div> 
+                <div>message preview</div>
+                </span>
+                <span>12:09</span>
+            </div>
+            <div class = "single-user">
+                <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+                <span> 
+                <div>UserName</div> 
+                <div>message preview</div>
+                </span>
+                <span>12:09</span>
+            </div>
+            <div class = "single-user">
+                <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+                <span> 
+                <div>UserName</div> 
+                <div>message preview</div>
+                </span>
+                <span>12:09</span>
+            </div>
         </div>
-        <div class = "single-user">
-            <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-            <span> 
-               <div>UserName</div> 
-               <div>message preview</div>
-            </span>
-            <span>12:09</span>
+    </section>
+    <section class = "col-md-7 chat-room">
+        {% comment %} {% block chat-room %}
+            <h1>WELCOME TO CHATAPP</h1>
+        {% endblock  %} {% endcomment %}
+        <div class ="header">
+            <nav>
+                <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+                <span class="profile-name">User 2</span> 
+                <span>
+                    <i class="fas fa-phone"></i>
+                    <i class="fas fa-video"></i>
+                </span>  
+            </nav>
         </div>
-    </div>
-
+        <div class="chat-interface">
+            <p class="text-center time">
+                1 FEB 12:00
+            </p>
+        </div>
+        
+    </section>
 </section>
 
 {% endblock %}
