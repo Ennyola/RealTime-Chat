@@ -6,91 +6,112 @@
 {% endblock  %}
 
 {% block content %}
-<section class="row">
-    <section class ="col-md-5 chat-list">
-        <header>
-            <div>
-                <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-                <span class="profile-name">User</span>
+<div class="container">
+    <div class="row no-gutters">
+        <div class="col-md-4">
+            <div class="header-settings">
+                <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="display-picture">
+                <span class="settings-icon">
+                    <i class="fas fa-sync-alt"></i> 
+                    <i class="fas fa-ellipsis-v"></i>
+                    <i class="fas fa-comment-alt"></i>
+                </span>
             </div>
+        </div>
+        <div class="col-md-8">hi</div>
+    </div>
+    
+</div>
+
+{% endblock %}
+
+
+    {% comment %} <section class="row no-gutters">
+        <section class ="col-md-5 chat-list">
+            <div class ="settings-tray">
+                    <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+                    <span class="tray-icons">
+                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-video"></i>
+                    </span>
+                
+            </div>
+
             <div class ="search">
                 <input class ="form-control-sm" type="text" placeholder="search">
                 <input type="button" value="+">
             </div>
-        </header>
-        <div class = "stories">
-            <h4>Stories</h4>
-            <div>
-                <div class = "story">
-                    <div class="single-story">
-                        <p>User Anonymous</p>
-                    </div>      
-                </div>
-                <div class = "story">
-                    <div class="single-story">
-                        <p>User Anonymous</p>
-                    </div>      
-                </div>
-                <div class = "story">
-                    <div class="single-story">
-                        <p>User Anonymous</p>
-                    </div>      
-                </div>
-                <div class = "story">
-                    <div class="single-story">
-                        <p>User Anonymous</p>
-                    </div>      
-                </div>
-            </div>   
-        </div>
-        <div class="users">
-            <div class = "single-user">
-                <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-                <span> 
-                <div>UserName</div> 
-                <div>message preview</div>
-                </span>
-                <span>12:09</span>
-            </div>
-            <div class = "single-user">
-                <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-                <span> 
-                <div>UserName</div> 
-                <div>message preview</div>
-                </span>
-                <span>12:09</span>
-            </div>
-            <div class = "single-user">
-                <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-                <span> 
-                <div>UserName</div> 
-                <div>message preview</div>
-                </span>
-                <span>12:09</span>
-            </div>
-        </div>
-    </section>
-    <section class = "col-md-7 chat-room">
-        {% comment %} {% block chat-room %}
-            <h1>WELCOME TO CHATAPP</h1>
-        {% endblock  %} {% endcomment %}
-        <div class ="header">
-            <nav>
-                <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-                <span class="profile-name">User 2</span> 
-                <span>
-                    <i class="fas fa-phone"></i>
-                    <i class="fas fa-video"></i>
-                </span>  
-            </nav>
-        </div>
-        <div class="chat-interface">
-            <p class="text-center time">
-                1 FEB 12:00
-            </p>
-        </div>
-        
-    </section>
-</section>
 
-{% endblock %}
+            <div class = "stories">
+                <h4>Stories</h4>
+                <div>
+                    <div class = "story">
+                        <div class="single-story">
+                            <p>User Anonymous</p>
+                        </div>      
+                    </div>
+                    <div class = "story">
+                        <div class="single-story">
+                            <p>User Anonymous</p>
+                        </div>      
+                    </div>
+                    <div class = "story">
+                        <div class="single-story">
+                            <p>User Anonymous</p>
+                        </div>      
+                    </div>
+                    <div class = "story">
+                        <div class="single-story">
+                            <p>User Anonymous</p>
+                        </div>      
+                    </div>
+                </div>   
+            </div>
+            <div class="users">
+                <div class = "single-user">
+                    <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+                    <span> 
+                    <div>UserName</div> 
+                    <div>message preview</div>
+                    </span>
+                    <span>12:09</span>
+                </div>
+                <div class = "single-user">
+                    <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+                    <span> 
+                    <div>UserName</div> 
+                    <div>message preview</div>
+                    </span>
+                    <span>12:09</span>
+                </div>
+                <div class = "single-user">
+                    <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+                    <span> 
+                    <div>UserName</div> 
+                    <div>message preview</div>
+                    </span>
+                    <span>12:09</span>
+                </div>
+            </div>
+        </section>
+        <section class = "col-md-7 chat-room">
+            <div class ="header">
+                <nav>
+                    <span>
+                        <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
+                        <span class="profile-name">User 2</span> 
+                    </span>
+                    <span>
+                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-video"></i>
+                    </span>  
+                </nav>
+            </div>
+            <div class="chat-interface">
+                <p class="text-center time">
+                    1 FEB 12:00
+                </p>
+            </div>
+            
+        </section>
+    </section> {% endcomment %}

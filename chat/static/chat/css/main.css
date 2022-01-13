@@ -1,19 +1,43 @@
-html {
-    padding: 0px 15px;
-    margin: 0;
-}
-
 body {
+    background-color: white;
     color: white;
+    font-family: sans-serif;
+}
+
+.container {
     background-color: #292F3F;
-    font-family: 'Courier New', Courier, monospace;
+    padding: 0;
 }
 
-header {
-    font-size: 14px;
+.header-settings {
+    background-color: #323739;
+    padding: 10px 15px;
 }
 
-.chat-list header div:nth-child(1) {
+.display-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+.settings-icon {
+    float: right;
+}
+
+.settings-icon i {
+    margin: 15px 10px;
+    font-weight: 600;
+    border: 3px solid red;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.settings-icon i:hover {
+    cursor: pointer;
+}
+
+
+/* .settings-tray {
     position: fixed;
     left: 0;
     width: 41.5%;
@@ -67,7 +91,7 @@ header {
 
 .single-user {
     display: flex;
-    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
     padding: 10px 0;
 }
 
@@ -98,10 +122,15 @@ header {
     height: 60px;
 }
 
+.chat-room .header nav {
+    display: flex;
+    justify-content: space-between;
+}
+
 .chat-interface {
     margin-top: 35px;
 }
 
 .chat-interface .time {
     font-weight: 100;
-}
+} */
