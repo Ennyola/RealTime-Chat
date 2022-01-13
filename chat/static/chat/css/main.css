@@ -1,5 +1,5 @@
 body {
-    background-color: white;
+    background-color: rgb(110, 107, 107);
     color: white;
     font-family: sans-serif;
 }
@@ -9,14 +9,20 @@ body {
     padding: 0;
 }
 
+.col-md-4 {
+    border-right: 1px solid rgb(212, 202, 202);
+    padding-right: 0px;
+}
+
 .header-settings {
     background-color: #323739;
-    padding: 10px 15px;
+    padding: 5px 15px;
+    border-radius: 5px;
 }
 
 .display-picture {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 25px;
 }
 
@@ -25,15 +31,43 @@ body {
 }
 
 .settings-icon i {
-    margin: 15px 10px;
+    margin: 8px 10px;
     font-weight: 600;
-    border: 3px solid red;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    border-radius: 45px;
+    transition: 0.5s;
+    font-size: 18px;
 }
 
 .settings-icon i:hover {
     cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.search-box {
+    padding: 10px 15px;
+}
+
+.wrapper {
+    position: relative;
+    border-radius: 10px;
+}
+
+.wrapper i {
+    position: absolute;
+    color: white;
+    top: 10px;
+    left: 10px;
+}
+
+.wrapper [type="text"] {
+    background-color: #292F3F;
+    border-color: white;
+    padding-left: 2rem;
+    color: white;
+    border-radius: 25px;
+    width: 80%;
+    outline: none;
 }
 
 
