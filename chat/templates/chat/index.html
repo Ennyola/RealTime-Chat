@@ -26,16 +26,47 @@
             </div>
 
             <div class="stories">
+                <h4>Stories</h4>
                 <div class="stories-wrapper">
-                    <h4>Stories</h4>
                     {% with ''|center:10 as range %}
-                       
-                    {% endwith %}
-                    
+                       {% for _ in range  %}
+                        <div class="single-story">
+                            <p>User Anonymous</p>
+                        </div>
+                       {% endfor %}
+                    {% endwith %} 
                 </div>
             </div>
+            <div class="friends-list">
+                {% with ''|center:10 as range %}
+                    {% for _ in range  %}
+                        <div class="single-friend">
+                            <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
+                            <div class = "text">
+                                <h6> User {{forloop.counter}}</h6>
+                                <p>This is a new message</p>
+                            </div>
+                            <span class="time">08:43</span>
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+                
+            </div>
         </div>
-        <div class="col-md-8">hi</div>
+        <div class="col-md-8">
+            <div class="">
+                <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
+                <div class = "text">
+                    <h6> User {{forloop.counter}}</h6>
+                    <p>This is my status hahahaha</p>
+                </div>
+                <span class="settings-icon">
+                    <i class="fas fa-sync-alt"></i> 
+                    <i class="fas fa-ellipsis-v"></i>
+                    <i class="fas fa-comment-alt"></i>
+                </span>
+            </div>
+        </div>
     </div>
     
 </div>

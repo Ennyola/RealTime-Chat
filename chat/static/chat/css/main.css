@@ -1,3 +1,7 @@
+:root {
+    --padding: 5px 15px;
+}
+
 body {
     background-color: rgb(110, 107, 107);
     color: white;
@@ -10,13 +14,13 @@ body {
 }
 
 .col-md-4 {
-    border-right: 1px solid rgb(212, 202, 202);
+    border-right: 1px solid rgb(150, 143, 143);
     padding-right: 0px;
 }
 
 .header-settings {
     background-color: #323739;
-    padding: 5px 15px;
+    padding: var(--padding);
     border-radius: 5px;
 }
 
@@ -68,6 +72,77 @@ body {
     border-radius: 25px;
     width: 80%;
     outline: none;
+}
+
+.stories {
+    margin-top: 10px;
+    padding: var(--padding);
+}
+
+.stories-wrapper {
+    overflow-x: auto;
+    display: flex;
+    scroll-behavior: smooth;
+}
+
+.stories-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.single-story {
+    margin-right: 16px;
+    background: linear-gradient(180deg, #FFE81D 0%, #00F0FF 100%);
+    min-width: 120px;
+    height: 160px;
+    border-radius: 30px;
+    cursor: pointer;
+    color: black;
+}
+
+.single-story p {
+    color: black;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    top: 100px;
+}
+
+.friends-list {
+    margin-top: 30px;
+}
+
+.single-friend {
+    display: flex;
+    border-bottom: 1px solid rgb(151, 146, 146);
+    padding: var(--padding);
+    transition: 0.5s;
+}
+
+.single-friend:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    color: black !important;
+}
+
+.single-friend .text {
+    margin: 0px 15px;
+    width: 100%;
+}
+
+.single-friend .text h6 {
+    position: relative;
+    top: 3px;
+}
+
+.single-friend .text p {
+    color: grey;
+    font-size: 16px;
+}
+
+.time {
+    color: grey;
 }
 
 
