@@ -54,18 +54,22 @@
             </div>
         </div>
         <div class="col-md-8">
-            <div class="">
-                <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
-                <div class = "text">
-                    <h6> User {{forloop.counter}}</h6>
-                    <p>This is my status hahahaha</p>
+            <div class="header-settings">
+                <div class="single-friend">
+                    <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
+                    <div class = "text">
+                        <h6> User {{forloop.counter}}</h6>
+                        <p>This is my status hahahaha</p>
+                    </div>
+                    <span class="settings-icon">
+                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-video"></i>
+                    </span>
                 </div>
-                <span class="settings-icon">
-                    <i class="fas fa-sync-alt"></i> 
-                    <i class="fas fa-ellipsis-v"></i>
-                    <i class="fas fa-comment-alt"></i>
-                </span>
-            </div>
+            </div> 
+            <p class= "chat-date">
+                7:56 am
+            </p>      
         </div>
     </div>
     

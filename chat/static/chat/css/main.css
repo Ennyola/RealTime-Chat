@@ -1,5 +1,5 @@
 :root {
-    --padding: 5px 15px;
+    --padding: 10px 15px;
 }
 
 body {
@@ -116,8 +116,8 @@ body {
 .single-friend {
     display: flex;
     border-bottom: 1px solid rgb(151, 146, 146);
-    padding: var(--padding);
     transition: 0.5s;
+    padding: 5px;
 }
 
 .single-friend:hover {
@@ -128,12 +128,13 @@ body {
 
 .single-friend .text {
     margin: 0px 15px;
-    width: 100%;
+    width: 80%;
 }
 
 .single-friend .text h6 {
     position: relative;
     top: 3px;
+    margin-bottom: 5px;
 }
 
 .single-friend .text p {
@@ -143,6 +144,51 @@ body {
 
 .time {
     color: grey;
+}
+
+.col-md-8 {
+    padding-left: 0;
+}
+
+.col-md-8 .single-friend {
+    border-bottom: none;
+    margin: 0;
+    padding: 0;
+}
+
+.col-md-8 .header-settings {
+    padding: 5px 15px;
+}
+
+.col-md-8 .single-friend:hover {
+    background-color: transparent;
+    color: white !important;
+    cursor: default;
+}
+
+.col-md-8 .text {
+    width: 70%;
+}
+
+.col-md-8 .text p {
+    margin-bottom: 2px;
+}
+
+.col-md-8 .settings-icon i {
+    margin: 8px 10px;
+    font-weight: 600;
+    padding: 5px;
+    border-radius: 45px;
+    transition: 0.5s;
+    font-size: 18px;
+}
+
+.chat-date {
+    text-align: center;
+    margin-top: 10px;
+    margin-right: 30px;
+    color: rgb(168, 161, 161);
+    font-size: 14px;
 }
 
 
