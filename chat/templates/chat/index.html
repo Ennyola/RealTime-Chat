@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="row no-gutters">
+    <div class="row g-0">
         <div class="col-md-4">
             <div class="header-settings">
                 <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="display-picture">
@@ -66,10 +66,33 @@
                         <i class="fas fa-video"></i>
                     </span>
                 </div>
+            </div>
+            <div class="messages">
+                {% with ''|center:10 as range %}
+                    {% for _ in range  %}
+                    <div class="incoming-message">
+                        <div class="chat-bubble">
+                            <div class="msg">
+                                Test which is a new approach to have all solutions
+                            </div>
+                        </div>
+                    </div>
+                    <div class="outgoing-message">
+                        <div class="chat-bubble">
+                            <div class="msg">
+                                Test which is a new approach to have all solutions
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endwith %}
             </div> 
-            <p class= "chat-date">
-                7:56 am
-            </p>      
+            <div class="search-box">
+                <div class="wrapper">
+                    <input class="form-control" type="text" placeholder="search" name="" id="">
+                    <input  type="button" value="+">
+                </div>
+            </div>
         </div>
     </div>
     

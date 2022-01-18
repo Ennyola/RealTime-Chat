@@ -19,7 +19,7 @@ body {
 }
 
 .header-settings {
-    background-color: #323739;
+    background-color: #272A35;
     padding: var(--padding);
     border-radius: 5px;
 }
@@ -111,6 +111,7 @@ body {
 
 .friends-list {
     margin-top: 30px;
+    overflow-y: auto;
 }
 
 .single-friend {
@@ -191,101 +192,30 @@ body {
     font-size: 14px;
 }
 
-
-/* .settings-tray {
-    position: fixed;
-    left: 0;
-    width: 41.5%;
-    padding: 5px 15px;
-    background-color: #323739;
-    height: 60px;
-}
-
-.search [type="text"] {
-    border-radius: 30px;
-    width: 80%;
-    margin-top: 80px;
-}
-
-.stories {
-    margin-top: 20px;
-}
-
-.stories>div {
-    display: flex;
+.messages {
+    padding: 5px;
+    height: 50%;
     overflow: auto;
 }
 
-.stories .story {
-    margin-right: 16px;
-    background: linear-gradient(180deg, #FFE81D 0%, #00F0FF 100%);
-    width: 105px;
-    height: 160px;
-    border-radius: 30px;
-    cursor: pointer;
+.chat-bubble {
+    background-color: #373E4E;
+    padding: 10px 15px;
+    margin: 5px 10px;
+    width: 40%;
+    border-radius: 20px;
 }
 
-.chat-list {
-    border-right: 1px solid grey;
-    height: 100vh;
-}
-
-.stories .story p {
-    color: black;
-    font-size: 12px;
-    text-transform: uppercase;
-    font-weight: bold;
-    text-align: center;
+.incoming-message {
     position: relative;
-    top: 100px;
 }
 
-.users {
-    margin-top: 30px;
-}
-
-.single-user {
+.outgoing-message {
+    position: relative;
     display: flex;
-    border-bottom: 1px solid grey;
-    padding: 10px 0;
+    justify-content: end;
 }
 
-.single-user:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    cursor: pointer;
+.outgoing-message .chat-bubble {
+    background-color: #272A35;
 }
-
-.single-user span {
-    margin-left: 30px;
-}
-
-.chat-room h1 {
-    height: 90px;
-    line-height: 90px;
-    text-align: center;
-    border: 3px dashed #1c87c9;
-}
-
-.chat-room {
-    padding: 0;
-    margin: 0;
-}
-
-.chat-room .header {
-    padding: 5px 15px;
-    background-color: #323739;
-    height: 60px;
-}
-
-.chat-room .header nav {
-    display: flex;
-    justify-content: space-between;
-}
-
-.chat-interface {
-    margin-top: 35px;
-}
-
-.chat-interface .time {
-    font-weight: 100;
-} */
