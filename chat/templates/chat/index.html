@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="messages">
-                {% with ''|center:10 as range %}
+                {% with ''|center:1 as range %}
                     {% for _ in range  %}
                     <div class="incoming-message">
                         <div class="chat-bubble">
@@ -80,17 +80,16 @@
                     <div class="outgoing-message">
                         <div class="chat-bubble">
                             <div class="msg">
-                                Test which is a new approach to have all solutions
-                            </div>
+                                Test which is a new approach to have all solution                            </div>
                         </div>
                     </div>
                     {% endfor %}
                 {% endwith %}
             </div> 
-            <div class="search-box">
-                <div class="wrapper">
-                    <input class="form-control" type="text" placeholder="search" name="" id="">
-                    <input  type="button" value="+">
+            <div class="message-box">
+                <div class="input-wrapper">
+                    <input class="form-control-sm" id = "input-message" type="text" placeholder="type message" name="" id="">
+                    <input type="button" id = "send-button" value="send">
                 </div>
             </div>
         </div>
@@ -99,94 +98,3 @@
 </div>
 
 {% endblock %}
-
-
-    {% comment %} <section class="row no-gutters">
-        <section class ="col-md-5 chat-list">
-            <div class ="settings-tray">
-                    <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-                    <span class="tray-icons">
-                        <i class="fas fa-phone"></i>
-                        <i class="fas fa-video"></i>
-                    </span>
-                
-            </div>
-
-            <div class ="search">
-                <input class ="form-control-sm" type="text" placeholder="search">
-                <input type="button" value="+">
-            </div>
-
-            <div class = "stories">
-                <h4>Stories</h4>
-                <div>
-                    <div class = "story">
-                        <div class="single-story">
-                            <p>User Anonymous</p>
-                        </div>      
-                    </div>
-                    <div class = "story">
-                        <div class="single-story">
-                            <p>User Anonymous</p>
-                        </div>      
-                    </div>
-                    <div class = "story">
-                        <div class="single-story">
-                            <p>User Anonymous</p>
-                        </div>      
-                    </div>
-                    <div class = "story">
-                        <div class="single-story">
-                            <p>User Anonymous</p>
-                        </div>      
-                    </div>
-                </div>   
-            </div>
-            <div class="users">
-                <div class = "single-user">
-                    <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-                    <span> 
-                    <div>UserName</div> 
-                    <div>message preview</div>
-                    </span>
-                    <span>12:09</span>
-                </div>
-                <div class = "single-user">
-                    <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-                    <span> 
-                    <div>UserName</div> 
-                    <div>message preview</div>
-                    </span>
-                    <span>12:09</span>
-                </div>
-                <div class = "single-user">
-                    <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-                    <span> 
-                    <div>UserName</div> 
-                    <div>message preview</div>
-                    </span>
-                    <span>12:09</span>
-                </div>
-            </div>
-        </section>
-        <section class = "col-md-7 chat-room">
-            <div class ="header">
-                <nav>
-                    <span>
-                        <img src=" {% static 'chat/images/dp.svg' %} " alt="display-picture">
-                        <span class="profile-name">User 2</span> 
-                    </span>
-                    <span>
-                        <i class="fas fa-phone"></i>
-                        <i class="fas fa-video"></i>
-                    </span>  
-                </nav>
-            </div>
-            <div class="chat-interface">
-                <p class="text-center time">
-                    1 FEB 12:00
-                </p>
-            </div>
-            
-        </section>
-    </section> {% endcomment %}

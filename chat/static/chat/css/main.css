@@ -14,7 +14,7 @@ body {
 }
 
 .col-md-4 {
-    border-right: 1px solid rgb(150, 143, 143);
+    border-right: 1px solid rgb(88, 87, 87);
     padding-right: 0px;
 }
 
@@ -195,7 +195,7 @@ body {
 .messages {
     padding: 5px;
     height: 50%;
-    overflow: auto;
+    overflow-y: auto;
 }
 
 .chat-bubble {
@@ -218,4 +218,21 @@ body {
 
 .outgoing-message .chat-bubble {
     background-color: #272A35;
+}
+
+.msg {
+    word-wrap: break-word;
+    padding: 10px;
+}
+
+.message-box {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid grey;
+}
+
+.message-box [type="text"] {
+    width: 80%;
+    border-radius: 45px;
+    padding-left: 1em;
 }
