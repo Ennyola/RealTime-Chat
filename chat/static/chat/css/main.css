@@ -222,7 +222,17 @@ body {
 
 .msg {
     word-wrap: break-word;
-    padding: 10px;
+    padding: 5px;
+}
+
+.msg-metadata {
+    display: flex;
+    justify-content: end;
+}
+
+.msg-time {
+    margin: 2px 5px;
+    font-size: 14px;
 }
 
 .message-box {
