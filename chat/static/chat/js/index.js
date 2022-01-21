@@ -17,7 +17,7 @@ inputBox.addEventListener('keyup', (e => {
 
 
 
-const url = `ws://${window.location.host}/ws/chat/${"dan"}/`
+const url = `ws://${window.location.host}/ws/chat/${"Ennheny"}/`
 const chatSocket = new WebSocket(url)
 
 

@@ -11,11 +11,13 @@ body {
 .container {
     background-color: #292F3F;
     padding: 0;
+    height: 100vh;
 }
 
 .col-md-4 {
     border-right: 1px solid rgb(88, 87, 87);
     padding-right: 0px;
+    height: 100vh;
 }
 
 .header-settings {
@@ -111,6 +113,7 @@ body {
 
 .friends-list {
     margin-top: 30px;
+    height: 10cm;
     overflow-y: auto;
 }
 
