@@ -38,11 +38,11 @@
                 </div>
             </div>
             <div class="friends-list">
-                    {% for user in users %}
+                    {% for friend in friends %}
                         <div class="single-friend">
                             <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
                             <div class = "text">
-                                <h6> {{user.username}}</h6>
+                                <h6> {{friend.user.username}}</h6>
                                 <p>This is a new message</p>
                             </div>
                             <span class="time">08:43</span>
@@ -65,32 +65,37 @@
                 </div>
             </div>
             <div class="messages">
-                    <div class="incoming-message">
-                        <div class="chat-bubble">
-                            <div class="msg">
-                                Test which is a new approach to have all solutions
-                            </div>
-                            <span class ="msg-metadata">
-                                <span class = "msg-time">11:18 am</span> 
-                            </span>
-                        </div>
-                    </div>
-                    <div class="outgoing-message">
-                        <div class="chat-bubble">
-                            <div class="msg">Test which is a new approach to have all solution</div>
-                            <span class ="msg-metadata">
-                                <span class = "msg-time">11:18 am</span> 
-                                <span>
-                                    {% if  True%}
-                                        <i class="fas fa-check"></i>
-                                    {% else %}
-                                        <i class="fas fa-spinner"></i>
-                                    {% endif %}          
-                                </span>
+                {% for message in messages %}
+                    {% if message.sender == request.user %}
+                        <div class="outgoing-message">
+                            <div class="chat-bubble">
+                                <div class="msg">{{message.content}}</div>
+                                <span class ="msg-metadata">
+                                    <span class = "msg-time">{{message.time.time}}</span> 
+                                    <span>
+                                        <i class="d-inline fas fa-check"></i>
+                                        {% comment %} <i class="d-none fas fa-spinner"></i>        {% endcomment %}
+                                    </span>
 
-                            </span>
+                                </span>
+                            </div>
                         </div>
-                    </div>
+                    {% else %}
+                        <div class="incoming-message">
+                            <div class="chat-bubble">
+                                <div class="msg">
+                                    {{message.content}}
+                                </div>
+                                <span class ="msg-metadata">
+                                    <span class = "msg-time">11:18 am</span> 
+                                </span>
+                            </div>
+                        </div>    
+                    {% endif %}
+                
+                {% endfor %}
+                    
+                    
             </div> 
             <div class="message-box">
                 <div class="input-wrapper">

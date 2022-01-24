@@ -9,9 +9,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         print("Connection Established")
         self.user_name = self.scope['url_route']['kwargs']['username']
+        self.friend = await sync_to_async(User.objects.get)(username=self.user_name)
         self.room_group_name = f'{self.scope["user"]}_{self.user_name}'
         self.room, created = await self.create_room(self.room_group_name)
-        self.participants, created = await self.create_participants(self.scope['user'], self.room)
+        self.participants, created = await self.create_participants(self.friend, self.room)
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name

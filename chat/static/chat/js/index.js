@@ -2,12 +2,6 @@ let inputBox = document.querySelector("#input-message")
 let sendButton = document.querySelector("#send-button")
 let chatHolder = document.querySelectorAll(".messages")[0]
 
-
-
-
-
-
-
 inputBox.focus()
 inputBox.addEventListener('keyup', (e => {
     if (e.keyCode === 13) { // enter, return
@@ -16,9 +10,8 @@ inputBox.addEventListener('keyup', (e => {
 }))
 
 
-
-const url = `ws://${window.location.host}/ws/chat/${"Eny"}/`
-const chatSocket = new WebSocket(url)
+const url = `ws://${window.location.host}/ws/chat/${"eny"}/`
+const chatSocket = new ReconnectingWebSocket(url)
 
 
 chatSocket.addEventListener('open', (e) => {
