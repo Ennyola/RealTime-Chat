@@ -1,7 +1,7 @@
 let inputBox = document.querySelector("#input-message")
 let sendButton = document.querySelector("#send-button")
 let chatHolder = document.querySelectorAll(".messages")[0]
-let icon = document.querySelector('.chat-status i:nth-child(1)')
+
 
 
 inputBox.focus()
@@ -20,19 +20,10 @@ chatSocket.addEventListener('open', (e) => {
     console.log("Connection Established")
 })
 chatSocket.addEventListener('message', (e) => {
-    const message = JSON.parse(e.data)
-    let str = `<div class="outgoing-message">
-                    <div class="chat-bubble">
-                        <div class="msg">${message.message}</div>
-                        <span class ="msg-metadata">
-                            <span class = "msg-time"></span> 
-                            <span class="chat-status">
-                                <i class="fas fa-check"></i>
-                            </span>
-                        </span>
-                    </div>
-                </div>`
-    console.log(icon.classList)
+    let messageStatus = document.querySelectorAll('.chat-status')
+    let spinnerIcon = document.querySelectorAll('.chat-status i:nth-child(1)')
+    spinnerIcon[spinnerIcon.length - 1].classList.add("d-none")
+    messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
 
 
 
