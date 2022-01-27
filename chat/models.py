@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 # Create your models here.
 
 
@@ -22,7 +23,7 @@ class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     content = models.TextField()
-    time = models.DateTimeField(auto_now=True)
+    time = models.DateTimeField(default=timezone.localtime)
     type = models.CharField(max_length=50, blank=True, null=True)
     status = models.CharField(max_length=20, blank=True, null=True)
 
