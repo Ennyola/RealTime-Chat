@@ -6,9 +6,10 @@ from .models import Room, Message, Participants
 
 
 def index(request):
-    friends = Participants.objects.all()
+    friends = User.objects.all()
     room = Room.objects.get(name="Ennyola_eny")
     messages = Message.objects.filter(room=room)
+    print(room)
     context = {
         'friends': friends,
         'messages': messages

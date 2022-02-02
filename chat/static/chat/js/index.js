@@ -1,6 +1,15 @@
 let inputBox = document.querySelector("#input-message")
 let sendButton = document.querySelector("#send-button")
 let chatHolder = document.querySelectorAll(".messages")[0]
+let friendsNode = document.querySelectorAll(".friends-list .single-friend")
+let friendList = [...friendsNode]
+console.log(friendsNode)
+friendList.map((item) => {
+    item.addEventListener('click', (e) => {
+        console.log(item.getElementsByTagName("h6")[0].innerHTML)
+    })
+
+})
 
 const formatAMPM = (date) => {
     var hours = date.getHours();

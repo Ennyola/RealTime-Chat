@@ -4,6 +4,10 @@ from django.utils import timezone
 # Create your models here.
 
 
+class Friends(models.Model):
+    friend = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
 class Room(models.Model):
     name = models.CharField(max_length=500)
 

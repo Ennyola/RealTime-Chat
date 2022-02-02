@@ -1,6 +1,6 @@
 from tkinter.font import ROMAN
 from django.contrib import admin
-from .models import Room, Message, Participants
+from .models import Room, Message, Participants, Friends
 # Register your models here.
 
 
