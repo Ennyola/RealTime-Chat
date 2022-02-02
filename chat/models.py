@@ -7,6 +7,9 @@ from django.utils import timezone
 class Friends(models.Model):
     friend = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.friend.username
+
 
 class Room(models.Model):
     name = models.CharField(max_length=500)
@@ -20,7 +23,7 @@ class Participants(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return self.room.name
 
 
 class Message(models.Model):

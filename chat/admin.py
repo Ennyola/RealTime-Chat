@@ -7,6 +7,7 @@ from .models import Room, Message, Participants, Friends
 admin.site.register(Room)
 admin.site.register(Message)
 admin.site.register(Participants)
+admin.site.register(Friends)
 
 
 class MessageAdmin(admin.ModelAdmin):

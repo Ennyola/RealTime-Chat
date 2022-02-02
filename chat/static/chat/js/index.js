@@ -3,13 +3,32 @@ let sendButton = document.querySelector("#send-button")
 let chatHolder = document.querySelectorAll(".messages")[0]
 let friendsNode = document.querySelectorAll(".friends-list .single-friend")
 let friendList = [...friendsNode]
-console.log(friendsNode)
+let chatSocket
+
 friendList.map((item) => {
     item.addEventListener('click', (e) => {
-        console.log(item.getElementsByTagName("h6")[0].innerHTML)
+        friend = item.getElementsByTagName("h6")[0].innerHTML
+        const url = `ws://${window.location.host}/ws/chat/${friend}/`
+        chatSocket = new ReconnectingWebSocket(url)
+
+        chatSocket.addEventListener('open', (e) => {
+            console.log("Connection Established")
+        })
+
+        chatSocket.addEventListener('message', (e) => {
+            let messageStatus = document.querySelectorAll('.chat-status')
+            let spinnerIcon = document.querySelectorAll('.chat-status i:nth-child(1)')
+            spinnerIcon[spinnerIcon.length - 1].classList.add("d-none")
+            messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
+        })
+        chatSocket.addEventListener('close', (e) => {
+            console.error('Chat socket closed unexpectedly');
+        })
+
     })
 
 })
+
 
 const formatAMPM = (date) => {
     var hours = date.getHours();
@@ -22,29 +41,6 @@ const formatAMPM = (date) => {
     return strTime;
 }
 
-
-
-const url = `ws://${window.location.host}/ws/chat/${"eny"}/`
-const chatSocket = new ReconnectingWebSocket(url)
-
-
-chatSocket.addEventListener('open', (e) => {
-    console.log("Connection Established")
-})
-chatSocket.addEventListener('message', (e) => {
-    let messageStatus = document.querySelectorAll('.chat-status')
-    let spinnerIcon = document.querySelectorAll('.chat-status i:nth-child(1)')
-    spinnerIcon[spinnerIcon.length - 1].classList.add("d-none")
-    messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
-
-
-
-})
-chatSocket.addEventListener('close', (e) => {
-    console.error('Chat socket closed unexpectedly');
-})
-
-
 inputBox.focus()
 inputBox.addEventListener('keyup', (e => {
     if (e.keyCode === 13) { // enter, return
@@ -52,9 +48,8 @@ inputBox.addEventListener('keyup', (e => {
     }
 }))
 
-
-
 sendButton.addEventListener('click', (e) => {
+    console.log(chatSocket)
     chatSocket.send(JSON.stringify({
         'message': inputBox.value
     }));
@@ -75,14 +70,3 @@ sendButton.addEventListener('click', (e) => {
     inputBox.value = ""
 
 })
-
-// const divOutgoing = document.createElement("div")
-//     const divchatBubble = document.createElement("div")
-//     const divMsg = document.createElement("div")
-
-//     divOutgoing.className = "outgoing-message"
-//     divchatBubble.className = "chat-bubble"
-//     divMsg.className = "msg"
-//     divMsg.innerHTML = inputBox.value
-//     divchatBubble.appendChild(divMsg)
-//     divOutgoing.append(divchatBubble)

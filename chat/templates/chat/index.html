@@ -6,50 +6,38 @@
 {% endblock  %}
 
 {% block content %}
-<div class="container">
-    <div class="row g-0">
-        <div class="col-md-4">
-            <div class="header-settings">
-                <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="display-picture">
-                <span class="settings-icon">
-                    <i class="fas fa-sync-alt"></i> 
-                    <i class="fas fa-ellipsis-v"></i>
-                    <i class="fas fa-comment-alt"></i>
-                </span>
-            </div>
-            <div class="search-box">
-                <div class="wrapper">
-                    <i class="fas fa-search"></i>
-                    <input class="form-control-sm" type="text" placeholder="search" name="" id="">
-                    <input  type="button" value="+">
+    <div class="container">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <div class="header-settings">
+                    <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="display-picture">
+                    <span class="settings-icon">
+                        <i class="fas fa-sync-alt"></i> 
+                        <i class="fas fa-ellipsis-v"></i>
+                        <i class="fas fa-comment-alt"></i>
+                    </span>
                 </div>
-            </div>
+                <div class="search-box">
+                    <div class="wrapper">
+                        <i class="fas fa-search"></i>
+                        <input class="form-control-sm" type="text" placeholder="search" name="" id="">
+                        <input  type="button" value="+">
+                    </div>
+                </div>
 
-            <div class="stories">
-                <h4>Stories</h4>
-                <div class="stories-wrapper">
-                    {% with ''|center:10 as range %}
-                       {% for _ in range  %}
-                        <div class="single-story">
-                            <p>User Anonymous</p>
-                        </div>
-                       {% endfor %}
-                    {% endwith %} 
-                </div>
+                {% include "./stories.html" %}
+                {% include './friends.html' %}
             </div>
-            {% include './friends.html' %}
-        </div>
-        <div class="col-md-8">
-            {% include './chat-room.html' %}
-            <div class="message-box">
-                <div class="input-wrapper">
-                    <input class="form-control-sm" id = "input-message" type="text" placeholder="type message" name="" id="">
-                    <input type="button" id = "send-button" value="send">
+            <div class="col-md-8">
+                {% include './chat-room.html' %}
+                <div class="message-box">
+                    <div class="input-wrapper">
+                        <input class="form-control-sm" id = "input-message" type="text" placeholder="type message" name="" id="">
+                        <input type="button" id = "send-button" value="send">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     
-</div>
-
 {% endblock %}
