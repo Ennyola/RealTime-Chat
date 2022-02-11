@@ -1,11 +1,11 @@
 {% load static %}
 <div class="friends-list">
     {% for friend in friends %}
-        <div class="single-friend">
+        <div class="single-friend" id={{friend.room_id}}>
             <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
             <div class = "text">
-                <h6>{{friend}}</h6>
-                <p>This is a new message</p>
+                <h6>{{friend.room_name}}</h6>
+                <p>Latest Message</p>
             </div>
             <span class="time">08:43</span>
         </div>
