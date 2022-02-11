@@ -29,13 +29,8 @@
                 {% include './friends.html' %}
             </div>
             <div class="col-md-8">
-                {% include './chat-room.html' %}
-                <div class="message-box">
-                    <div class="input-wrapper">
-                        <input class="form-control-sm" id = "input-message" type="text" placeholder="type message" name="" id="">
-                        <input type="button" id = "send-button" value="send">
-                    </div>
-                </div>
+                {% block chat-room %}{% endblock  %}
+                
             </div>
         </div>
     </div>

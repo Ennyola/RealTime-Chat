@@ -4,8 +4,7 @@ let friendList = [...friendsNode]
 // Go to a particular room when you click on a friend's name
 friendList.map((item) => {
     item.addEventListener('click', (e) => {
-        e.preventDefault()
-        window.location.href += `${item.id}/`
+        window.location.href += `chat/${item.id}/`
 
     })
 })

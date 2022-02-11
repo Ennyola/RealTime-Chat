@@ -1,10 +1,13 @@
+{% extends "./index.html" %}
 {% load static %}
+{% block chat-room %}
+
+{{room_name|json_script:"room-name"}}
 <div class="header-settings">
     <div class="single-friend">
         <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
         <div class = "text">
-            <h6> User {{forloop.counter}}</h6>
-            <p>This is my status hahahaha</p>
+            <h6> {{room_name}}</h6>
         </div>
         <span class="settings-icon">
             <i class="fas fa-phone"></i>
@@ -41,3 +44,14 @@
     
     {% endfor %}   
 </div> 
+<div class="message-box">
+    <div class="input-wrapper">
+        <input class="form-control-sm" id = "input-message" type="text" placeholder="type message" name="" id="">
+        <input type="button" id = "send-button" value="send">
+    </div>
+</div>
+
+{% endblock  %}
+{% block script2 %}
+      <script src="{% static 'chat/js/chatroom.js' %}"></script>
+{% endblock  %} 
