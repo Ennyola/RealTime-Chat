@@ -24,6 +24,19 @@ class Participants(models.Model):
 
     def __str__(self):
         return self.room.name
+    
+    @staticmethod
+    def get_friends():
+        friends = Participants.objects.all()
+        friend_list = []
+        for friend in friends:
+            room_id = friend.room.id
+            room_name = friend.room.name.split("_")[1]
+            friend_list.append({
+                'room_id': room_id,
+                'room_name': room_name
+            })
+        return friend_list
 
 
 class Message(models.Model):

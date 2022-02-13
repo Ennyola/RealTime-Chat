@@ -6,15 +6,7 @@ from .models import Room, Message, Participants, Friends
 
 
 def index(request):
-    friends = Participants.objects.all()
-    friend_list = []
-    for friend in friends:
-        room_id = friend.room.id
-        room_name = friend.room.name.split("_")[1]
-        friend_list.append({
-            'room_id': room_id,
-            'room_name': room_name
-        })
+    friend_list =Participants.get_friends()
     context = {
         'friends': friend_list,
     }
@@ -23,11 +15,13 @@ def index(request):
 
 def chat_room(request, room_id):
     messages = Message.objects.filter(room_id=room_id)
+    friend_list =Participants.get_friends()
     room = Room.objects.get(id=room_id)
     if room.name.startswith(request.user.username):
         room_name=room.name.split("_")[1]
     context = {
         'messages': messages,
-        'room_name': room_name
+        'room_name': room_name,
+        'friends': friend_list,
     }
     return render(request, 'chat/chat-room.html', context)
