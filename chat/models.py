@@ -26,8 +26,8 @@ class Participants(models.Model):
         return self.room.name
     
     @staticmethod
-    def get_friends():
-        friends = Participants.objects.all()
+    def get_friends(user):
+        friends = Participants.objects.filter(user=user)
         friend_list = []
         for friend in friends:
             room_id = friend.room.id

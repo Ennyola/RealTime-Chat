@@ -10,9 +10,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
         print("Connection Established")
         self.user_name = self.scope['url_route']['kwargs']['username']
         self.friend = await sync_to_async(User.objects.get)(username=self.user_name)
-        self.room_group_name = f'{self.scope["user"]}_{self.user_name}'
-        self.room, created = await self.create_room(self.room_group_name)
-        self.participants, created = await self.create_participants(self.scope["user"], self.room)
+        self.does_room_exist = await self.check_if_room_exists(self.scope['user'], self.friend)
+        if not self.does_room_exist: 
+            # The room_group name starts with the name of the user and that of the person he/she is chatting with
+            # e.g currentUser_myfriend
+            self.room_group_name = f'{self.scope["user"]}_{self.user_name}'
+            self.room, created = await self.create_room(self.room_group_name)
+            self.create_room_for_user, created = await self.create_participants(self.scope["user"], self.room)
+
+            # A similar room is created for the friend with same room_group name
+            self.create_room_for_friend, created = await self.create_participants(self.friend, self.room)
+        else:
+            self.room_group_name = await sync_to_async(Room.objects.get)(name=f'{self.user_name}_{self.scope["user"]}')
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -56,3 +65,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def create_participants(self, user, room_name):
         return Participants.objects.get_or_create(user=user, room=room_name)
+
+    @sync_to_async
+    def check_if_room_exists(self, user, friend):
+        return Room.objects.filter(name=f'{friend}_{user}').exists()
