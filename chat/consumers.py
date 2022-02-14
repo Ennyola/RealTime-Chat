@@ -21,7 +21,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             # A similar room is created for the friend with same room_group name
             self.create_room_for_friend, created = await self.create_participants(self.friend, self.room)
         else:
-            self.room_group_name = await sync_to_async(Room.objects.get)(name=f'{self.user_name}_{self.scope["user"]}')
+            self.room = await sync_to_async(Room.objects.get)(name=f'{self.user_name}_{self.scope["user"]}')
+            self.room_group_name = self.room.name
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name

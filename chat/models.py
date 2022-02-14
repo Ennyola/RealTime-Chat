@@ -31,7 +31,10 @@ class Participants(models.Model):
         friend_list = []
         for friend in friends:
             room_id = friend.room.id
-            room_name = friend.room.name.split("_")[1]
+            if friend.room.name.startswith(user.username):
+                room_name=friend.room.name.split("_")[1]
+            else:
+                room_name=friend.room.name.split("_")[0]
             friend_list.append({
                 'room_id': room_id,
                 'room_name': room_name
