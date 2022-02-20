@@ -11,7 +11,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.user_name = self.scope['url_route']['kwargs']['username']
         self.friend = await sync_to_async(User.objects.get)(username=self.user_name)
         self.does_room_exist = await self.check_if_room_exists(self.scope['user'], self.friend)
-        if not self.does_room_exist: 
+        if not self.does_room_exist:
             # The room_group name starts with the name of the user and that of the person he/she is chatting with
             # e.g currentUser_myfriend
             self.room_group_name = f'{self.scope["user"]}_{self.user_name}'

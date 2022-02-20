@@ -32,6 +32,7 @@ chatSocket.addEventListener('close', (e) => {
 inputBox.focus()
 inputBox.addEventListener('keyup', (e => {
     if (e.keyCode === 13) { // enter, return
+        if (inputBox.value === "") return
         sendButton.click();
     }
 }))
