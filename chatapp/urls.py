@@ -21,6 +21,7 @@ app_name="chat"
 urlpatterns = [
     path('',index, name="homepage"),
     path('accounts/',include('accounts.urls')),
+    path('add-friend/', include('find_friends.urls')),
     path('admin/', admin.site.urls),
     path('chat/',include('chat.urls'))
 ]
