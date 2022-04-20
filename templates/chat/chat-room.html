@@ -1,7 +1,6 @@
 {% extends "./index.html" %}
 {% load static %}
 {% block chat-room %}
-
 {{room_name|json_script:"room-name"}}
 <div class="header-settings">
     <div class="single-friend">
@@ -50,8 +49,8 @@
         <input type="button" id = "send-button" value="send">
     </div>
 </div>
-
 {% endblock  %}
+
 {% block script2 %}
       <script src="{% static 'chat/js/chatroom.js' %}"></script>
 {% endblock  %} 

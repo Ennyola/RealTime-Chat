@@ -1,0 +1,18 @@
+{% load static %}
+<div>
+    <div class="header-settings">
+        <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="display-picture">
+        <span class="settings-icon">
+           <a href= {% url 'find_friends:add-friend' %} ><i class="fas fa-user-plus"></i></a> 
+            <i class="fas fa-ellipsis-v"></i>
+            <i class="fas fa-comment-alt"></i>
+        </span>
+    </div>
+    <div class="search-box">
+        <div class="wrapper">
+            <i class="fas fa-search"></i>
+            <input class="form-control-sm" type="text" placeholder="search" name="" id="">
+            <input  type="button" value="+">
+        </div>
+    </div>
+</div>

@@ -4,4 +4,4 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return render(request, 'find_friends/add-friend.html')
+    return render(request, 'find_friends/index.html')

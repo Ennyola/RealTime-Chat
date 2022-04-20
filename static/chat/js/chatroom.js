@@ -1,4 +1,4 @@
-const friend_name = JSON.parse(document.getElementById('room-name').textContent);
+const friendName = JSON.parse(document.getElementById('room-name').textContent);
 
 const formatAMPM = (date) => {
     var hours = date.getHours();
@@ -11,7 +11,7 @@ const formatAMPM = (date) => {
     return strTime;
 }
 
-const url = `ws://${window.location.host}/ws/chat/${friend_name}/`
+const url = `ws://${window.location.host}/ws/chat/${friendName}/`
 let chatSocket = new ReconnectingWebSocket(url)
 
 chatSocket.addEventListener('open', (e) => {
