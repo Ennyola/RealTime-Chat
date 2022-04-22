@@ -1,2 +1,14 @@
-{% extends "../base.html" %}
-{% block content %}{% endblock  %}
+{% extends "./index.html" %}
+{% load static %}
+{% block friend %}
+<div>
+    {% for user in random_users %}
+        <div>
+            <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="display-picture">
+            <span>{{user.username}}</span> 
+            <a href={% url 'find_friends:add_friend' user.id %}> <button >Add friend</button></a> 
+        </div>
+        <hr>
+    {% endfor %}
+</div>
+{% endblock  %}

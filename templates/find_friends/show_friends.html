@@ -1,0 +1,9 @@
+{% extends './index.html' %}
+{% block friend %}
+        {% for friend in friends %}
+            <div>
+                {{friend.friend.username}}
+                <hr>
+            </div>
+        {% endfor %} 
+{% endblock %}

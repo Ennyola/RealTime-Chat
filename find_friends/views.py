@@ -15,9 +15,17 @@ def index(request):
     context={
         "random_users":random_five
     }
-    return render(request, 'find_friends/index.html',context)
+    return render(request, 'find_friends/add-friend.html',context)
 
 def add_friend(request,id):
     friend = User.objects.get(id=id)
     Friends.objects.create(friend=friend)
     return redirect('find_friends:index')
+
+def show_friends(request):
+    friends=Friends.objects.all()
+    context={
+        "friends":friends
+    }
+    
+    return render(request,'find_friends/show_friends.html',context)

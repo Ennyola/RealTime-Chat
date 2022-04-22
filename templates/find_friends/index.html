@@ -10,16 +10,8 @@
         <div class="row g-0">
             <div class="col-md-4">
                 {% include '../header_settings.html' %}
-                <div>
-                    {% for user in random_users %}
-                        <div>
-                            <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="display-picture">
-                            <span>{{user.username}}</span> 
-                            <a href={% url 'find_friends:add_friend' user.id %}> <button >Add friend</button></a> 
-                        </div>
-                        <hr>
-                    {% endfor %}
-                </div>
+                {% block friend %}  {% endblock  %}  
+                
             </div>
             <div class="col-md-8">
                 
