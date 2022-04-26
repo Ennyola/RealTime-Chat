@@ -1,7 +1,7 @@
 import random
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
-from.models import Friends
+from chat.models import Participants,Room
 # Create your views here.
 
 
@@ -19,13 +19,19 @@ def index(request):
 
 def add_friend(request,id):
     friend = User.objects.get(id=id)
-    Friends.objects.create(friend=friend)
+    #checking if room already exists
+    if Room.objects.filter(name=f'{friend.username}_{request.user}').exists() or Room.objects.filter(name=f'{request.user}_{friend.username}').exists():
+        print("User already added")
+    else:
+        room = Room.objects.create(name=f'{request.user}_{friend.username}')
+        Participants.objects.create(user=request.user,room=room)
+        Participants.objects.create(user=friend,room=room)
     return redirect('find_friends:index')
 
 def show_friends(request):
-    friends=Friends.objects.all()
-    context={
-        "friends":friends
+    friend_list =Participants.get_friends(request.user)
+    context = {
+        'friends': friend_list,
     }
     
     return render(request,'find_friends/show_friends.html',context)

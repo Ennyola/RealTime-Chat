@@ -1,9 +1,15 @@
 {% extends './index.html' %}
+{% load static %}
 {% block friend %}
+    <div class="friends">
         {% for friend in friends %}
-            <div>
-                {{friend.friend.username}}
+            <div class="friend" id="{{friend.room_id}}">
+                {{friend.room_name}}
                 <hr>
             </div>
         {% endfor %} 
+    </div>
 {% endblock %}
+{% block script2 %}
+      <script type="module" src="{% static 'find_friends/js/showFriends.js' %}"></script>
+{% endblock  %} 
