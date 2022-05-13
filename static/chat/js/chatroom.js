@@ -1,4 +1,7 @@
-const friendName = JSON.parse(document.getElementById('room-name').textContent);
+import { chatSocket } from './index.js'
+let inputBox = document.querySelector("#input-message"),
+    sendButton = document.querySelector("#send-button"),
+    chatHolder = document.querySelectorAll(".messages")[0]
 
 const formatAMPM = (date) => {
     var hours = date.getHours();
@@ -11,24 +14,6 @@ const formatAMPM = (date) => {
     return strTime;
 }
 
-const url = `ws://${window.location.host}/ws/chat/${friendName}/`
-let chatSocket = new ReconnectingWebSocket(url)
-
-chatSocket.addEventListener('open', (e) => {
-    console.log("Connection Established")
-})
-
-chatSocket.addEventListener('message', (e) => {
-    let messageStatus = document.querySelectorAll('.chat-status')
-    let spinnerIcon = document.querySelectorAll('.chat-status i:nth-child(1)')
-    spinnerIcon[spinnerIcon.length - 1].classList.add("d-none")
-    messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
-})
-chatSocket.addEventListener('close', (e) => {
-    console.error('Chat socket closed unexpectedly');
-})
-
-
 inputBox.focus()
 inputBox.addEventListener('keyup', (e => {
     if (e.keyCode === 13) { // enter, return
@@ -37,9 +22,13 @@ inputBox.addEventListener('keyup', (e => {
     }
 }))
 
+
+
+
 sendButton.addEventListener('click', (e) => {
     chatSocket.send(JSON.stringify({
-        'message': inputBox.value
+        type: "message",
+        messageContent: inputBox.value
     }));
     let str = `<div class="outgoing-message">
                     <div class="chat-bubble">

@@ -10,15 +10,12 @@
         <div class="row g-0">
             <div class="col-md-4">
                 {% include '../header_settings.html' %}
-
                 {% comment %} {% include "./stories.html" %} {% endcomment %}
                 {% include './friends.html' %}
             </div>
             <div class="col-md-8">
                 {% block chat-room %}{% endblock  %}
-                
             </div>
         </div>
     </div>
-    
 {% endblock %}
