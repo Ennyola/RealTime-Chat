@@ -7,8 +7,16 @@ chatSocket.addEventListener('open', (e) => {
 })
 
 chatSocket.addEventListener('message', (e) => {
-    let messageStatus = document.querySelectorAll('.chat-status')
-    let spinnerIcon = document.querySelectorAll('.chat-status i:nth-child(1)')
-    spinnerIcon[spinnerIcon.length - 1].classList.add("d-none")
-    messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
+    const msg = JSON.parse(e.data)
+    switch (msg.type) {
+        case "message":
+            let messageStatus = document.querySelectorAll('.chat-status')
+            let spinnerIcon = document.querySelectorAll('.chat-status i:nth-child(1)')
+            spinnerIcon[spinnerIcon.length - 1].classList.add("d-none")
+            messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
+            break;
+        default:
+            break;
+    }
+
 })
