@@ -1,0 +1,23 @@
+.video-container{
+position: fixed;
+z-index: +12;
+border:2px solid green;
+min-width:55%;
+height:80%;
+}
+.video-box{
+    position: relative;
+    border:2px solid red;
+}
+
+#received_video{
+    width: 500px;
+    height:500px;
+}
+#local_video{
+    position: absolute;
+    width: 100px;
+    height:200px;
+    right:0;
+    bottom:0;
+}
