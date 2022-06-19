@@ -10,17 +10,17 @@
         </div>
         <span class="settings-icon">
             <i class="fas fa-phone"></i>
-            <i class="fas fa-video"></i>
+            <i id ="video-call-icon" class="fas fa-video"></i>
         </span>
     </div>
 </div>
-<div class="video-container">
+<div class="video-container d-none">
     <div class="video-box">
-        {% comment %} <video src = "{% static 'chat/images/WIN_20211018_13_46_20_Pro.mp4' %}" id="received_video" autoplay></video>
-        <video src = "{% static 'chat/images/WIN_20210817_12_10_10_Pro.mp4' %}" id="local_video" autoplay muted></video>
+        <video id="received_video" autoplay></video>
+        <video id="local_video" autoplay muted></video>
         <button id="hangup-button" disabled>
         Hang Up
-        </button> {% endcomment %}
+        </button> 
     </div>
 </div>
 <div class="messages">
