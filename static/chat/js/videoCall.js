@@ -1,5 +1,6 @@
-const videoCallIcon = document.querySelector("#video-call-icon")
+import { chatSocket, createPeerConnection } from "./index.js";
 const videoContainer = document.querySelector('.video-container')
+const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const mediaConstraints = {
     audio: true, // We want an audio track
     video: {
@@ -8,14 +9,43 @@ const mediaConstraints = {
         }
     }
 };
+let myPeerConnection = null;
 
-let myPeerConnection = new RTCPeerConnection({
-    iceServers: [ // Information about ICE servers - Use your own!
-        {
-            urls: "stun:stun.stunprotocol.org"
-        }
-    ]
-});
+const handleVideoOfferMsg = (msg) => {
+    let localStream = null;
+
+    targetUsername = msg.name;
+    createPeerConnection();
+
+    let desc = new RTCSessionDescription(msg.sdp);
+
+    myPeerConnection.setRemoteDescription(desc).then(() => {
+            return navigator.mediaDevices.getUserMedia(mediaConstraints);
+        })
+        .then((stream) => {
+            localStream = stream;
+            document.querySelector("#local_video").srcObject = localStream;
+
+            localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
+        })
+        .then(() => {
+            return myPeerConnection.createAnswer();
+        })
+        .then((answer) => {
+            return myPeerConnection.setLocalDescription(answer);
+        })
+        .then(() => {
+            let msg = {
+                name: myUsername,
+                target: targetUsername,
+                type: "video-answer",
+                sdp: myPeerConnection.localDescription
+            };
+
+            chatSocket.send(JSON.stringify(msg));
+        })
+        .catch(handleGetUserMediaError);
+}
 
 
 const handleGetUserMediaError = (e) => {
@@ -42,8 +72,8 @@ const handleNegotiationNeededEvent = () => {
         })
         .then(() => {
             sendToServer({
-                name: myUsername,
-                target: targetUsername,
+                name: "me",
+                target: friendName,
                 type: "video-offer",
                 sdp: myPeerConnection.localDescription
             });
@@ -51,18 +81,10 @@ const handleNegotiationNeededEvent = () => {
         .catch(reportError);
 }
 
-const createPeerConnection = () => {
-    myPeerConnection.onicecandidate = handleICECandidateEvent;
-    myPeerConnection.ontrack = handleTrackEvent;
-    myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
-    myPeerConnection.onremovetrack = handleRemoveTrackEvent;
-    myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
-    myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
-    myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
-}
+
 
 // The caller initiating the call
-const invite = (e) => {
+export const invite = (e) => {
     // Makes the video visible
     videoContainer.classList.remove("d-none")
     if (myPeerConnection) {
@@ -77,5 +99,3 @@ const invite = (e) => {
             .catch(handleGetUserMediaError);
     }
 }
-
-videoCallIcon.addEventListener("click", invite)

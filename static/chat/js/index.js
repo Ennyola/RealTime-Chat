@@ -1,7 +1,31 @@
+import { invite } from "./videoCall.js";
+const videoCallIcon = document.querySelector("#video-call-icon")
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const url = `ws://${window.location.host}/ws/chat/${friendName}/`
 export const chatSocket = new ReconnectingWebSocket(url)
 
+//start the call
+videoCallIcon.addEventListener("click", invite)
+
+export const createPeerConnection = () => {
+    myPeerConnection = new RTCPeerConnection({
+        iceServers: [ // Information about ICE servers - Use your own!
+            {
+                urls: "stun:stun.stunprotocol.org"
+            }
+        ]
+    });
+
+    myPeerConnection.onicecandidate = handleICECandidateEvent;
+    myPeerConnection.ontrack = handleTrackEvent;
+    myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
+    myPeerConnection.onremovetrack = handleRemoveTrackEvent;
+    myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
+    myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
+    myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
+}
+
+//Open websocket connection
 chatSocket.addEventListener('open', (e) => {
     console.log("Connection Established")
 })
