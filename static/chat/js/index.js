@@ -1,8 +1,10 @@
-import { invite } from "./videoCall.js";
+import { invite, handleNegotiationNeededEvent, handleICECandidateEvent, handleTrackEvent, handleRemoveTrackEvent, handleICEConnectionStateChangeEvent, closeVideoCall, handleSignalingStateChangeEvent, handleICEGatheringStateChangeEvent } from "./videoCall.js";
 const videoCallIcon = document.querySelector("#video-call-icon")
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const url = `ws://${window.location.host}/ws/chat/${friendName}/`
 export const chatSocket = new ReconnectingWebSocket(url)
+
+let myPeerConnection = null;
 
 //start the call
 videoCallIcon.addEventListener("click", invite)
@@ -44,3 +46,12 @@ chatSocket.addEventListener('message', (e) => {
     }
 
 })
+
+const hangUpCall = () => {
+    closeVideoCall();
+    chatSocket.send({
+        name: myUsername,
+        target: targetUsername,
+        type: "hang-up"
+    });
+}

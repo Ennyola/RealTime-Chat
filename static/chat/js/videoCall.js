@@ -11,6 +11,41 @@ const mediaConstraints = {
 };
 let myPeerConnection = null;
 
+export const closeVideoCall = () => {
+    let remoteVideo = document.querySelector("#received_video");
+    let localVideo = document.querySelector("#local_video");
+
+    if (myPeerConnection) {
+        myPeerConnection.ontrack = null;
+        myPeerConnection.onremovetrack = null;
+        myPeerConnection.onremovestream = null;
+        myPeerConnection.onicecandidate = null;
+        myPeerConnection.oniceconnectionstatechange = null;
+        myPeerConnection.onsignalingstatechange = null;
+        myPeerConnection.onicegatheringstatechange = null;
+        myPeerConnection.onnegotiationneeded = null;
+
+        if (remoteVideo.srcObject) {
+            remoteVideo.srcObject.getTracks().forEach(track => track.stop());
+        }
+
+        if (localVideo.srcObject) {
+            localVideo.srcObject.getTracks().forEach(track => track.stop());
+        }
+
+        myPeerConnection.close();
+        myPeerConnection = null;
+    }
+
+    remoteVideo.removeAttribute("src");
+    remoteVideo.removeAttribute("srcObject");
+    localVideo.removeAttribute("src");
+    remoteVideo.removeAttribute("srcObject");
+
+    document.querySelector("#hangup-button").disabled = true;
+    targetUsername = null;
+}
+
 const handleVideoOfferMsg = (msg) => {
     let localStream = null;
 
@@ -66,22 +101,6 @@ const handleGetUserMediaError = (e) => {
     closeVideoCall();
 }
 
-const handleNegotiationNeededEvent = () => {
-    myPeerConnection.createOffer().then((offer) => {
-            return myPeerConnection.setLocalDescription(offer);
-        })
-        .then(() => {
-            sendToServer({
-                name: "me",
-                target: friendName,
-                type: "video-offer",
-                sdp: myPeerConnection.localDescription
-            });
-        })
-        .catch(reportError);
-}
-
-
 
 // The caller initiating the call
 export const invite = (e) => {
@@ -98,4 +117,76 @@ export const invite = (e) => {
             })
             .catch(handleGetUserMediaError);
     }
+}
+
+export const handleNegotiationNeededEvent = () => {
+    myPeerConnection.createOffer().then((offer) => {
+            return myPeerConnection.setLocalDescription(offer);
+        })
+        .then(() => {
+            sendToServer({
+                name: "me",
+                target: friendName,
+                type: "video-offer",
+                sdp: myPeerConnection.localDescription
+            });
+        })
+        .catch(reportError);
+}
+
+
+export const handleICECandidateEvent = (event) => {
+    if (event.candidate) {
+        chatSocket.send(JSON.stringify({
+            type: "new-ice-candidate",
+            target: targetUsername,
+            candidate: event.candidate
+        }));
+    };
+}
+
+export const handleNewICECandidateMsg = (msg) => {
+    let candidate = new RTCIceCandidate(msg.candidate);
+
+    myPeerConnection.addIceCandidate(candidate)
+        .catch(reportError);
+}
+
+export const handleTrackEvent = (event) => {
+    document.querySelector("#received_video").srcObject = event.streams[0];
+    document.querySelector("#hangup-button").disabled = false;
+}
+
+export const handleRemoveTrackEvent = (event) => {
+    let stream = document.querySelector("#received_video").srcObject;
+    let trackList = stream.getTracks();
+
+    if (trackList.length == 0) {
+        closeVideoCall();
+    }
+}
+
+export const handleICEConnectionStateChangeEvent = (event) => {
+    switch (myPeerConnection.iceConnectionState) {
+        case "closed":
+        case "failed":
+            closeVideoCall();
+            break;
+        default:
+            break;
+    }
+}
+
+export const handleSignalingStateChangeEvent = (event) => {
+    switch (myPeerConnection.signalingState) {
+        case "closed":
+            closeVideoCall();
+            break;
+    }
+};
+
+export const handleICEGatheringStateChangeEvent = (event) => {
+    // Our sample just logs information to console here,
+    // but you can do whatever you need.
+    console.log(event)
 }
