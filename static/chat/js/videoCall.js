@@ -1,4 +1,4 @@
-import { chatSocket, createPeerConnection } from "./index.js";
+import { chatSocket, createPeerConnection, myPeerConnection } from "./index.js";
 const videoContainer = document.querySelector('.video-container')
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const mediaConstraints = {
@@ -9,12 +9,11 @@ const mediaConstraints = {
         }
     }
 };
-let myPeerConnection = null;
+let targetUsername = null;
 
 export const closeVideoCall = () => {
     let remoteVideo = document.querySelector("#received_video");
     let localVideo = document.querySelector("#local_video");
-
     if (myPeerConnection) {
         myPeerConnection.ontrack = null;
         myPeerConnection.onremovetrack = null;
@@ -124,7 +123,7 @@ export const handleNegotiationNeededEvent = () => {
             return myPeerConnection.setLocalDescription(offer);
         })
         .then(() => {
-            sendToServer({
+            chatSocket.send({
                 name: "me",
                 target: friendName,
                 type: "video-offer",
@@ -188,5 +187,5 @@ export const handleSignalingStateChangeEvent = (event) => {
 export const handleICEGatheringStateChangeEvent = (event) => {
     // Our sample just logs information to console here,
     // but you can do whatever you need.
-    console.log(event)
+    // console.log(event)
 }

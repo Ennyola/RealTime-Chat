@@ -4,7 +4,7 @@ const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const url = `ws://${window.location.host}/ws/chat/${friendName}/`
 export const chatSocket = new ReconnectingWebSocket(url)
 
-let myPeerConnection = null;
+export let myPeerConnection = null;
 
 //start the call
 videoCallIcon.addEventListener("click", invite)
