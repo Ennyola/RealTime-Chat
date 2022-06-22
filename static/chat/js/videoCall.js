@@ -45,7 +45,55 @@ export const closeVideoCall = () => {
     targetUsername = null;
 }
 
-const handleVideoOfferMsg = (msg) => {
+const handleGetUserMediaError = (e) => {
+        switch (e.name) {
+            case "NotFoundError":
+                alert("Unable to open your call because no camera and/or microphone" +
+                    "were found.");
+                break;
+            case "SecurityError":
+            case "PermissionDeniedError":
+                // Do nothing; this is the same as the user canceling the call.
+                break;
+            default:
+                alert("Error opening your camera and/or microphone: " + e.message);
+                break;
+        }
+
+        closeVideoCall();
+    }
+    // The caller initiating the call
+export const invite = (e) => {
+    // Makes the video visible
+    videoContainer.classList.remove("d-none")
+    if (myPeerConnection) {
+        alert("You can't start a call because you already have one open!");
+    } else {
+        createPeerConnection();
+        navigator.mediaDevices.getUserMedia(mediaConstraints)
+            .then((localStream) => {
+                document.querySelector("#local_video").srcObject = localStream;
+                localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
+            })
+            .catch(handleGetUserMediaError);
+    }
+}
+
+export const handleNegotiationNeededEvent = () => {
+    myPeerConnection.createOffer().then((offer) => {
+            return myPeerConnection.setLocalDescription(offer);
+        })
+        .then(() => {
+            chatSocket.send(JSON.stringify({
+                name: "me",
+                target: friendName,
+                type: "video-offer",
+                sdp: myPeerConnection.localDescription
+            }));
+        })
+        .catch(reportError);
+}
+export const handleVideoOfferMsg = (msg) => {
     let localStream = null;
 
     targetUsername = msg.name;
@@ -82,58 +130,6 @@ const handleVideoOfferMsg = (msg) => {
 }
 
 
-const handleGetUserMediaError = (e) => {
-    switch (e.name) {
-        case "NotFoundError":
-            alert("Unable to open your call because no camera and/or microphone" +
-                "were found.");
-            break;
-        case "SecurityError":
-        case "PermissionDeniedError":
-            // Do nothing; this is the same as the user canceling the call.
-            break;
-        default:
-            alert("Error opening your camera and/or microphone: " + e.message);
-            break;
-    }
-
-    closeVideoCall();
-}
-
-
-// The caller initiating the call
-export const invite = (e) => {
-    // Makes the video visible
-    videoContainer.classList.remove("d-none")
-    if (myPeerConnection) {
-        alert("You can't start a call because you already have one open!");
-    } else {
-        createPeerConnection();
-        navigator.mediaDevices.getUserMedia(mediaConstraints)
-            .then((localStream) => {
-                document.querySelector("#local_video").srcObject = localStream;
-                localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
-            })
-            .catch(handleGetUserMediaError);
-    }
-}
-
-export const handleNegotiationNeededEvent = () => {
-    myPeerConnection.createOffer().then((offer) => {
-            return myPeerConnection.setLocalDescription(offer);
-        })
-        .then(() => {
-            chatSocket.send({
-                name: "me",
-                target: friendName,
-                type: "video-offer",
-                sdp: myPeerConnection.localDescription
-            });
-        })
-        .catch(reportError);
-}
-
-
 export const handleICECandidateEvent = (event) => {
     if (event.candidate) {
         chatSocket.send(JSON.stringify({
@@ -152,6 +148,7 @@ export const handleNewICECandidateMsg = (msg) => {
 }
 
 export const handleTrackEvent = (event) => {
+    console.log(event)
     document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
 }
