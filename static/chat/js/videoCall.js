@@ -129,6 +129,14 @@ export const handleVideoOfferMsg = (msg) => {
         .catch(handleGetUserMediaError);
 }
 
+export const handleVideoAnswerMsg = (msg) => {
+
+    // Configure the remote description, which is the SDP payload
+    // in our "video-answer" message.
+    let desc = new RTCSessionDescription(msg.sdp);
+    myPeerConnection.setRemoteDescription(desc).catch(reportError);
+}
+
 
 export const handleICECandidateEvent = (event) => {
     if (event.candidate) {
@@ -148,7 +156,6 @@ export const handleNewICECandidateMsg = (msg) => {
 }
 
 export const handleTrackEvent = (event) => {
-    console.log(event)
     document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
 }

@@ -1,4 +1,17 @@
-import { invite, handleNegotiationNeededEvent, handleICECandidateEvent, handleTrackEvent, handleRemoveTrackEvent, handleICEConnectionStateChangeEvent, closeVideoCall, handleSignalingStateChangeEvent, handleICEGatheringStateChangeEvent } from "./videoCall.js";
+import {
+    invite,
+    handleNegotiationNeededEvent,
+    handleICECandidateEvent,
+    handleTrackEvent,
+    handleRemoveTrackEvent,
+    handleICEConnectionStateChangeEvent,
+    closeVideoCall,
+    handleSignalingStateChangeEvent,
+    handleICEGatheringStateChangeEvent,
+    handleVideoOfferMsg,
+    handleVideoAnswerMsg,
+    handleNewICECandidateMsg
+} from "./videoCall.js";
 const videoCallIcon = document.querySelector("#video-call-icon")
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const url = `ws://${window.location.host}/ws/chat/${friendName}/`
@@ -31,7 +44,8 @@ export const createPeerConnection = () => {
 chatSocket.addEventListener('open', (e) => {
     console.log("Connection Established")
 })
-
+console.log(`${request.user}`)
+console.log(mee)
 chatSocket.addEventListener('message', (e) => {
     const msg = JSON.parse(e.data)
     switch (msg.type) {
@@ -41,9 +55,21 @@ chatSocket.addEventListener('message', (e) => {
             spinnerIcon[spinnerIcon.length - 1].classList.add("d-none")
             messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
             break;
+        case "video-offer":
+            console.log("i am here")
+            handleVideoOfferMsg(msg)
+            break;
+        case "video-answer":
+            console.log("i am here again")
+            handleVideoAnswerMsg(msg)
+            break;
+        case "new-ice-candidate":
+            handleNewICECandidateMsg(msg)
+            break;
         default:
             break;
     }
+
 
 })
 

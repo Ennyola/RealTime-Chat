@@ -8,6 +8,7 @@ from .models import Message, Room, Participants
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         print("Connection Established")
+        print(self.scope["user"])
         self.user_name = self.scope["url_route"]["kwargs"]["username"]
         self.friend = await sync_to_async(User.objects.get)(username=self.user_name)
         self.does_room_exist = await self.check_if_room_exists(
@@ -43,10 +44,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_send(
                 self.room_group_name, {"type": "chat_message", "message": message}
             )
-        elif text_data_json['type'] =="video-offer":
-            self.send(json.dumps({}))
         else:
-            pass
+            await self.send(json.dumps(text_data_json))
 
     # Receive message from room group
     async def chat_message(self, event):
