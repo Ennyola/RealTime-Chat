@@ -45,6 +45,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name, {"type": "chat_message", "message": message}
             )
         else:
+            print(
+                f'type-{text_data_json["type"]} \n current-user {text_data_json["name"]} \n target-{text_data_json["target"]}'
+            )
             await self.send(json.dumps(text_data_json))
 
     # Receive message from room group

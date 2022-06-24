@@ -1,4 +1,5 @@
 import { chatSocket, createPeerConnection, myPeerConnection } from "./index.js";
+const user = document.querySelector("#username").textContent;
 const videoContainer = document.querySelector('.video-container')
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const mediaConstraints = {
@@ -9,7 +10,7 @@ const mediaConstraints = {
         }
     }
 };
-let targetUsername = null;
+let targetUsername = friendName;
 
 export const closeVideoCall = () => {
     let remoteVideo = document.querySelector("#received_video");
@@ -85,8 +86,8 @@ export const handleNegotiationNeededEvent = () => {
         })
         .then(() => {
             chatSocket.send(JSON.stringify({
-                name: "me",
-                target: friendName,
+                name: user,
+                target: targetUsername,
                 type: "video-offer",
                 sdp: myPeerConnection.localDescription
             }));
@@ -98,6 +99,7 @@ export const handleVideoOfferMsg = (msg) => {
 
     targetUsername = msg.name;
     createPeerConnection();
+    console.log("calle here")
 
     let desc = new RTCSessionDescription(msg.sdp);
 
@@ -118,7 +120,7 @@ export const handleVideoOfferMsg = (msg) => {
         })
         .then(() => {
             let msg = {
-                name: myUsername,
+                name: user,
                 target: targetUsername,
                 type: "video-answer",
                 sdp: myPeerConnection.localDescription
@@ -130,7 +132,6 @@ export const handleVideoOfferMsg = (msg) => {
 }
 
 export const handleVideoAnswerMsg = (msg) => {
-
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
     let desc = new RTCSessionDescription(msg.sdp);
@@ -139,8 +140,10 @@ export const handleVideoAnswerMsg = (msg) => {
 
 
 export const handleICECandidateEvent = (event) => {
+    console.log("icecandidate event", targetUsername)
     if (event.candidate) {
         chatSocket.send(JSON.stringify({
+            name: user,
             type: "new-ice-candidate",
             target: targetUsername,
             candidate: event.candidate

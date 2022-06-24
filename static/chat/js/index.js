@@ -44,8 +44,7 @@ export const createPeerConnection = () => {
 chatSocket.addEventListener('open', (e) => {
     console.log("Connection Established")
 })
-console.log(`${request.user}`)
-console.log(mee)
+
 chatSocket.addEventListener('message', (e) => {
     const msg = JSON.parse(e.data)
     switch (msg.type) {
