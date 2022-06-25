@@ -10,11 +10,14 @@ import {
     handleICEGatheringStateChangeEvent,
     handleVideoOfferMsg,
     handleVideoAnswerMsg,
-    handleNewICECandidateMsg
+    handleNewICECandidateMsg,
 } from "./videoCall.js";
+import { formatAMPM } from "./chatroom.js";
 const videoCallIcon = document.querySelector("#video-call-icon")
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const url = `ws://${window.location.host}/ws/chat/${friendName}/`
+const currentuUser = document.querySelector("#username").textContent;
+let chatHolder = document.querySelectorAll(".messages")[0]
 export const chatSocket = new ReconnectingWebSocket(url)
 
 export let myPeerConnection = null;
@@ -39,6 +42,7 @@ export const createPeerConnection = () => {
     myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
     myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
 }
+console.log(currentuUser)
 
 //Open websocket connection
 chatSocket.addEventListener('open', (e) => {
@@ -49,10 +53,25 @@ chatSocket.addEventListener('message', (e) => {
     const msg = JSON.parse(e.data)
     switch (msg.type) {
         case "message":
-            let messageStatus = document.querySelectorAll('.chat-status')
-            let spinnerIcon = document.querySelectorAll('.chat-status i:nth-child(1)')
-            spinnerIcon[spinnerIcon.length - 1].classList.add("d-none")
-            messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
+            const messageType = currentuUser === msg.sender ? "outgoing-message" : "incoming-message";
+            console.log(messageType)
+            let text = `<div class=${messageType}>
+                <div class="chat-bubble">
+                    <div class="msg">${msg.message_content}</div>
+                        <span class ="msg-metadata">
+                            <span class = "msg-time">${formatAMPM(new Date)}</span> 
+                            <span class="chat-status">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </span>
+                </div>
+            </div>`
+            chatHolder.innerHTML += text
+            chatHolder.scrollTop = chatHolder.scrollHeight;
+            // let messageStatus = document.querySelectorAll('.chat-status')
+            // let spinnerIcon = document.querySelectorAll('.chat-status i:nth-child(1)')
+            // spinnerIcon[spinnerIcon.length - 1].classList.add("d-none")
+            // messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
             break;
         case "video-offer":
             console.log("i am here")

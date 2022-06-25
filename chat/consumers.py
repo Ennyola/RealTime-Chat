@@ -38,11 +38,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
     async def receive(self, text_data):
+        print(self.room_group_name)
         text_data_json = json.loads(text_data)
         if text_data_json["type"] == "message":
             message = text_data_json["messageContent"]
+            sender = text_data_json["sender"]
             await self.channel_layer.group_send(
-                self.room_group_name, {"type": "chat_message", "message": message}
+                self.room_group_name,
+                {"type": "chat_message", "message": message, "sender": sender},
             )
         else:
             print(
@@ -53,10 +56,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from room group
     async def chat_message(self, event):
         message = event["message"]
-        await self.save_message(self.scope["user"], message, self.room)
+        sender = event["sender"]
+        print(sender,str(self.scope["user"].username) )
+        print(type(sender))
+        print(str(self.scope["user"].username)==str(sender))
+        if self.scope["user"] == sender:
+            await self.save_message(self.scope["user"], message, self.room)
         # Send message to WebSocket
         await self.send(
-            text_data=json.dumps({"type": "message", "message_content": message})
+            text_data=json.dumps(
+                {"type": "message", "message_content": message, "sender": sender}
+            )
         )
 
     @sync_to_async

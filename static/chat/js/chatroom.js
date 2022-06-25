@@ -1,9 +1,9 @@
 import { chatSocket } from './index.js'
+const user = document.querySelector("#username").textContent;
 let inputBox = document.querySelector("#input-message"),
     sendButton = document.querySelector("#send-button"),
     chatHolder = document.querySelectorAll(".messages")[0]
-
-const formatAMPM = (date) => {
+export const formatAMPM = (date) => {
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'pm' : 'am';
@@ -22,28 +22,13 @@ inputBox.addEventListener('keyup', (e => {
     }
 }))
 
-
-
-
 sendButton.addEventListener('click', (e) => {
     chatSocket.send(JSON.stringify({
         type: "message",
-        messageContent: inputBox.value
+        messageContent: inputBox.value,
+        sender: user
     }));
-    let str = `<div class="outgoing-message">
-                    <div class="chat-bubble">
-                        <div class="msg">${inputBox.value}</div>
-                        <span class ="msg-metadata">
-                            <span class = "msg-time">${formatAMPM(new Date)}</span> 
-                            <span class="chat-status">
-                                <i class="fas fa-spinner"></i>
-                            </span>
-                        </span>
-                    </div>
-                </div>`
-
-    chatHolder.innerHTML += str
-    chatHolder.scrollTop = chatHolder.scrollHeight;
     inputBox.value = ""
+
 
 })
