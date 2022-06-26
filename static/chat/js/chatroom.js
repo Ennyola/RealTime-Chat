@@ -1,8 +1,8 @@
 import { chatSocket } from './index.js'
-const user = document.querySelector("#username").textContent;
+const currentuUser = document.querySelector("#username").textContent;
 let inputBox = document.querySelector("#input-message"),
-    sendButton = document.querySelector("#send-button"),
-    chatHolder = document.querySelectorAll(".messages")[0]
+    sendButton = document.querySelector("#send-button")
+
 export const formatAMPM = (date) => {
     var hours = date.getHours();
     var minutes = date.getMinutes();
@@ -26,9 +26,7 @@ sendButton.addEventListener('click', (e) => {
     chatSocket.send(JSON.stringify({
         type: "message",
         messageContent: inputBox.value,
-        sender: user
+        sender: currentuUser
     }));
     inputBox.value = ""
-
-
 })

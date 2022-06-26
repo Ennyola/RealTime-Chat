@@ -54,14 +54,13 @@ chatSocket.addEventListener('message', (e) => {
     switch (msg.type) {
         case "message":
             const messageType = currentuUser === msg.sender ? "outgoing-message" : "incoming-message";
-            console.log(messageType)
             let text = `<div class=${messageType}>
                 <div class="chat-bubble">
                     <div class="msg">${msg.message_content}</div>
                         <span class ="msg-metadata">
                             <span class = "msg-time">${formatAMPM(new Date)}</span> 
                             <span class="chat-status">
-                            <i class="fas fa-check"></i>
+                            ${currentuUser === msg.sender?'<i class="fas fa-check"></i>':""}
                         </span>
                     </span>
                 </div>

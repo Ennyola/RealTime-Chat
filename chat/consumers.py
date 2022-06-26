@@ -8,7 +8,6 @@ from .models import Message, Room, Participants
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         print("Connection Established")
-        print(self.scope["user"])
         self.user_name = self.scope["url_route"]["kwargs"]["username"]
         self.friend = await sync_to_async(User.objects.get)(username=self.user_name)
         self.does_room_exist = await self.check_if_room_exists(
@@ -38,7 +37,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
     async def receive(self, text_data):
-        print(self.room_group_name)
         text_data_json = json.loads(text_data)
         if text_data_json["type"] == "message":
             message = text_data_json["messageContent"]
@@ -48,19 +46,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 {"type": "chat_message", "message": message, "sender": sender},
             )
         else:
-            print(
-                f'type-{text_data_json["type"]} \n current-user {text_data_json["name"]} \n target-{text_data_json["target"]}'
-            )
             await self.send(json.dumps(text_data_json))
 
     # Receive message from room group
     async def chat_message(self, event):
         message = event["message"]
         sender = event["sender"]
-        print(sender,str(self.scope["user"].username) )
-        print(type(sender))
-        print(str(self.scope["user"].username)==str(sender))
-        if self.scope["user"] == sender:
+        if self.scope["user"].username == sender.strip('"'):
             await self.save_message(self.scope["user"], message, self.room)
         # Send message to WebSocket
         await self.send(
