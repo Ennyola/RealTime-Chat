@@ -42,7 +42,6 @@ export const createPeerConnection = () => {
     myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
     myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
 }
-console.log(currentuUser)
 
 //Open websocket connection
 chatSocket.addEventListener('open', (e) => {
@@ -53,6 +52,7 @@ chatSocket.addEventListener('message', (e) => {
     const msg = JSON.parse(e.data)
     switch (msg.type) {
         case "message":
+            //If the current user is the sender, then the message is sent to the right side, else, the left
             const messageType = currentuUser === msg.sender ? "outgoing-message" : "incoming-message";
             let text = `<div class=${messageType}>
                 <div class="chat-bubble">

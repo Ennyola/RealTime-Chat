@@ -52,6 +52,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         message = event["message"]
         sender = event["sender"]
+        #If the currently logged in user is not the sender, do not save the message sent to the server
         if self.scope["user"].username == sender.strip('"'):
             await self.save_message(self.scope["user"], message, self.room)
         # Send message to WebSocket
