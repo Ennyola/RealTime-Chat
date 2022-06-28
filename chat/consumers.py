@@ -46,13 +46,36 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 {"type": "chat_message", "message": message, "sender": sender},
             )
         else:
-            await self.send(json.dumps(text_data_json))
+            if text_data_json["type"] == "video-offer":
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "video_offer",
+                        "msg_type": text_data_json["type"],
+                        "caller": text_data_json["caller"],
+                        "target": text_data_json["target"],
+                        "sdp": text_data_json["sdp"],
+                    },
+                )
+            if text_data_json["type"] == "video-answer":
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "video_answer",
+                        "msg_type": text_data_json["type"],
+                        "caller": text_data_json["caller"],
+                        "target": text_data_json["target"],
+                        "sdp": text_data_json["sdp"],
+                    },
+                )
+
+                # await self.send(json.dumps(text_data_json))
 
     # Receive message from room group
     async def chat_message(self, event):
         message = event["message"]
         sender = event["sender"]
-        #If the currently logged in user is not the sender, do not save the message sent to the server
+        # If the currently logged in user is not the sender, do not save the message sent to the server
         if self.scope["user"].username == sender.strip('"'):
             await self.save_message(self.scope["user"], message, self.room)
         # Send message to WebSocket
@@ -61,6 +84,32 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 {"type": "message", "message_content": message, "sender": sender}
             )
         )
+
+    async def video_offer(self, event):
+        if self.scope["user"].username != event["caller"].strip('"'):
+            await self.send(
+                json.dumps(
+                    {
+                        "type": event["msg_type"],
+                        "caller": event["caller"],
+                        "target": event["target"],
+                        "sdp": event["sdp"],
+                    }
+                )
+            )
+
+    async def video_answer(self, event):
+        if self.scope["user"].username != event["caller"].strip('"'):
+            await self.send(
+                json.dumps(
+                    {
+                        "type": event["msg_type"],
+                        "caller": event["caller"],
+                        "target": event["target"],
+                        "sdp": event["sdp"],
+                    }
+                )
+            )
 
     @sync_to_async
     def save_message(self, user, content, room):

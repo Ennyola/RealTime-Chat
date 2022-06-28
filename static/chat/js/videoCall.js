@@ -65,14 +65,16 @@ const handleGetUserMediaError = (e) => {
     }
     // The caller initiating the call
 export const invite = (e) => {
-    // Makes the video visible
-    videoContainer.classList.remove("d-none")
+
     if (myPeerConnection) {
         alert("You can't start a call because you already have one open!");
     } else {
         createPeerConnection();
         navigator.mediaDevices.getUserMedia(mediaConstraints)
             .then((localStream) => {
+                console.log(localStream)
+                    // Make the video visible
+                videoContainer.classList.remove("d-none")
                 document.querySelector("#local_video").srcObject = localStream;
                 localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
             })
@@ -86,7 +88,7 @@ export const handleNegotiationNeededEvent = () => {
         })
         .then(() => {
             chatSocket.send(JSON.stringify({
-                name: user,
+                caller: user,
                 target: targetUsername,
                 type: "video-offer",
                 sdp: myPeerConnection.localDescription
@@ -96,20 +98,20 @@ export const handleNegotiationNeededEvent = () => {
 }
 export const handleVideoOfferMsg = (msg) => {
     let localStream = null;
-
-    targetUsername = msg.name;
+    targetUsername = msg.caller;
     createPeerConnection();
-    console.log("calle here")
+
 
     let desc = new RTCSessionDescription(msg.sdp);
-
     myPeerConnection.setRemoteDescription(desc).then(() => {
             return navigator.mediaDevices.getUserMedia(mediaConstraints);
         })
         .then((stream) => {
+            // Make the video visible
+            videoContainer.classList.remove("d-none")
             localStream = stream;
+            console.log(localStream)
             document.querySelector("#local_video").srcObject = localStream;
-
             localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
         })
         .then(() => {
@@ -120,7 +122,7 @@ export const handleVideoOfferMsg = (msg) => {
         })
         .then(() => {
             let msg = {
-                name: user,
+                caller: user,
                 target: targetUsername,
                 type: "video-answer",
                 sdp: myPeerConnection.localDescription
@@ -134,16 +136,15 @@ export const handleVideoOfferMsg = (msg) => {
 export const handleVideoAnswerMsg = (msg) => {
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
+    console.log(msg)
     let desc = new RTCSessionDescription(msg.sdp);
     myPeerConnection.setRemoteDescription(desc).catch(reportError);
 }
 
 
 export const handleICECandidateEvent = (event) => {
-    console.log("icecandidate event", targetUsername)
     if (event.candidate) {
         chatSocket.send(JSON.stringify({
-            name: user,
             type: "new-ice-candidate",
             target: targetUsername,
             candidate: event.candidate
@@ -159,6 +160,8 @@ export const handleNewICECandidateMsg = (msg) => {
 }
 
 export const handleTrackEvent = (event) => {
+    // Make the video visible
+    // videoContainer.classList.remove("d-none")
     document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
 }

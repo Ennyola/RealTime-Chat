@@ -17,8 +17,9 @@ const videoCallIcon = document.querySelector("#video-call-icon")
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const url = `ws://${window.location.host}/ws/chat/${friendName}/`
 const currentuUser = document.querySelector("#username").textContent;
-let chatHolder = document.querySelectorAll(".messages")[0]
 export const chatSocket = new ReconnectingWebSocket(url)
+let chatHolder = document.querySelectorAll(".messages")[0]
+
 
 export let myPeerConnection = null;
 
@@ -73,11 +74,9 @@ chatSocket.addEventListener('message', (e) => {
             // messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
             break;
         case "video-offer":
-            console.log("i am here")
             handleVideoOfferMsg(msg)
             break;
         case "video-answer":
-            console.log("i am here again")
             handleVideoAnswerMsg(msg)
             break;
         case "new-ice-candidate":
