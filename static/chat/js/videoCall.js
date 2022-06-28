@@ -153,6 +153,7 @@ export const handleICECandidateEvent = (event) => {
 }
 
 export const handleNewICECandidateMsg = (msg) => {
+    console.log(msg.candidate)
     let candidate = new RTCIceCandidate(msg.candidate);
 
     myPeerConnection.addIceCandidate(candidate)
