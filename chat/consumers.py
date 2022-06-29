@@ -78,6 +78,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         "candidate": text_data_json["candidate"],
                     },
                 )
+            if text_data_json["type"] == "hang-up":
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        "type": "hang_up",
+                        "msg_type": text_data_json["type"],
+                        "target": text_data_json["target"],
+                        "name": text_data_json["name"],
+                    },
+                )
 
                 # await self.send(json.dumps(text_data_json))
 
@@ -120,6 +130,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     }
                 )
             )
+
     async def new_ice_candidate(self, event):
         if self.scope["user"].username == event["target"].strip('"'):
             await self.send(
@@ -128,6 +139,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         "type": event["msg_type"],
                         "target": event["target"],
                         "candidate": event["candidate"],
+                    }
+                )
+            )
+    async def hang_up(self, event):
+            await self.send(
+                json.dumps(
+                    {
+                        "type": event["msg_type"],
+                        "target": event["target"],
+                        "name": event["name"],
                     }
                 )
             )

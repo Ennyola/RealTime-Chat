@@ -5,44 +5,33 @@ import {
     handleTrackEvent,
     handleRemoveTrackEvent,
     handleICEConnectionStateChangeEvent,
-    closeVideoCall,
     handleSignalingStateChangeEvent,
     handleICEGatheringStateChangeEvent,
     handleVideoOfferMsg,
     handleVideoAnswerMsg,
     handleNewICECandidateMsg,
+    handleHangUpMsg,
+    hangUpCall
 } from "./videoCall.js";
 import { formatAMPM } from "./chatroom.js";
-const videoCallIcon = document.querySelector("#video-call-icon")
+const videoCallIcon = document.querySelector("#video-call-icon");
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const url = `ws://${window.location.host}/ws/chat/${friendName}/`
 const currentuUser = document.querySelector("#username").textContent;
-export const chatSocket = new ReconnectingWebSocket(url)
-let chatHolder = document.querySelectorAll(".messages")[0]
+const hangupButton = document.querySelector('#hangup-button');
+export const chatSocket = new ReconnectingWebSocket(url);
+let chatHolder = document.querySelectorAll(".messages")[0];
 
 
-export let myPeerConnection = null;
 
 //start the call
 videoCallIcon.addEventListener("click", invite)
 
-export const createPeerConnection = () => {
-    myPeerConnection = new RTCPeerConnection({
-        iceServers: [ // Information about ICE servers - Use your own!
-            {
-                urls: "stun:stun.stunprotocol.org"
-            }
-        ]
-    });
+//End the call
+hangupButton.addEventListener("click", (e) => {
+    hangUpCall()
+})
 
-    myPeerConnection.onicecandidate = handleICECandidateEvent;
-    myPeerConnection.ontrack = handleTrackEvent;
-    myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
-    myPeerConnection.onremovetrack = handleRemoveTrackEvent;
-    myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
-    myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
-    myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
-}
 
 //Open websocket connection
 chatSocket.addEventListener('open', (e) => {
@@ -82,18 +71,10 @@ chatSocket.addEventListener('message', (e) => {
         case "new-ice-candidate":
             handleNewICECandidateMsg(msg)
             break;
+        case "hang-up":
+            handleHangUpMsg(msg)
+            break;
         default:
             break;
     }
-
-
 })
-
-const hangUpCall = () => {
-    closeVideoCall();
-    chatSocket.send({
-        name: myUsername,
-        target: targetUsername,
-        type: "hang-up"
-    });
-}

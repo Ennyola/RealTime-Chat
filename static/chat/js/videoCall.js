@@ -1,17 +1,13 @@
-import { chatSocket, createPeerConnection, myPeerConnection } from "./index.js";
+import { chatSocket } from "./index.js";
 const user = document.querySelector("#username").textContent;
 const videoContainer = document.querySelector('.video-container')
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const mediaConstraints = {
     audio: true, // We want an audio track
-    video: {
-        aspectRatio: {
-            ideal: 1.333333 // 3:2 aspect is preferred
-        }
-    }
+    video: true
 };
 let targetUsername = friendName;
-
+let myPeerConnection = null;
 export const closeVideoCall = () => {
     let remoteVideo = document.querySelector("#received_video");
     let localVideo = document.querySelector("#local_video");
@@ -41,9 +37,9 @@ export const closeVideoCall = () => {
     remoteVideo.removeAttribute("srcObject");
     localVideo.removeAttribute("src");
     remoteVideo.removeAttribute("srcObject");
-
     document.querySelector("#hangup-button").disabled = true;
     targetUsername = null;
+    videoContainer.classList.add("d-none")
 }
 
 const handleGetUserMediaError = (e) => {
@@ -72,8 +68,7 @@ export const invite = (e) => {
         createPeerConnection();
         navigator.mediaDevices.getUserMedia(mediaConstraints)
             .then((localStream) => {
-                console.log(localStream)
-                    // Make the video visible
+                // Make the video visible
                 videoContainer.classList.remove("d-none")
                 document.querySelector("#local_video").srcObject = localStream;
                 localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
@@ -110,7 +105,6 @@ export const handleVideoOfferMsg = (msg) => {
             // Make the video visible
             videoContainer.classList.remove("d-none")
             localStream = stream;
-            console.log(localStream)
             document.querySelector("#local_video").srcObject = localStream;
             localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
         })
@@ -136,7 +130,6 @@ export const handleVideoOfferMsg = (msg) => {
 export const handleVideoAnswerMsg = (msg) => {
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
-    console.log(msg)
     let desc = new RTCSessionDescription(msg.sdp);
     myPeerConnection.setRemoteDescription(desc).catch(reportError);
 }
@@ -153,7 +146,6 @@ export const handleICECandidateEvent = (event) => {
 }
 
 export const handleNewICECandidateMsg = (msg) => {
-    console.log(msg.candidate)
     let candidate = new RTCIceCandidate(msg.candidate);
 
     myPeerConnection.addIceCandidate(candidate)
@@ -161,8 +153,6 @@ export const handleNewICECandidateMsg = (msg) => {
 }
 
 export const handleTrackEvent = (event) => {
-    // Make the video visible
-    // videoContainer.classList.remove("d-none")
     document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
 }
@@ -199,4 +189,35 @@ export const handleICEGatheringStateChangeEvent = (event) => {
     // Our sample just logs information to console here,
     // but you can do whatever you need.
     // console.log(event)
+}
+
+export const handleHangUpMsg = (msg) => {
+    closeVideoCall();
+}
+
+
+export const hangUpCall = () => {
+    closeVideoCall();
+    chatSocket.send(JSON.stringify({
+        name: user,
+        target: targetUsername,
+        type: "hang-up"
+    }));
+}
+const createPeerConnection = () => {
+    myPeerConnection = new RTCPeerConnection({
+        iceServers: [ // Information about ICE servers - Use your own!
+            {
+                urls: "stun:stun.stunprotocol.org"
+            }
+        ]
+    });
+
+    myPeerConnection.onicecandidate = handleICECandidateEvent;
+    myPeerConnection.ontrack = handleTrackEvent;
+    myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
+    myPeerConnection.onremovetrack = handleRemoveTrackEvent;
+    myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
+    myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
+    myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
 }
