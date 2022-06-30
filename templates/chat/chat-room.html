@@ -15,13 +15,17 @@
         </span>
     </div>
 </div>
-<div class="video-container d-none">
+<div class="video-container">
     <div class="video-box">
-        <video id="received_video" autoplay></video>
-        <video id="local_video" autoplay muted></video>
-        <button id="hangup-button" disabled>
-        Hang Up
-        </button> 
+        <video src = {% static 'chat/images/WIN_20210817_12_10_10_Pro.mp4' %} id="received_video" autoplay></video>
+        <video src = {% static 'chat/images/WIN_20211018_13_46_20_Pro.mp4' %} id="local_video" autoplay muted></video>
+        <div class="call-control">
+            <button id="start_call" class="btn btn-success">Accept</button>
+            <button id="end_call" class="btn btn-danger">Decline</button>
+            <button id="hangup-button" disabled>
+                Hang Up
+            </button> 
+        </div>  
     </div>
 </div>
 <div class="messages">
