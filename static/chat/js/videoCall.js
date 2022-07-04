@@ -112,6 +112,7 @@ export const handleVideoOfferMsg = (msg) => {
             return myPeerConnection.createAnswer();
         })
         .then((answer) => {
+            consoe.olog(answe)
             return myPeerConnection.setLocalDescription(answer);
         })
         .then(() => {
