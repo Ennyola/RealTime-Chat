@@ -2,6 +2,7 @@ import { chatSocket } from "./index.js";
 const user = document.querySelector("#username").textContent;
 const videoContainer = document.querySelector('.video-container')
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
+const acceptCall = document.querySelector("#accept_call");
 const mediaConstraints = {
     audio: true, // We want an audio track
     video: true
@@ -109,10 +110,13 @@ export const handleVideoOfferMsg = (msg) => {
             localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
         })
         .then(() => {
+            acceptCall.addEventListener("click", (e) => {
+                console.log("clicked accept")
+            })
+            console.log("pass either ways")
             return myPeerConnection.createAnswer();
         })
         .then((answer) => {
-            consoe.olog(answe)
             return myPeerConnection.setLocalDescription(answer);
         })
         .then(() => {
