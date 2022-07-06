@@ -9,6 +9,7 @@ const mediaConstraints = {
 };
 let targetUsername = friendName;
 let myPeerConnection = null;
+let myStream = null;
 export const closeVideoCall = () => {
     let remoteVideo = document.querySelector("#received_video");
     let localVideo = document.querySelector("#local_video");
@@ -61,36 +62,49 @@ const handleGetUserMediaError = (e) => {
         closeVideoCall();
     }
     // The caller initiating the call
-export const invite = (e) => {
+export const invite = async(e) => {
 
     if (myPeerConnection) {
         alert("You can't start a call because you already have one open!");
     } else {
         createPeerConnection();
-        navigator.mediaDevices.getUserMedia(mediaConstraints)
-            .then((localStream) => {
-                // Make the video visible
-                videoContainer.classList.remove("d-none")
-                document.querySelector("#local_video").srcObject = localStream;
-                localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
-            })
-            .catch(handleGetUserMediaError);
+        try {
+            myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
+            videoContainer.classList.remove("d-none")
+            document.querySelector("#local_video").srcObject = myStream;
+            myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+        } catch (error) {
+            handleGetUserMediaError(error)
+        }
     }
 }
 
-export const handleNegotiationNeededEvent = () => {
-    myPeerConnection.createOffer().then((offer) => {
-            return myPeerConnection.setLocalDescription(offer);
-        })
-        .then(() => {
-            chatSocket.send(JSON.stringify({
-                caller: user,
-                target: targetUsername,
-                type: "video-offer",
-                sdp: myPeerConnection.localDescription
-            }));
-        })
-        .catch(reportError);
+export const handleNegotiationNeededEvent = async() => {
+    try {
+        let offer = await myPeerConnection.createOffer();
+        console.log(myPeerConnection.signalingState);
+
+        // If the connection hasn't yet achieved the "stable" state,
+        // return to the caller. Another negotiationneeded event
+        // will be fired when the state stabilizes.
+        if (myPeerConnection.signalingState != "stable") {
+            console.log("     -- The connection isn't stable yet; postponing...")
+            return;
+        }
+
+        await myPeerConnection.setLocalDescription(offer);
+        console.log(myPeerConnection.signalingState);
+        chatSocket.send(JSON.stringify({
+            caller: user,
+            target: targetUsername,
+            type: "video-offer",
+            sdp: myPeerConnection.localDescription
+        }));
+
+    } catch (e) {
+        reportError(e)
+    }
+
 }
 export const handleVideoOfferMsg = (msg) => {
     let localStream = null;
