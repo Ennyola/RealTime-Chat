@@ -14,12 +14,16 @@ import {
     hangUpCall
 } from "./videoCall.js";
 import { formatAMPM } from "./chatroom.js";
+
+
 const videoCallIcon = document.querySelector("#video-call-icon");
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const url = `ws://${window.location.host}/ws/chat/${friendName}/`
+export const chatSocket = new ReconnectingWebSocket(url);
 const currentuUser = document.querySelector("#username").textContent;
 const hangupButton = document.querySelector('#hangup-button');
-export const chatSocket = new ReconnectingWebSocket(url);
+const callControlContainer = document.querySelector('.call-control')
+
 let chatHolder = document.querySelectorAll(".messages")[0];
 
 
@@ -63,6 +67,8 @@ chatSocket.addEventListener('message', (e) => {
             // messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
             break;
         case "video-offer":
+            callControlContainer.classList.remove('d-none')
+            hangupButton.classList.add("d-none")
             handleVideoOfferMsg(msg)
             break;
         case "video-answer":

@@ -3,13 +3,17 @@ const user = document.querySelector("#username").textContent;
 const videoContainer = document.querySelector('.video-container')
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const acceptCall = document.querySelector("#accept_call");
+const rejectCall = document.querySelector("#reject_call");
+const callControlContainer = document.querySelector('.call-control')
+const hangupButton = document.querySelector('#hangup-button');
 const mediaConstraints = {
-    audio: true, // We want an audio track
+    audio: true,
     video: true
 };
 let targetUsername = friendName;
 let myPeerConnection = null;
 let myStream = null;
+
 export const closeVideoCall = () => {
     let remoteVideo = document.querySelector("#received_video");
     let localVideo = document.querySelector("#local_video");
@@ -106,44 +110,57 @@ export const handleNegotiationNeededEvent = async() => {
     }
 
 }
-export const handleVideoOfferMsg = (msg) => {
-    let localStream = null;
+
+export const hangUpCall = () => {
+    closeVideoCall();
+    chatSocket.send(JSON.stringify({
+        name: user,
+        target: targetUsername,
+        type: "hang-up"
+    }));
+}
+export const handleVideoOfferMsg = async(msg) => {
     targetUsername = msg.caller;
     createPeerConnection();
 
 
     let desc = new RTCSessionDescription(msg.sdp);
-    myPeerConnection.setRemoteDescription(desc).then(() => {
-            return navigator.mediaDevices.getUserMedia(mediaConstraints);
-        })
-        .then((stream) => {
-            // Make the video visible
-            videoContainer.classList.remove("d-none")
-            localStream = stream;
-            document.querySelector("#local_video").srcObject = localStream;
-            localStream.getTracks().forEach(track => myPeerConnection.addTrack(track, localStream));
-        })
-        .then(() => {
-            acceptCall.addEventListener("click", (e) => {
-                console.log("clicked accept")
-            })
-            console.log("pass either ways")
-            return myPeerConnection.createAnswer();
-        })
-        .then((answer) => {
-            return myPeerConnection.setLocalDescription(answer);
-        })
-        .then(() => {
-            let msg = {
+
+    try {
+        await myPeerConnection.setRemoteDescription(desc);
+        myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+        videoContainer.classList.remove("d-none")
+        document.querySelector("#local_video").srcObject = myStream;
+        await myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+    } catch (error) {
+        handleGetUserMediaError(error)
+    }
+
+    //function triggers when user accepts call
+    acceptCall.addEventListener('click', async(e) => {
+        try {
+            let answer = await myPeerConnection.createAnswer();
+            await myPeerConnection.setLocalDescription(answer);
+            chatSocket.send(JSON.stringify({
                 caller: user,
                 target: targetUsername,
                 type: "video-answer",
                 sdp: myPeerConnection.localDescription
-            };
+            }));
 
-            chatSocket.send(JSON.stringify(msg));
-        })
-        .catch(handleGetUserMediaError);
+        } catch (error) {
+            handleGetUserMediaError(error)
+        }
+        //makes the accept and reject button disappear
+        callControlContainer.classList.add('d-none')
+        hangupButton.classList.remove("d-none")
+
+    })
+    rejectCall.addEventListener('click', (e) => {
+        hangUpCall()
+    })
+
+
 }
 
 export const handleVideoAnswerMsg = (msg) => {
@@ -215,14 +232,6 @@ export const handleHangUpMsg = (msg) => {
 }
 
 
-export const hangUpCall = () => {
-    closeVideoCall();
-    chatSocket.send(JSON.stringify({
-        name: user,
-        target: targetUsername,
-        type: "hang-up"
-    }));
-}
 const createPeerConnection = () => {
     myPeerConnection = new RTCPeerConnection({
         iceServers: [ // Information about ICE servers - Use your own!
