@@ -86,7 +86,6 @@ export const invite = async(e) => {
 export const handleNegotiationNeededEvent = async() => {
     try {
         let offer = await myPeerConnection.createOffer();
-        console.log(myPeerConnection.signalingState);
 
         // If the connection hasn't yet achieved the "stable" state,
         // return to the caller. Another negotiationneeded event
@@ -97,7 +96,6 @@ export const handleNegotiationNeededEvent = async() => {
         }
 
         await myPeerConnection.setLocalDescription(offer);
-        console.log(myPeerConnection.signalingState);
         chatSocket.send(JSON.stringify({
             caller: user,
             target: targetUsername,
@@ -123,9 +121,7 @@ export const handleVideoOfferMsg = async(msg) => {
     targetUsername = msg.caller;
     createPeerConnection();
 
-
     let desc = new RTCSessionDescription(msg.sdp);
-
     try {
         await myPeerConnection.setRemoteDescription(desc);
         myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
@@ -135,12 +131,13 @@ export const handleVideoOfferMsg = async(msg) => {
     } catch (error) {
         handleGetUserMediaError(error)
     }
-
     //function triggers when user accepts call
     acceptCall.addEventListener('click', async(e) => {
         try {
+
             let answer = await myPeerConnection.createAnswer();
             await myPeerConnection.setLocalDescription(answer);
+
             chatSocket.send(JSON.stringify({
                 caller: user,
                 target: targetUsername,
@@ -148,8 +145,10 @@ export const handleVideoOfferMsg = async(msg) => {
                 sdp: myPeerConnection.localDescription
             }));
 
+
         } catch (error) {
             handleGetUserMediaError(error)
+
         }
         //makes the accept and reject button disappear
         callControlContainer.classList.add('d-none')
@@ -159,7 +158,6 @@ export const handleVideoOfferMsg = async(msg) => {
     rejectCall.addEventListener('click', (e) => {
         hangUpCall()
     })
-
 
 }
 
@@ -189,6 +187,7 @@ export const handleNewICECandidateMsg = (msg) => {
 }
 
 export const handleTrackEvent = (event) => {
+    console.log(event.streams)
     document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
 }
