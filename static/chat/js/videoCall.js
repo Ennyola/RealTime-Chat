@@ -14,6 +14,7 @@ let targetUsername = friendName;
 let myPeerConnection = null;
 let myStream = null;
 
+
 export const closeVideoCall = () => {
     let remoteVideo = document.querySelector("#received_video");
     let localVideo = document.querySelector("#local_video");
@@ -44,7 +45,6 @@ export const closeVideoCall = () => {
     localVideo.removeAttribute("src");
     remoteVideo.removeAttribute("srcObject");
     document.querySelector("#hangup-button").disabled = true;
-    targetUsername = null;
     videoContainer.classList.add("d-none")
 }
 
@@ -67,7 +67,6 @@ const handleGetUserMediaError = (e) => {
     }
     // The caller initiating the call
 export const invite = async(e) => {
-
     if (myPeerConnection) {
         alert("You can't start a call because you already have one open!");
     } else {
@@ -120,6 +119,8 @@ export const hangUpCall = () => {
 export const handleVideoOfferMsg = async(msg) => {
     targetUsername = msg.caller;
     createPeerConnection();
+
+
 
     let desc = new RTCSessionDescription(msg.sdp);
     try {
