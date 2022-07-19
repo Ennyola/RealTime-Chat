@@ -20,17 +20,15 @@ export const closeVideoCall = () => {
     let localVideo = document.querySelector("#local_video");
     if (myPeerConnection) {
         myPeerConnection.ontrack = null;
-        myPeerConnection.onremovetrack = null;
-        myPeerConnection.onremovestream = null;
         myPeerConnection.onicecandidate = null;
         myPeerConnection.oniceconnectionstatechange = null;
         myPeerConnection.onsignalingstatechange = null;
         myPeerConnection.onicegatheringstatechange = null;
         myPeerConnection.onnegotiationneeded = null;
 
-        if (remoteVideo.srcObject) {
-            remoteVideo.srcObject.getTracks().forEach(track => track.stop());
-        }
+        // if (remoteVideo.srcObject) {
+        //     remoteVideo.srcObject.getTracks().forEach(track => track.stop());
+        // }
 
         if (localVideo.srcObject) {
             localVideo.srcObject.getTracks().forEach(track => track.stop());
@@ -38,13 +36,14 @@ export const closeVideoCall = () => {
 
         myPeerConnection.close();
         myPeerConnection = null;
+        myStream = null;
     }
 
-    remoteVideo.removeAttribute("src");
-    remoteVideo.removeAttribute("srcObject");
-    localVideo.removeAttribute("src");
-    remoteVideo.removeAttribute("srcObject");
-    document.querySelector("#hangup-button").disabled = true;
+    // remoteVideo.removeAttribute("src");
+    // remoteVideo.removeAttribute("srcObject");
+    // localVideo.removeAttribute("src");
+    // remoteVideo.removeAttribute("srcObject");
+    // document.querySelector("#hangup-button").disabled = true;
     videoContainer.classList.add("d-none")
 }
 
@@ -116,46 +115,74 @@ export const hangUpCall = () => {
         type: "hang-up"
     }));
 }
+
+
 export const handleVideoOfferMsg = async(msg) => {
     targetUsername = msg.caller;
-    createPeerConnection();
 
+    if (!myStream) {
+        try {
+            myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+            videoContainer.classList.remove("d-none")
 
+        } catch (e) {
+            handleGetUserMediaError(e)
+        }
+    }
+
+    if (!myPeerConnection) {
+        createPeerConnection();
+    }
 
     let desc = new RTCSessionDescription(msg.sdp);
-    try {
+
+    if (myPeerConnection.signalingState != "stable") {
+        // Set the local and remove descriptions for rollback; don't proceed
+        // until both return.
+        await Promise.all([
+            myPeerConnection.setLocalDescription({ type: "rollback" }),
+            myPeerConnection.setRemoteDescription(desc)
+        ]);
+        return;
+    } else {
         await myPeerConnection.setRemoteDescription(desc);
-        myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-        videoContainer.classList.remove("d-none")
-        document.querySelector("#local_video").srcObject = myStream;
+    }
+
+
+    document.querySelector("#local_video").srcObject = myStream;
+
+
+    try {
         await myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
     } catch (error) {
         handleGetUserMediaError(error)
     }
+
     //function triggers when user accepts call
     acceptCall.addEventListener('click', async(e) => {
         try {
-
-            let answer = await myPeerConnection.createAnswer();
-            await myPeerConnection.setLocalDescription(answer);
-
-            chatSocket.send(JSON.stringify({
-                caller: user,
-                target: targetUsername,
-                type: "video-answer",
-                sdp: myPeerConnection.localDescription
-            }));
-
+            if (myPeerConnection.signalingState == "stable") {
+                return
+            } else {
+                let answer = await myPeerConnection.createAnswer();
+                await myPeerConnection.setLocalDescription(answer);
+            }
 
         } catch (error) {
             handleGetUserMediaError(error)
 
         }
+        chatSocket.send(JSON.stringify({
+            caller: user,
+            target: targetUsername,
+            type: "video-answer",
+            sdp: myPeerConnection.localDescription
+        }));
         //makes the accept and reject button disappear
         callControlContainer.classList.add('d-none')
         hangupButton.classList.remove("d-none")
-
     })
+
     rejectCall.addEventListener('click', (e) => {
         hangUpCall()
     })
