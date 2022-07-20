@@ -89,7 +89,6 @@ export const handleNegotiationNeededEvent = async() => {
         // return to the caller. Another negotiationneeded event
         // will be fired when the state stabilizes.
         if (myPeerConnection.signalingState != "stable") {
-            console.log("     -- The connection isn't stable yet; postponing...")
             return;
         }
 
@@ -215,7 +214,6 @@ export const handleNewICECandidateMsg = (msg) => {
 }
 
 export const handleTrackEvent = (event) => {
-    console.log(event.streams)
     document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
 }
