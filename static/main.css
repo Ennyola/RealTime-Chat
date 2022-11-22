@@ -83,6 +83,7 @@ body {
 
 .stories-wrapper {
     overflow-x: auto;
+    
     display: flex;
     scroll-behavior: smooth;
 }

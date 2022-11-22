@@ -15,14 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+
 from chat.views import index
 from find_friends.views import show_friends
-app_name="chat"
+
 urlpatterns = [
     path('',index, name="homepage"),
     path('accounts/',include('accounts.urls')),
     path('add-friend/', include('find_friends.urls')),
     path('admin/', admin.site.urls),
-    path('chat/',include('chat.urls')),
+    path('chat/',include('chat.urls', namespace="chat")),
     path('friends/', show_friends, name="friends" )
 ]

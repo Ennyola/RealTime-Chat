@@ -1,4 +1,5 @@
 import json
+
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.models import User
 from asgiref.sync import sync_to_async
@@ -8,31 +9,32 @@ from .models import Message, Room, Participants
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         print("Connection Established")
-        self.user_name = self.scope["url_route"]["kwargs"]["username"]
-        self.friend = await sync_to_async(User.objects.get)(username=self.user_name)
+        self.friend_username = self.scope["url_route"]["kwargs"]["username"]
+        self.friend_model_object = await sync_to_async(User.objects.get)(username=self.friend_username)
         self.does_room_exist = await self.check_if_room_exists(
-            self.scope["user"], self.friend
+            self.scope["user"], self.friend_model_object
         )
-        if not self.does_room_exist:
+        print(self.does_room_exist)
+        if self.does_room_exist:
+            self.room = await sync_to_async(Room.objects.get)(
+                name=f'{self.friend_username}_{self.scope["user"]}'
+            )
+            self.room_group_name = self.room.name
+        else:
             # The room_group name starts with the name of the user and that of the person he/she is chatting with
             # e.g currentUser_myfriend
-            self.room_group_name = f'{self.scope["user"]}_{self.user_name}'
+            self.room_group_name = f'{self.scope["user"]}_{self.friend_username}'
             self.room, created = await self.create_room(self.room_group_name)
             self.create_room_for_user, created = await self.create_participants(
                 self.scope["user"], self.room
             )
             # A similar room is created for the friend with same room_group name
             self.create_room_for_friend, created = await self.create_participants(
-                self.friend, self.room
+                self.friend_model_object, self.room
             )
-        else:
-            self.room = await sync_to_async(Room.objects.get)(
-                name=f'{self.user_name}_{self.scope["user"]}'
-            )
-            self.room_group_name = self.room.name
+            
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
-
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 

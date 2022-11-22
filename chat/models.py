@@ -15,7 +15,7 @@ class Participants(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.room.name
+        return f"{self.room.name} {self.user}"
     
     @staticmethod
     def get_friends(user):
