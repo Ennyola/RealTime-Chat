@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+
+from .helpers import get_room_name
 # Create your models here.
+
 
 class Room(models.Model):
     name = models.CharField(max_length=500)
@@ -16,22 +19,15 @@ class Participants(models.Model):
 
     def __str__(self):
         return f"{self.room.name} {self.user}"
-    
-    @staticmethod
-    def get_friends(user):
-        friends = Participants.objects.filter(user=user)
+
+    @classmethod
+    def get_friends(cls, user) -> list:
+        participants = cls.objects.select_related('room').filter(user=user)
         friend_list = []
-        for friend in friends:
+        for friend in participants:
             room_id = friend.room.id
-            #Setting the room name to be the name of the friend
-            if friend.room.name.startswith(user.username):
-                room_name=friend.room.name.split("_")[1]
-            else:
-                room_name=friend.room.name.split("_")[0]
-            friend_list.append({
-                'room_id': room_id,
-                'room_name': room_name
-            })
+            room_name = get_room_name(friend.room.name, user.username)
+            friend_list.append({"room_id": room_id, "room_name": room_name})
         return friend_list
 
 
@@ -44,4 +40,4 @@ class Message(models.Model):
     status = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
-        return self.content
+        return f"{self.content}"

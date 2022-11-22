@@ -3,19 +3,16 @@
 
 {% block stylesheets %}
         <link rel="stylesheet" href="{% static 'main.css' %}">
-        <link rel="stylesheet" href="{% static 'chat/css/chatroom.css' %}">
 {% endblock  %}
 
 {% block content %}
     <div class="container">
         <div class="row g-0">
             <div class="col-md-4">
-                {% include '../header_settings.html' %}
-                {% comment %} {% include "./stories.html" %} {% endcomment %}
-                {% include './friends.html' %}
+                {% include '_header_settings.html' %}
+                {% block friend %}  {% endblock  %}              
             </div>
             <div class="col-md-8">
-                {% block chat-room %}{% endblock  %}
             </div>
         </div>
     </div>
