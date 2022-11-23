@@ -18,17 +18,28 @@ class ChatIndexView(View):
 
 
 class ChatRoomView(View):
-    pass
+    def get(self,request,**kwargs):
+        messages = Message.objects.filter(room_id=kwargs['room_id'])
+        friend_list = Participants.get_friends(request.user)
+        room = Room.objects.get(id=kwargs['room_id'])
 
-@login_required
-def chat_room(request, room_id):
-    messages = Message.objects.filter(room_id=room_id)
-    friend_list = Participants.get_friends(request.user)
-    room = Room.objects.get(id=room_id)
+        context = {
+            "messages": messages,
+            "room_name": get_room_name(room.name, request.user.username),
+            "friends": friend_list,
+        }
+        return render(request, "chat/chat-room.html", context)
+        
 
-    context = {
-        "messages": messages,
-        "room_name": get_room_name(room.name, request.user.username),
-        "friends": friend_list,
-    }
-    return render(request, "chat/chat-room.html", context)
+# @login_required
+# def chat_room(request, room_id):
+#     messages = Message.objects.filter(room_id=room_id)
+#     friend_list = Participants.get_friends(request.user)
+#     room = Room.objects.get(id=room_id)
+
+#     context = {
+#         "messages": messages,
+#         "room_name": get_room_name(room.name, request.user.username),
+#         "friends": friend_list,
+#     }
+#     return render(request, "chat/chat-room.html", context)
