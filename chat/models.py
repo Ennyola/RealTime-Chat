@@ -35,7 +35,7 @@ class Message(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     content = models.TextField()
     time = models.DateTimeField(default=timezone.localtime)
-    type = models.CharField(max_length=50, blank=True, null=True)
+    message_type = models.CharField(db_column="type", max_length=50, blank=True, null=True)
     status = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self) -> str:
