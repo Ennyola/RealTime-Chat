@@ -6,15 +6,17 @@ body {
     background-color: rgb(110, 107, 107);
     color: white;
     font-family: sans-serif;
+    
 }
 
-.container {
+.content-body{
     background-color: #292F3F;
     padding: 0;
     height: 100vh;
+    width: 100vw;
 }
 
-.col-md-4 {
+.col-md-3 {
     border-right: 1px solid rgb(88, 87, 87);
     padding-right: 0px;
     height: 100vh;
@@ -151,35 +153,35 @@ body {
     color: grey;
 }
 
-.col-md-8 {
+.col-md-9 {
     padding-left: 0;
 }
 
-.col-md-8 .single-friend {
+.col-md-9 .single-friend {
     border-bottom: none;
     margin: 0;
     padding: 0;
 }
 
-.col-md-8 .header-settings {
+.col-md-9 .header-settings {
     padding: 5px 15px;
 }
 
-.col-md-8 .single-friend:hover {
+.col-md-9 .single-friend:hover {
     background-color: transparent;
     color: white !important;
     cursor: default;
 }
 
-.col-md-8 .text {
+.col-md-9 .text {
     width: 70%;
 }
 
-.col-md-8 .text p {
+.col-md-9 .text p {
     margin-bottom: 2px;
 }
 
-.col-md-8 .settings-icon i {
+.col-md-9 .settings-icon i {
     margin: 8px 10px;
     font-weight: 600;
     padding: 5px;
@@ -188,65 +190,3 @@ body {
     font-size: 18px;
 }
 
-.chat-date {
-    text-align: center;
-    margin-top: 10px;
-    margin-right: 30px;
-    color: rgb(168, 161, 161);
-    font-size: 14px;
-}
-
-.messages {
-    padding: 5px;
-    height: 563px;
-    overflow-y: auto;
-}
-
-.chat-bubble {
-    background-color: #373E4E;
-    padding: 10px 15px;
-    margin: 5px 10px;
-    width: 40%;
-    border-radius: 20px;
-}
-
-.incoming-message {
-    position: relative;
-}
-
-.outgoing-message {
-    position: relative;
-    display: flex;
-    justify-content: end;
-}
-
-.outgoing-message .chat-bubble {
-    background-color: #272A35;
-}
-
-.msg {
-    word-wrap: break-word;
-    padding: 5px;
-}
-
-.msg-metadata {
-    display: flex;
-    justify-content: end;
-}
-
-.msg-time {
-    margin: 2px 5px;
-    font-size: 14px;
-}
-
-.message-box {
-    padding: 10px;
-    margin: 10px;
-    border: 1px solid grey;
-}
-
-.message-box [type="text"] {
-    width: 80%;
-    border-radius: 45px;
-    padding-left: 1em;
-}
