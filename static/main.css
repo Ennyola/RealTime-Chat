@@ -6,7 +6,6 @@ body {
     background-color: rgb(110, 107, 107);
     color: white;
     font-family: sans-serif;
-    
 }
 
 .content-body{
@@ -16,7 +15,7 @@ body {
     width: 100vw;
 }
 
-.col-md-3 {
+.col-md-4 {
     border-right: 1px solid rgb(88, 87, 87);
     padding-right: 0px;
     height: 100vh;
@@ -153,35 +152,35 @@ body {
     color: grey;
 }
 
-.col-md-9 {
+.col-md-8 {
     padding-left: 0;
 }
 
-.col-md-9 .single-friend {
+.col-md-8 .single-friend {
     border-bottom: none;
     margin: 0;
     padding: 0;
 }
 
-.col-md-9 .header-settings {
+.col-md-8 .header-settings {
     padding: 5px 15px;
 }
 
-.col-md-9 .single-friend:hover {
+.col-md-8 .single-friend:hover {
     background-color: transparent;
     color: white !important;
     cursor: default;
 }
 
-.col-md-9 .text {
+.col-md-8 .text {
     width: 70%;
 }
 
-.col-md-9 .text p {
+.col-md-8 .text p {
     margin-bottom: 2px;
 }
 
-.col-md-9 .settings-icon i {
+.col-md-8 .settings-icon i {
     margin: 8px 10px;
     font-weight: 600;
     padding: 5px;

@@ -23,6 +23,7 @@ inputBox.addEventListener('keyup', (e => {
 }))
 
 sendButton.addEventListener('click', (e) => {
+    if (inputBox.value === "") return
     chatSocket.send(JSON.stringify({
         type: "message",
         messageContent: inputBox.value,
