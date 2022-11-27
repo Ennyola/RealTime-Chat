@@ -95,29 +95,50 @@
 
 .message-box {
     position: fixed;
-    bottom: 0;
-    width: 80%;
+    bottom: 20px;
+    width: 100%;
     background-color: #373E4E;
-    height: 70px;
+    padding: 20px 0px;
     /* padding: 10px;
     margin: 10px;
     border: 1px solid grey; */
 }
 
-.message-box .input-wrapper {
-    width: 60%;
-    margin: 10px;
-    margin: 20px;
-}
-
-.message-box [type="text"] {
-    width: 80%;
-    border-radius: 45px;
-    padding-left: 1em;
-}
-
 .icons {
-    /* margin: 0px 10px; */
     color: #808F99;
     font-size: 25px;
+    cursor: pointer;
+}
+
+.message-box .input-wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin: 0px 10px;
+}
+
+.emoji-attachment {
+    margin-right: 20px;
+}
+
+.emoji-attachment .icons {
+    position: relative;
+    margin-left: 12px;
+    top: 3px;
+}
+
+.text-input {
+    width: 60%;
+}
+
+.text-input .icons {
+    margin: 0 10px;
+}
+
+.message-box .form-control {
+    border-radius: 45px;
+    padding: 0.4em 1em;
+    outline: none;
+    display: inline;
+    width: 80%;
 }

@@ -8,7 +8,7 @@ body {
     font-family: sans-serif;
 }
 
-.content-body{
+.content-body {
     background-color: #292F3F;
     padding: 0;
     height: 100vh;
@@ -84,7 +84,6 @@ body {
 
 .stories-wrapper {
     overflow-x: auto;
-    
     display: flex;
     scroll-behavior: smooth;
 }
@@ -115,13 +114,13 @@ body {
 
 .friends-list {
     margin-top: 30px;
-    height: 300px;
+    height: 600px;
     overflow-y: auto;
 }
 
 .single-friend {
     display: flex;
-    border-bottom: 1px solid rgb(151, 146, 146);
+    border-bottom: 1px solid #3c444b;
     transition: 0.5s;
     padding: 5px;
 }
@@ -188,4 +187,3 @@ body {
     transition: 0.5s;
     font-size: 18px;
 }
-
