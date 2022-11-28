@@ -1,0 +1,47 @@
+.add_users{
+    height:627px;
+    overflow:auto;
+}
+
+form{
+    margin:10px;
+    padding:10px;
+    display: flex;
+    justify-content:space-between;
+}
+
+.user span{
+    margin:5px;
+    padding:5px;
+    border-radius:5px;
+}
+.add-remove{
+    position: relative;
+    top:10px;
+}
+
+.add-remove a{
+    text-decoration:none;
+    color: white;
+    font-weight:bold;
+    margin-right:10px;
+    padding:10px;
+    background-color: rgba(255,255,255,0.2);
+    border-radius:45px;
+    transition:ease-in 0.2s;
+    font-size:14px;
+}
+.add-remove a i{
+    margin-right:5px;
+}
+
+.add-remove a:hover{
+    background-color: rgba(255,255,255,0.1);
+}
+
+.add-remove i{
+    cursor: pointer;
+}
+.add-remove i:hover{
+    color:rgba(255,255,255,0.5);
+}

@@ -30,6 +30,7 @@ def add_friend(request,id):
 
 def show_friends(request):
     friend_list =Participants.get_friends(request.user)
+    print(friend_list)
     context = {
         'friends': friend_list,
     }

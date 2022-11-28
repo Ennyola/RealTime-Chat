@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.decorators import login_required
 
+from emoji import Emoji
+
 from .models import Room, Message, Participants
 from .helpers import get_room_name
 
@@ -22,7 +24,6 @@ class ChatRoomView(View):
         messages = Message.objects.filter(room_id=kwargs['room_id'])
         friend_list = Participants.get_friends(request.user)
         room = Room.objects.get(id=kwargs['room_id'])
-
         context = {
             "messages": messages,
             "room_name": get_room_name(room.name, request.user.username),

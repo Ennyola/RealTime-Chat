@@ -26,5 +26,6 @@ urlpatterns = [
     path('add-friend/', include('find_friends.urls')),
     path('admin/', admin.site.urls),
     path('chat/',include('chat.urls', namespace="chat")),
-    path('friends/', show_friends, name="friends" )
+    path('friends/', show_friends, name="friends" ),
+    path('emoji/', include('emoji.urls')),
 ]

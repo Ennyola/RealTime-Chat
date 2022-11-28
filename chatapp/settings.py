@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'chat',
     'accounts',
-    'find_friends'
+    'find_friends',
+    'emoji',
 ]
 
 MIDDLEWARE = [

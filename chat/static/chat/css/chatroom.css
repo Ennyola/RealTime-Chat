@@ -1,3 +1,42 @@
+.friends-list {
+    margin-top: 30px;
+    height: 600px;
+    overflow-y: auto;
+}
+
+.single-friend {
+    display: flex;
+    border-bottom: 1px solid #3c444b;
+    transition: 0.5s;
+    padding: 5px;
+}
+
+.single-friend:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    color: black !important;
+}
+
+.single-friend .text {
+    margin: 0px 15px;
+    width: 80%;
+}
+
+.single-friend .text h6 {
+    position: relative;
+    top: 3px;
+    margin-bottom: 5px;
+}
+
+.single-friend .text p {
+    color: grey;
+    font-size: 16px;
+}
+
+.time {
+    color: grey;
+}
+
 .video-container {
     position: fixed;
     z-index: +12;
