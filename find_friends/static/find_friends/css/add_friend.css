@@ -1,9 +1,11 @@
-.add_users{
-    height:627px;
-    overflow:auto;
+
+.height{
+    height:620px;
+    overflow-y:auto;
 }
 
-form{
+
+.add_users form{
     margin:10px;
     padding:10px;
     display: flex;
@@ -45,3 +47,4 @@ form{
 .add-remove i:hover{
     color:rgba(255,255,255,0.5);
 }
+
