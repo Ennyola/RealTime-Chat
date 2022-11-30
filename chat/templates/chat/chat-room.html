@@ -17,15 +17,16 @@
 </div>
 <div class="video-container d-none">
     <div class="video-box">
-        <video  id="received_video" autoplay></video>
-        <video  id="local_video" autoplay muted></video>
+        <video class="calle-video" id="received_video" autoplay></video>
+        <video class="caller-video" id="local_video" autoplay muted></video>
         <div class="call-control d-none">
-            <button id="accept_call" class="btn btn-success">Accept</button>
-            <button id="reject_call" class="btn btn-danger">Decline</button>
+            <span id="accept_call" class="call-control-button"><i class="fa fa-phone" aria-hidden="true"></i></span>
+            <span id="reject_call" class="call-control-button"><i class="fa fa-phone" aria-hidden="true"></i></span>
         </div>  
-        <button id="hangup-button">
-            Hang Up
-        </button> 
+        
+        <span class ="call-control-button " id="hangup-button">
+            <i class="fa fa-phone" aria-hidden="true"></i> 
+        </span> 
     </div>
 </div>
 <div class="messages">

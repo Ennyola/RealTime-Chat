@@ -1,26 +1,28 @@
-.add_users{
-    height:627px;
-    overflow:auto;
+
+.height{
+    height:620px;
+    overflow-y:auto;
 }
 
-form{
+
+.add_users form{
     margin:10px;
     padding:10px;
     display: flex;
     justify-content:space-between;
 }
 
-.user span{
+.add_users .user span{
     margin:5px;
     padding:5px;
     border-radius:5px;
 }
-.add-remove{
+.add_users .add-remove{
     position: relative;
     top:10px;
 }
 
-.add-remove a{
+.add_users .add-remove a{
     text-decoration:none;
     color: white;
     font-weight:bold;
@@ -31,17 +33,33 @@ form{
     transition:ease-in 0.2s;
     font-size:14px;
 }
-.add-remove a i{
+.add_users .add-remove a i{
     margin-right:5px;
 }
 
-.add-remove a:hover{
+.add_users .add-remove a:hover{
     background-color: rgba(255,255,255,0.1);
 }
 
-.add-remove i{
+.add_users .add-remove i{
     cursor: pointer;
 }
-.add-remove i:hover{
+.add_users .add-remove i:hover{
     color:rgba(255,255,255,0.5);
+}
+
+.friends .friend{
+    margin:10px 0px;
+    padding:10px;
+    cursor: pointer;
+}
+
+.friends .friend:hover{
+    background-color: rgba(255,255,255,0.1);
+}
+
+
+.friends .friend span{
+    margin:5px;
+    padding:5px;
 }
