@@ -16,6 +16,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.friend_model_object = await sync_to_async(User.objects.get)(
             username=self.friend_username
         )
+        print(self.channel_name)
         self.does_room_exist = await self.check_if_room_exists(
             self.scope["user"], self.friend_model_object
         )

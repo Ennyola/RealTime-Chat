@@ -19,7 +19,7 @@ def index(request):
 
 def add_friend(request,id):
     friend = User.objects.get(id=id)
-    #checking if room already exists
+    # Check if a room already exists.
     if Room.objects.filter(name=f'{friend.username}_{request.user}').exists() or Room.objects.filter(name=f'{request.user}_{friend.username}').exists():
         print("User already added")
     else:

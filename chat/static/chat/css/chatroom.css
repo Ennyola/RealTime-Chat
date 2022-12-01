@@ -79,6 +79,11 @@
     cursor: pointer;
 }
 
+.call-control-button i {
+    position: relative;
+    left: 4px;
+}
+
 #hangup-button {
     background-color: rgb(170, 9, 9);
     position: absolute;
