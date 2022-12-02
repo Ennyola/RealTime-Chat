@@ -20,7 +20,7 @@ class FriendListMixin:
 
 class ChatIndexView(FriendListMixin, View):
     def get(self, request, *args, **kwargs):
-
+        
         friend_list = Participants.get_friends(request.user)
         context = super().get_context_data(user=request.user)
         return render(request, "chat/index.html", context)

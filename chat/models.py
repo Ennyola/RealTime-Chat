@@ -16,7 +16,7 @@ class Room(models.Model):
 
 class Participants(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, related_name="participant", on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, related_name="participants", on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.room.name} {self.user}"
@@ -28,13 +28,14 @@ class Participants(models.Model):
         for friend in participants:
             room_id = friend.room.id
             room_name = get_room_name(friend.room.name, user.username)
-            friend_list.append({"room_id": room_id, "room_name": room_name})
+            latest_message = friend.room.messages.last()
+            friend_list.append({"room_id": room_id, "room_name": room_name,"latest_message": latest_message})
         return friend_list
 
 
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, related_name="message", on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
     content = models.TextField()
     time = models.DateTimeField(default=timezone.localtime)
     message_type = models.CharField(

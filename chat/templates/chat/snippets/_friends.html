@@ -5,7 +5,12 @@
             <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
             <div class = "text">
                 <h6>{{friend.room_name}}</h6>
-                <p>lor</p>
+                {% if friend.latest_message %}
+                    <p>{{friend.latest_message}}</p>
+                {% else %}
+                    <p></p>
+                {% endif %}
+                
             </div>
             <span class="time">08:43</span>
         </div>
