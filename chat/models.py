@@ -23,7 +23,7 @@ class Participants(models.Model):
 
     @classmethod
     def get_friends(cls, user) -> list:
-        participants = cls.objects.select_related("room").filter(user=user)
+        participants = cls.objects.select_related("room").filter(user=user).order_by("room__name")
         friend_list = []
         for friend in participants:
             room_id = friend.room.id
@@ -34,14 +34,14 @@ class Participants(models.Model):
 
 
 class Message(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
     content = models.TextField()
     time = models.DateTimeField(default=timezone.localtime)
     message_type = models.CharField(
         db_column="type", max_length=50, blank=True, null=True
     )
     status = models.CharField(max_length=20, blank=True, null=True)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"{self.content}"

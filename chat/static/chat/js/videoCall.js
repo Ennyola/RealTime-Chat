@@ -13,11 +13,12 @@ const mediaConstraints = {
 let targetUsername = friendName;
 let myPeerConnection = null;
 let myStream = null;
-
+let userVideo = document.querySelector("#local_video")
+let incomingVideo = document.querySelector("#received_video");
 
 export const closeVideoCall = () => {
-    let remoteVideo = document.querySelector("#received_video");
-    let localVideo = document.querySelector("#local_video");
+    // let remoteVideo = document.querySelector("#received_video");
+    // let localVideo = document.querySelector("#local_video");
     if (myPeerConnection) {
         myPeerConnection.ontrack = null;
         myPeerConnection.onicecandidate = null;
@@ -26,12 +27,12 @@ export const closeVideoCall = () => {
         myPeerConnection.onicegatheringstatechange = null;
         myPeerConnection.onnegotiationneeded = null;
 
-        // if (remoteVideo.srcObject) {
-        //     remoteVideo.srcObject.getTracks().forEach(track => track.stop());
+        // if (incomingVideo.srcObject) {
+        //     incomingVideo.srcObject.getTracks().forEach(track => track.stop());
         // }
 
-        if (localVideo.srcObject) {
-            localVideo.srcObject.getTracks().forEach(track => track.stop());
+        if (userVideo.srcObject) {
+            userVideo.srcObject.getTracks().forEach(track => track.stop());
         }
 
         myPeerConnection.close();
@@ -39,10 +40,10 @@ export const closeVideoCall = () => {
         myStream = null;
     }
 
-    // remoteVideo.removeAttribute("src");
-    // remoteVideo.removeAttribute("srcObject");
-    // localVideo.removeAttribute("src");
-    // remoteVideo.removeAttribute("srcObject");
+    // incomingVideo.removeAttribute("src");
+    // incomingVideo.removeAttribute("srcObject");
+    // userVideo.removeAttribute("src");
+    // incomingVideo.removeAttribute("srcObject");
     // document.querySelector("#hangup-button").disabled = true;
     videoContainer.classList.add("d-none")
 }
@@ -72,8 +73,11 @@ export const invite = async(e) => {
         createPeerConnection();
         try {
             myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
+                // Make the user videos visible
             videoContainer.classList.remove("d-none")
-            document.querySelector("#local_video").srcObject = myStream;
+            userVideo.srcObject = myStream;
+            // userVideo.classList.add("user-video")
+            // document.querySelector("#local_video").srcObject = myStream;
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
         } catch (error) {
             handleGetUserMediaError(error)
@@ -148,7 +152,8 @@ export const handleVideoOfferMsg = async(msg) => {
     }
 
 
-    document.querySelector("#local_video").srcObject = myStream;
+    userVideo.srcObject = myStream;
+    // document.querySelector("#local_video").srcObject = myStream;
 
 
     try {
@@ -214,12 +219,14 @@ export const handleNewICECandidateMsg = (msg) => {
 }
 
 export const handleTrackEvent = (event) => {
-    document.querySelector("#received_video").srcObject = event.streams[0];
+    incomingVideo.srcObject = event.streams[0];
+    // document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
 }
 
 export const handleRemoveTrackEvent = (event) => {
-    let stream = document.querySelector("#received_video").srcObject;
+    let stream = incomingVideo.srcObject;
+    // let stream = document.querySelector("#received_video").srcObject;
     let trackList = stream.getTracks();
 
     if (trackList.length == 0) {
