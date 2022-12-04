@@ -16,7 +16,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.friend_model_object = await sync_to_async(User.objects.get)(
             username=self.friend_username
         )
-        print(self.channel_name)
         self.does_room_exist = await self.check_if_room_exists(
             self.scope["user"], self.friend_model_object
         )
@@ -180,3 +179,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return Room.objects.filter(
             Q(name=f"{friend}_{user}") | Q(name=f"{user}_{friend}")
         ).exists()
+
+
+class CallConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+
+    async def receive(self, text_data=None, bytes_data=None):
+        pass     
+        
