@@ -1,4 +1,4 @@
-import { chatSocket } from "./index.js";
+import { callSocket } from "./index.js";
 const user = document.querySelector("#username").textContent;
 const videoContainer = document.querySelector('.video-container')
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
@@ -97,7 +97,7 @@ export const handleNegotiationNeededEvent = async() => {
         }
 
         await myPeerConnection.setLocalDescription(offer);
-        chatSocket.send(JSON.stringify({
+        callSocket.send(JSON.stringify({
             caller: user,
             target: targetUsername,
             type: "video-offer",
@@ -112,7 +112,7 @@ export const handleNegotiationNeededEvent = async() => {
 
 export const hangUpCall = () => {
     closeVideoCall();
-    chatSocket.send(JSON.stringify({
+    callSocket.send(JSON.stringify({
         name: user,
         target: targetUsername,
         type: "hang-up"
@@ -176,7 +176,7 @@ export const handleVideoOfferMsg = async(msg) => {
             handleGetUserMediaError(error)
 
         }
-        chatSocket.send(JSON.stringify({
+        callSocket.send(JSON.stringify({
             caller: user,
             target: targetUsername,
             type: "video-answer",
@@ -203,7 +203,7 @@ export const handleVideoAnswerMsg = (msg) => {
 
 export const handleICECandidateEvent = (event) => {
     if (event.candidate) {
-        chatSocket.send(JSON.stringify({
+        callSocket.send(JSON.stringify({
             type: "new-ice-candidate",
             target: targetUsername,
             candidate: event.candidate

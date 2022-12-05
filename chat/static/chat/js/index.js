@@ -22,6 +22,7 @@ const callControlContainer = document.querySelector('.call-control')
 
 let chatHolder = document.querySelectorAll(".messages")[0];
 
+console.log("hio")
 
 
 //start the call
@@ -85,3 +86,4 @@ chatSocket.addEventListener('message', (e) => {
             break;
     }
 })
+console.log("Loading chatroom.js");

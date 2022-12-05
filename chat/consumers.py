@@ -186,5 +186,19 @@ class CallConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def receive(self, text_data=None, bytes_data=None):
-        pass     
-        
+        data_json = json.loads(text_data)
+        print(data_json)
+    
+    async def video_offer(self, event):
+        print(event)
+        # if self.scope["user"].username != event["caller"].strip('"'):
+        #     await self.send(
+        #         json.dumps(
+        #             {
+        #                 "type": event["msg_type"],
+        #                 "caller": event["caller"],
+        #                 "target": event["target"],
+        #                 "sdp": event["sdp"],
+        #             }
+        #         )
+        #     )
