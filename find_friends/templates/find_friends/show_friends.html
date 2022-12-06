@@ -1,5 +1,11 @@
-{% extends 'find_friends/index.html' %}
+{% extends 'base.html' %}
+
 {% load static %}
+
+{% block stylesheet %}
+        <link rel="stylesheet" href="{% static 'find_friends/css/add_friend.css' %}">
+{% endblock  %}
+
 {% block friends %}
     <div class="friends height">
         {% for friend in friends %}
@@ -10,6 +16,7 @@
         {% endfor %} 
     </div>
 {% endblock %}
-{% block script2 %}
+
+{% block script %}
       <script type="module" src="{% static 'find_friends/js/showFriends.js' %}"></script>
 {% endblock  %} 

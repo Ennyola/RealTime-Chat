@@ -1,79 +1,88 @@
-{% extends "./index.html" %}
+{% extends "base.html" %}
 {% load static %}
-{% block chat-room %}
-{{room_name|json_script:"room-name"}}
-{{request.user.username|json_script:"username"}}
-<div class="header-settings">
-    <div class="single-friend">
-        <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
-        <div class = "text">
-            <h6> {{room_name}}</h6>
-        </div>
-        <span class="settings-icon">
-            <i class="fas fa-phone"></i>
-            <i id ="video-call-icon" class="fas fa-video"></i>
-        </span>
-    </div>
-</div>
-<div class="video-container d-none">
-    <div class="video-box">
-        <video class="incoming-video" id="received_video" autoplay></video>
-        <video class="user-video" id="local_video" autoplay muted></video>
-        <div class="call-control d-none">
-            <span id="accept_call" class="call-control-button"><i class="fa fa-phone" aria-hidden="true"></i></span>
-            <span id="reject_call" class="call-control-button"><i class="fa fa-phone" aria-hidden="true"></i></span>
-        </div>  
-        
-        <span class ="call-control-button " id="hangup-button">
-            <i class="fa fa-phone" aria-hidden="true"></i> 
-        </span> 
-    </div>
-</div>
-<div class="messages">
-    {% for message in messages %}
-        {% if message.sender == request.user %}
-            <div class="outgoing-message">
-                <div class="chat-bubble">
-                    <div class="msg">{{message.content}}</div>
-                    <span class ="msg-metadata">
-                        <span class = "msg-time">{{message.time.time}}</span> 
-                        <span class="chat-status">
-                            <i class="fas fa-check"></i>
-                        </span>
-                    </span>
-                </div>
-            </div>
-        {% else %}
-            <div class="incoming-message">
-                <div class="chat-bubble">
-                    <div class="msg">
-                        {{message.content}}
-                    </div>
-                    <span class ="msg-metadata">
-                        <span class = "msg-time">{{message.time.time}}</span> 
-                    </span>
-                </div>
-            </div>    
-        {% endif %}
-    
-    {% endfor %}   
-    
-</div> 
-<div class="message-box">
-    <div class="input-wrapper">
-        <div class="emoji-attachment">
-            <span class="icons" ><i class="far fa-smile"></i></span> 
-            <span class="icons" ><i class="fas fa-paperclip"></i></i></span>
-        </div>  
-        <div class="text-input">
-            <input class="form-control" id = "input-message" type="text" placeholder="type message" name="" id="">
-            <span class="icons" ><i class="fas fa-paper-plane" id ="send-button"></i></span>
-        </div>
-    </div>
-</div>
+
+{% block friends %}
+    {% include 'chat/snippets/_friends.html' %}
 {% endblock  %}
 
-{% block script2 %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'chat/css/chatroom.css' %}">
+{% endblock  %}
+
+{% block chat-room %}
+    {{room_name|json_script:"room-name"}}
+    {{request.user.username|json_script:"username"}}
+    <div class="header-settings">
+        <div class="single-friend">
+            <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
+            <div class = "text">
+                <h6> {{room_name}}</h6>
+            </div>
+            <span class="settings-icon">
+                <i class="fas fa-phone"></i>
+                <i id ="video-call-icon" class="fas fa-video"></i>
+            </span>
+        </div>
+    </div>
+    <div class="video-container d-none">
+        <div class="video-box">
+            <video class="incoming-video" id="received_video" autoplay></video>
+            <video class="user-video" id="local_video" autoplay muted></video>
+            <div class="call-control d-none">
+                <span id="accept_call" class="call-control-button"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                <span id="reject_call" class="call-control-button"><i class="fa fa-phone" aria-hidden="true"></i></span>
+            </div>  
+            
+            <span class ="call-control-button " id="hangup-button">
+                <i class="fa fa-phone" aria-hidden="true"></i> 
+            </span> 
+        </div>
+    </div>
+    <div class="messages">
+        {% for message in messages %}
+            {% if message.sender == request.user %}
+                <div class="outgoing-message">
+                    <div class="chat-bubble">
+                        <div class="msg">{{message.content}}</div>
+                        <span class ="msg-metadata">
+                            <span class = "msg-time">{{message.time.time}}</span> 
+                            <span class="chat-status">
+                                <i class="fas fa-check"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            {% else %}
+                <div class="incoming-message">
+                    <div class="chat-bubble">
+                        <div class="msg">
+                            {{message.content}}
+                        </div>
+                        <span class ="msg-metadata">
+                            <span class = "msg-time">{{message.time.time}}</span> 
+                        </span>
+                    </div>
+                </div>    
+            {% endif %}
+        
+        {% endfor %}   
+        
+    </div> 
+    <div class="message-box">
+        <div class="input-wrapper">
+            <div class="emoji-attachment">
+                <span class="icons" ><i class="far fa-smile"></i></span> 
+                <span class="icons" ><i class="fas fa-paperclip"></i></i></span>
+            </div>  
+            <div class="text-input">
+                <input class="form-control" id = "input-message" type="text" placeholder="type message" name="" id="">
+                <span class="icons" ><i class="fas fa-paper-plane" id ="send-button"></i></span>
+            </div>
+        </div>
+    </div>
+{% endblock  %}
+
+{% block script %}
       <script type="module" src="{% static 'chat/js/chatroom.js' %}"></script>
       <script type="module" src="{% static 'chat/js/videoCall.js' %}"></script>
 {% endblock  %} 

@@ -1,18 +1,24 @@
-{% extends "find_friends/index.html" %}
+{% extends "base.html" %}
+
 {% load static %}
-{% block add_friends %}
-<div class="add_users height">
-    {% for user in random_users %}
-        <form>
-            <div class="user">
-                <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="display-picture">
-                <span>{{user.username}}</span>
-            </div> 
-            <div class="add-remove">
-                <a href={% url 'find_friends:add_friend' user.id %}> <i class="fas fa-user-plus"></i>Add friend</a> 
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </div>       
-        </form>
-    {% endfor %}
-</div>
+
+{% block stylesheet %}
+        <link rel="stylesheet" href="{% static 'find_friends/css/add_friend.css' %}">
+{% endblock  %}
+
+{% block friends %}
+    <div class="add_users height">
+        {% for user in random_users %}
+            <form>
+                <div class="user">
+                    <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="display-picture">
+                    <span>{{user.username}}</span>
+                </div> 
+                <div class="add-remove">
+                    <a href={% url 'find_friends:add_friend' user.id %}> <i class="fas fa-user-plus"></i>Add friend</a> 
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </div>       
+            </form>
+        {% endfor %}
+    </div>
 {% endblock  %}

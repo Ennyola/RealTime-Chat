@@ -1,28 +1,10 @@
 {% extends 'base.html' %} 
 {% load static %}
 
-{% block stylesheets %}
-        <link rel="stylesheet" href="{% static 'main.css' %}">
-        <link rel="stylesheet" href="{% static 'chat/css/chatroom.css' %}">
+{% block friends %}
+    {% include 'chat/snippets/_friends.html' %}
 {% endblock  %}
 
-{% block content %}
-    <div class="content-body">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <header>   
-                    {% include '_header_settings.html' %}
-                </header>
-                {% include './snippets/_friends.html' %}
-            </div>
-            <div class="col-md-8">
-                {% block chat-room %}{% endblock  %}
-            </div>
-        </div>
-    </div>
-    <script type="module" src="{% static 'chat/js/index.js' %}"></script> 
-{% endblock %}
-
-{% block script2 %}
-    <script type="module" src="{% static 'chat/js/index.js' %}"></script> 
+{% block script %}
+    <script type="module" src="{% static 'chat/js/index.js' %}"></script>
 {% endblock  %}
