@@ -103,7 +103,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def chat_message(self, event):
         message = event["message"]
         sender = event["sender"]
-        # If the currently logged in user is not the sender, do not save the message sent to the server
+        # If the currently logged in user is not the sender, do not save the message sent to the server.
+        # This logic is useful because we do not want to save the message twice in the database. 
         if self.scope["user"].username == sender.strip('"'):
             await self.save_message(self.scope["user"], message, self.room)
         # Send message to WebSocket
@@ -114,6 +115,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def video_offer(self, event):
+        # If caller is not the currently logged in user, send the offer to the user.
         if self.scope["user"].username != event["caller"].strip('"'):
             await self.send(
                 json.dumps(
@@ -181,24 +183,23 @@ class ChatConsumer(AsyncWebsocketConsumer):
         ).exists()
 
 
-class CallConsumer(AsyncWebsocketConsumer):
+class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
+        await self.channel_layer.group_add("notifications", self.channel_name)
 
-    async def receive(self, text_data=None, bytes_data=None):
-        data_json = json.loads(text_data)
-        print(data_json)
-    
-    async def video_offer(self, event):
-        print(event)
-        # if self.scope["user"].username != event["caller"].strip('"'):
-        #     await self.send(
-        #         json.dumps(
-        #             {
-        #                 "type": event["msg_type"],
-        #                 "caller": event["caller"],
-        #                 "target": event["target"],
-        #                 "sdp": event["sdp"],
-        #             }
-        #         )
-        #     )
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard("notifications", self.channel_name)
+
+    async def notify_user(self, event):
+        if self.scope["user"].username == event["receiver"]:
+            await self.send(
+                json.dumps(
+                    {
+                        "type": "new_message",
+                        "sender": event["sender"],
+                        "receiver": event["receiver"],
+                        "message": event["message"],
+                    }
+                )
+            )

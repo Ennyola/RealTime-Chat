@@ -7,4 +7,19 @@ export const goToPage = (friends = friendList) => {
         })
     })
 }
+
+const notificationSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/chat/`)
+
+notificationSocket.addEventListener('open', (e => {
+    console.log("Connection Established")
+}))
+
+notificationSocket.addEventListener('message', (e => {
+    const msg = JSON.parse(e.data)
+    switch (msg.type) {
+        case "friend-request":
+    }
+}))
+
+
 goToPage()

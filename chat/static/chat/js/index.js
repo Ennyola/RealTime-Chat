@@ -15,15 +15,11 @@ const videoCallIcon = document.querySelector("#video-call-icon");
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const url = `ws://${window.location.host}/ws/chat/${friendName}/`
 export const chatSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/chat/${friendName}/`);
-export const callSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/chat/`);
 const currentuUser = document.querySelector("#username").textContent;
 const hangupButton = document.querySelector('#hangup-button');
 const callControlContainer = document.querySelector('.call-control')
 
 let chatHolder = document.querySelectorAll(".messages")[0];
-
-console.log("hio")
-
 
 //start the call
 videoCallIcon.addEventListener("click", invite)
@@ -39,10 +35,6 @@ chatSocket.addEventListener('open', (e) => {
     console.log("Connection Established")
 })
 
-//Open Callwebsocket connection
-callSocket.addEventListener('open', (e) => {
-    console.log("Connection Established")
-})
 
 chatSocket.addEventListener('message', (e) => {
     const msg = JSON.parse(e.data)
