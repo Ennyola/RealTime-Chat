@@ -19,5 +19,6 @@ def send_notification(sender, **kwargs):
             "sender": message.sender.username,
             "message": message.content,
             "receiver": get_room_name(message.room.name, message.sender.username),
+            "room_id": message.room.id,
         },
     )

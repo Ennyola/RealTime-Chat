@@ -200,6 +200,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                         "sender": event["sender"],
                         "receiver": event["receiver"],
                         "message": event["message"],
+                        "room_id": event["room_id"],
                     }
                 )
             )

@@ -6,7 +6,7 @@
             <div class = "text">
                 <h6>{{friend.room_name}}</h6>
                 {% if friend.latest_message %}
-                    <p>{{friend.latest_message}}</p>
+                    <p id="latest_message">{{friend.latest_message}}</p>
                 {% else %}
                     <p></p>
                 {% endif %}

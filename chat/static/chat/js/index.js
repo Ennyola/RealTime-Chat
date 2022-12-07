@@ -78,4 +78,3 @@ chatSocket.addEventListener('message', (e) => {
             break;
     }
 })
-console.log("Loading chatroom.js");
