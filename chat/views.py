@@ -19,9 +19,10 @@ class FriendListMixin:
 
 
 class ChatIndexView(FriendListMixin, View):
-    def get(self, request, *args, **kwargs): 
+    def get(self, request, *args, **kwargs):
         context = super().get_context_data(user=request.user)
         return render(request, "chat/index.html", context)
+
 
 class ChatRoomView(FriendListMixin, View):
     def get(self, request, **kwargs):
@@ -31,4 +32,3 @@ class ChatRoomView(FriendListMixin, View):
         context["messages"] = messages
         context["room_name"] = get_room_name(room.name, request.user.username)
         return render(request, "chat/chat-room.html", context)
-

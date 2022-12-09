@@ -23,7 +23,9 @@ class Participants(models.Model):
 
     @classmethod
     def get_friends(cls, user) -> list:
-        participants = cls.objects.select_related("room").filter(user=user).order_by("room__name")
+        # To get all the friends relating to a user 
+        participants = cls.objects.select_related("room").filter(user=user)
+        print(participants)
         friend_list = []
         for friend in participants:
             room_id = friend.room.id
