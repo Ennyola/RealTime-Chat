@@ -16,22 +16,40 @@ class Room(models.Model):
 
 class Participants(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, related_name="participants", on_delete=models.CASCADE)
+    room = models.ForeignKey(
+        Room, related_name="participants", on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return f"{self.room.name} {self.user}"
 
     @classmethod
     def get_friends(cls, user) -> list:
-        ''' To get 
-        '''
-        participants = cls.objects.select_related("room").filter(user=user)
+        """To get all the friends associated with a user"""
+
+        participants = (
+            cls.objects.select_related("room")
+            .filter(user=user)
+            .order_by("-room__messages__time")
+        )
+        unique_participants = []
+        [
+            unique_participants.append(x)
+            for x in participants
+            if x not in unique_participants
+        ]
         friend_list = []
-        for friend in participants:
+        for friend in unique_participants:
             room_id = friend.room.id
             room_name = get_room_name(friend.room.name, user.username)
             latest_message = friend.room.messages.last()
-            friend_list.append({"room_id": room_id, "room_name": room_name,"latest_message": latest_message})
+            friend_list.append(
+                {
+                    "room_id": room_id,
+                    "room_name": room_name,
+                    "latest_message": latest_message,
+                }
+            )
         return friend_list
 
 
