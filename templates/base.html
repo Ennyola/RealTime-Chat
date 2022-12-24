@@ -17,14 +17,14 @@
 <body>
     <div class="content-body">
         <div class="row g-0">
-            <div class="col-md-4">
+            <div class="col-md-4 left-section">
                 <header>   
                     {% include '_header_settings.html' %}
                 </header>
                 {% block friends %}
                 {% endblock  %}
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 right-section">
                 {% block chat-room %}{% endblock  %}
             </div>
         </div>

@@ -183,3 +183,9 @@ body {
     transition: 0.5s;
     font-size: 18px;
 }
+
+@media screen and (max-width: 768px) {
+    .right-section {
+        display: none;
+    }
+}
