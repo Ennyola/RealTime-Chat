@@ -127,6 +127,7 @@ export const handleVideoOfferMsg = async(msg) => {
         try {
             myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
             videoContainer.classList.remove("d-none")
+            userVideo.srcObject = myStream;
 
         } catch (e) {
             handleGetUserMediaError(e)
@@ -152,7 +153,7 @@ export const handleVideoOfferMsg = async(msg) => {
     }
 
 
-    userVideo.srcObject = myStream;
+
     // document.querySelector("#local_video").srcObject = myStream;
 
 
