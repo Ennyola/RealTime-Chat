@@ -122,12 +122,14 @@ export const hangUpCall = () => {
 
 export const handleVideoOfferMsg = async(msg) => {
     targetUsername = msg.caller;
-
+    videoContainer.classList.remove("d-none")
     if (!myStream) {
         try {
             myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-            videoContainer.classList.remove("d-none")
+
             userVideo.srcObject = myStream;
+
+
 
         } catch (e) {
             handleGetUserMediaError(e)
@@ -220,6 +222,7 @@ export const handleNewICECandidateMsg = (msg) => {
 }
 
 export const handleTrackEvent = (event) => {
+    console.log(`pick me ${user}`)
     incomingVideo.srcObject = event.streams[0];
     // document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
@@ -263,6 +266,7 @@ export const handleICEGatheringStateChangeEvent = (event) => {
 export const handleHangUpMsg = (msg) => {
     closeVideoCall();
 }
+
 
 
 const createPeerConnection = () => {
