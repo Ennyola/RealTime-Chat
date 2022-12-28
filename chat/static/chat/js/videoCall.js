@@ -16,6 +16,7 @@ let myStream = null;
 let userVideo = document.querySelector("#local_video")
 let incomingVideo = document.querySelector("#received_video");
 
+
 export const closeVideoCall = () => {
     // let remoteVideo = document.querySelector("#received_video");
     // let localVideo = document.querySelector("#local_video");
@@ -123,6 +124,7 @@ export const hangUpCall = () => {
 export const handleVideoOfferMsg = async(msg) => {
     targetUsername = msg.caller;
     videoContainer.classList.remove("d-none")
+
     if (!myStream) {
         try {
             myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
@@ -165,20 +167,22 @@ export const handleVideoOfferMsg = async(msg) => {
         handleGetUserMediaError(error)
     }
 
+    try {
+        if (myPeerConnection.signalingState == "stable") {
+            return
+        } else {
+            let answer = await myPeerConnection.createAnswer();
+            await myPeerConnection.setLocalDescription(answer);
+        }
+
+    } catch (error) {
+        handleGetUserMediaError(error)
+
+    }
+
     //function triggers when user accepts call
     acceptCall.addEventListener('click', async(e) => {
-        try {
-            if (myPeerConnection.signalingState == "stable") {
-                return
-            } else {
-                let answer = await myPeerConnection.createAnswer();
-                await myPeerConnection.setLocalDescription(answer);
-            }
 
-        } catch (error) {
-            handleGetUserMediaError(error)
-
-        }
         chatSocket.send(JSON.stringify({
             caller: user,
             target: targetUsername,
