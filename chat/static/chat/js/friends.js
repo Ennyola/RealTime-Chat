@@ -1,7 +1,6 @@
 let friendList = document.querySelectorAll(".friends-list .single-friend")
     // Go to a particular room when you click on a friend's name
 
-console.log(Array.from(friendList))
 export const goToPage = (friends = friendList) => {
     friends.forEach((item) => {
         item.addEventListener('click', (e) => {

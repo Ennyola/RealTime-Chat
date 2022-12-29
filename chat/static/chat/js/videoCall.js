@@ -18,8 +18,6 @@ let incomingVideo = document.querySelector("#received_video");
 
 
 export const closeVideoCall = () => {
-    // let remoteVideo = document.querySelector("#received_video");
-    // let localVideo = document.querySelector("#local_video");
     if (myPeerConnection) {
         myPeerConnection.ontrack = null;
         myPeerConnection.onicecandidate = null;
@@ -27,10 +25,6 @@ export const closeVideoCall = () => {
         myPeerConnection.onsignalingstatechange = null;
         myPeerConnection.onicegatheringstatechange = null;
         myPeerConnection.onnegotiationneeded = null;
-
-        // if (incomingVideo.srcObject) {
-        //     incomingVideo.srcObject.getTracks().forEach(track => track.stop());
-        // }
 
         if (userVideo.srcObject) {
             userVideo.srcObject.getTracks().forEach(track => track.stop());
@@ -76,9 +70,7 @@ export const invite = async(e) => {
             myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
                 // Make the user videos visible
             videoContainer.classList.remove("d-none")
-            userVideo.srcObject = myStream;
-            // userVideo.classList.add("user-video")
-            // document.querySelector("#local_video").srcObject = myStream;
+            incomingVideo.srcObject = myStream;
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
         } catch (error) {
             handleGetUserMediaError(error)
@@ -128,11 +120,7 @@ export const handleVideoOfferMsg = async(msg) => {
     if (!myStream) {
         try {
             myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-
-            userVideo.srcObject = myStream;
-
-
-
+            incomingVideo.srcObject = myStream;
         } catch (e) {
             handleGetUserMediaError(e)
         }
@@ -141,6 +129,8 @@ export const handleVideoOfferMsg = async(msg) => {
     if (!myPeerConnection) {
         createPeerConnection();
     }
+
+
 
     let desc = new RTCSessionDescription(msg.sdp);
 
@@ -151,14 +141,12 @@ export const handleVideoOfferMsg = async(msg) => {
             myPeerConnection.setLocalDescription({ type: "rollback" }),
             myPeerConnection.setRemoteDescription(desc)
         ]);
+
         return;
     } else {
         await myPeerConnection.setRemoteDescription(desc);
     }
 
-
-
-    // document.querySelector("#local_video").srcObject = myStream;
 
 
     try {
@@ -167,6 +155,7 @@ export const handleVideoOfferMsg = async(msg) => {
         handleGetUserMediaError(error)
     }
 
+    console.log("hello")
     try {
         if (myPeerConnection.signalingState == "stable") {
             return
@@ -183,7 +172,7 @@ export const handleVideoOfferMsg = async(msg) => {
     //function triggers when user accepts call
     acceptCall.addEventListener('click', async(e) => {
 
-        chatSocket.send(JSON.stringify({
+        await chatSocket.send(JSON.stringify({
             caller: user,
             target: targetUsername,
             type: "video-answer",
@@ -220,15 +209,19 @@ export const handleICECandidateEvent = (event) => {
 
 export const handleNewICECandidateMsg = (msg) => {
     let candidate = new RTCIceCandidate(msg.candidate);
-
     myPeerConnection.addIceCandidate(candidate)
         .catch(reportError);
 }
 
 export const handleTrackEvent = (event) => {
-    console.log(`pick me ${user}`)
-    incomingVideo.srcObject = event.streams[0];
-    // document.querySelector("#received_video").srcObject = event.streams[0];
+    // Switching the uservideo to the small video and the incoming video to the big video.
+    if (incomingVideo.srcObject.id !== event.streams[0].id) {
+        userVideo.srcObject = myStream
+        incomingVideo.srcObject = event.streams[0];
+    }
+
+    console.log("hi")
+        // document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
 }
 
