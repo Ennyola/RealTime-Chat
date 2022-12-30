@@ -115,10 +115,15 @@ export const hangUpCall = () => {
 
 export const handleVideoOfferMsg = async(msg) => {
     targetUsername = msg.caller;
-    videoContainer.classList.remove("d-none")
+
+
+    if (!myPeerConnection) {
+        createPeerConnection();
+    }
 
     if (!myStream) {
         try {
+            videoContainer.classList.remove("d-none")
             myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
             incomingVideo.srcObject = myStream;
         } catch (e) {
@@ -126,58 +131,62 @@ export const handleVideoOfferMsg = async(msg) => {
         }
     }
 
-    if (!myPeerConnection) {
-        createPeerConnection();
-    }
+    console.log("hellop")
 
-
-
+    console.log("hellopq")
     let desc = new RTCSessionDescription(msg.sdp);
-
-    if (myPeerConnection.signalingState != "stable") {
-        // Set the local and remove descriptions for rollback; don't proceed
-        // until both return.
-        await Promise.all([
-            myPeerConnection.setLocalDescription({ type: "rollback" }),
-            myPeerConnection.setRemoteDescription(desc)
-        ]);
-
-        return;
-    } else {
-        await myPeerConnection.setRemoteDescription(desc);
-    }
+    console.log("hellops")
 
 
+    console.log("hellopv")
 
-    try {
-        await myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
-    } catch (error) {
-        handleGetUserMediaError(error)
-    }
 
-    console.log("hello")
-    try {
-        if (myPeerConnection.signalingState == "stable") {
-            return
-        } else {
-            let answer = await myPeerConnection.createAnswer();
-            await myPeerConnection.setLocalDescription(answer);
-        }
+    // if (myPeerConnection.signalingState != "stable") {
+    //     // Set the local and remove descriptions for rollback; don't proceed
+    //     // until both return.
+    //     console.log("helloph")
+    //     await Promise.all([
+    //         myPeerConnection.setLocalDescription({ type: "rollback" }),
+    //         myPeerConnection.setRemoteDescription(desc)
+    //     ]);
+    //     console.log("hellopl")
+    //     return;
+    // } else {
+    //     console.log("hellopz")
 
-    } catch (error) {
-        handleGetUserMediaError(error)
+    //     console.log("hellopc")
+    // }
+    console.log("hellopn")
 
-    }
+
 
     //function triggers when user accepts call
     acceptCall.addEventListener('click', async(e) => {
+        await myPeerConnection.setRemoteDescription(desc);
+        try {
+            await myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+        } catch (error) {
+            handleGetUserMediaError(error)
+        }
 
-        await chatSocket.send(JSON.stringify({
-            caller: user,
-            target: targetUsername,
-            type: "video-answer",
-            sdp: myPeerConnection.localDescription
-        }));
+        try {
+            if (myPeerConnection.signalingState == "stable") {
+                return
+            } else {
+                let answer = await myPeerConnection.createAnswer();
+                await myPeerConnection.setLocalDescription(answer);
+                await chatSocket.send(JSON.stringify({
+                    caller: user,
+                    target: targetUsername,
+                    type: "video-answer",
+                    sdp: myPeerConnection.localDescription
+                }))
+            }
+        } catch (error) {
+            handleGetUserMediaError(error)
+
+        }
+
         //makes the accept and reject button disappear
         callControlContainer.classList.add('d-none')
         hangupButton.classList.remove("d-none")
