@@ -157,17 +157,17 @@ export const handleVideoOfferMsg = async(msg) => {
     //     console.log("hellopc")
     // }
     console.log("hellopn")
+    await myPeerConnection.setRemoteDescription(desc);
+    try {
+        await myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+    } catch (error) {
+        handleGetUserMediaError(error)
+    }
 
 
 
     //function triggers when user accepts call
     acceptCall.addEventListener('click', async(e) => {
-        await myPeerConnection.setRemoteDescription(desc);
-        try {
-            await myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
-        } catch (error) {
-            handleGetUserMediaError(error)
-        }
 
         try {
             if (myPeerConnection.signalingState == "stable") {
