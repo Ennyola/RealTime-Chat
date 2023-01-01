@@ -55,10 +55,6 @@ chatSocket.addEventListener('message', (e) => {
             </div>`
             chatHolder.innerHTML += text
             chatHolder.scrollTop = chatHolder.scrollHeight;
-            // let messageStatus = document.querySelectorAll('.chat-status')
-            // let spinnerIcon = document.querySelectorAll('.chat-status i:nth-child(1)')
-            // spinnerIcon[spinnerIcon.length - 1].classList.add("d-none")
-            // messageStatus[messageStatus.length - 1].innerHTML += '<i class="fas fa-check"></i>'
             break;
         case "video-offer":
             callControlContainer.classList.remove('d-none')

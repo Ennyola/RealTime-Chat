@@ -25,9 +25,13 @@ export const closeVideoCall = () => {
         myPeerConnection.onsignalingstatechange = null;
         myPeerConnection.onicegatheringstatechange = null;
         myPeerConnection.onnegotiationneeded = null;
+        myPeerConnection.onremovetrack = null;
 
         if (userVideo.srcObject) {
             userVideo.srcObject.getTracks().forEach(track => track.stop());
+        }
+        if (incomingVideo.srcObject) {
+            incomingVideo.srcObject.getTracks().forEach(track => track.stop());
         }
 
         myPeerConnection.close();
@@ -115,79 +119,29 @@ export const hangUpCall = () => {
 
 export const handleVideoOfferMsg = async(msg) => {
     targetUsername = msg.caller;
+    createPeerConnection();
 
+    videoContainer.classList.remove("d-none")
+        // Opens the camera and microphone of the calle
+    myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
+    // Add the stream to the video element
+    incomingVideo.srcObject = myStream;
 
-    if (!myPeerConnection) {
-        createPeerConnection();
-    }
-
-    if (!myStream) {
-        try {
-            videoContainer.classList.remove("d-none")
-            myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-            incomingVideo.srcObject = myStream;
-        } catch (e) {
-            handleGetUserMediaError(e)
-        }
-    }
-
-    console.log("hellop")
-
-    console.log("hellopq")
-    let desc = new RTCSessionDescription(msg.sdp);
-    console.log("hellops")
-
-
-    console.log("hellopv")
-
-
-    // if (myPeerConnection.signalingState != "stable") {
-    //     // Set the local and remove descriptions for rollback; don't proceed
-    //     // until both return.
-    //     console.log("helloph")
-    //     await Promise.all([
-    //         myPeerConnection.setLocalDescription({ type: "rollback" }),
-    //         myPeerConnection.setRemoteDescription(desc)
-    //     ]);
-    //     console.log("hellopl")
-    //     return;
-    // } else {
-    //     console.log("hellopz")
-
-    //     console.log("hellopc")
-    // }
-    console.log("hellopn")
-    await myPeerConnection.setRemoteDescription(desc);
-    try {
-        await myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
-    } catch (error) {
-        handleGetUserMediaError(error)
-    }
-
-
-
-    //function triggers when user accepts call
+    //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
+        await myPeerConnection.setRemoteDescription(msg.sdp);
+        // Add the stream to the peer connection
+        myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
 
-        try {
-            if (myPeerConnection.signalingState == "stable") {
-                return
-            } else {
-                let answer = await myPeerConnection.createAnswer();
-                await myPeerConnection.setLocalDescription(answer);
-                await chatSocket.send(JSON.stringify({
-                    caller: user,
-                    target: targetUsername,
-                    type: "video-answer",
-                    sdp: myPeerConnection.localDescription
-                }))
-            }
-        } catch (error) {
-            handleGetUserMediaError(error)
-
-        }
-
-        //makes the accept and reject button disappear
+        let answer = await myPeerConnection.createAnswer();
+        await myPeerConnection.setLocalDescription(answer);
+        await chatSocket.send(JSON.stringify({
+                caller: user,
+                target: targetUsername,
+                type: "video-answer",
+                sdp: myPeerConnection.localDescription
+            }))
+            //makes the accept and reject button disappear
         callControlContainer.classList.add('d-none')
         hangupButton.classList.remove("d-none")
     })
@@ -228,9 +182,7 @@ export const handleTrackEvent = (event) => {
         userVideo.srcObject = myStream
         incomingVideo.srcObject = event.streams[0];
     }
-
-    console.log("hi")
-        // document.querySelector("#received_video").srcObject = event.streams[0];
+    // document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
 }
 
@@ -264,9 +216,7 @@ export const handleSignalingStateChangeEvent = (event) => {
 };
 
 export const handleICEGatheringStateChangeEvent = (event) => {
-    // Our sample just logs information to console here,
-    // but you can do whatever you need.
-    // console.log(event)
+    console.log(event)
 }
 
 export const handleHangUpMsg = (msg) => {
