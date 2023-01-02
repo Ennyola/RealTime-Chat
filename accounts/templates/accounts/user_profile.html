@@ -1,2 +1,40 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block user_profile %}
+    <div class="user-profile">
+        <div class="user-profile__heading">
+            <span>
+                <i class="fas fa-long-arrow-alt-left"></i>
+                <p> Profile </p> 
+            </span> 
+        </div>
+        <div class="user-profile__avatar">
+            <img src="{% static 'chat/images/dp.svg' %}" alt="{{ user.username }}'s avatar" />
+        </div>
+        <div class="user-profile__info">
+            <span>
+                <span>Your name</span>
+                <h5 class="user-profile__username">{{ user.username }}</h5>
+                <p>This is the name visible to your friends</p>
+            </span>
+            
+            <p class="user-profile__bio">{{ user.bio }}</p>
+            
+            {{user}}
+            
+            {% if  request.user.username == user.username %}
+                <p class="user-profile__joined">
+                    Joined {{ user.date_joined|date:"F j, Y" }}
+                </p>
+            {% endif %}
+            
+        </div>
+    </div>
+{% endblock  %}
+
+    {% comment %} <p class="user-profile__location">{{ user.location }}</p>
+                <p class="user-profile__website">
+                    <a href="{{ user.website }}">{{ user.website }}</a>
+                </p> {% endcomment %}

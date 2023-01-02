@@ -20,4 +20,4 @@ def user_logout(request):
 
 def user_profile(request,username):
     user = get_object_or_404(User,username=username)
-    return render(request, "accounts/user_profile.html")
+    return render(request, "accounts/user_profile.html", {"user":user})
