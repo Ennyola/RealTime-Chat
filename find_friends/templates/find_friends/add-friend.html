@@ -6,6 +6,12 @@
         <link rel="stylesheet" href="{% static 'find_friends/css/add_friend.css' %}">
 {% endblock  %}
 
+{% block header_settings %}
+    <header>   
+        {% include '_header_settings.html' %}
+    </header>
+{% endblock  %}
+
 {% block friends %}
     <div class="add_users height">
         {% for user in random_users %}

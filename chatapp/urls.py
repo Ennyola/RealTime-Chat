@@ -18,14 +18,19 @@ from django.urls import path,include
 from django.contrib.auth.decorators import login_required
 
 from chat.views import ChatIndexView
+
 from find_friends.views import show_friends
 
+from accounts.views import user_profile 
+
 urlpatterns = [
+    
     path('',login_required(ChatIndexView.as_view()), name="homepage"),
     path('accounts/',include('accounts.urls')),
     path('add-friend/', include('find_friends.urls')),
+    path('friends/', show_friends, name="friends" ),
+    path('<str:username>/', user_profile, name="user_profile"),
     path('admin/', admin.site.urls),
     path('chat/',include('chat.urls', namespace="chat")),
-    path('friends/', show_friends, name="friends" ),
     path('emoji/', include('emoji.urls')),
 ]

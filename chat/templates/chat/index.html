@@ -1,6 +1,12 @@
 {% extends 'base.html' %} 
 {% load static %}
 
+{% block header_settings %}
+    <header>   
+        {% include '_header_settings.html' %}
+    </header>
+{% endblock  %}
+
 {% block friends %}
     {% include 'chat/snippets/_friends.html' %}
 {% endblock  %}

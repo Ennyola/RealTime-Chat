@@ -18,10 +18,16 @@
     <div class="content-body">
         <div class="row g-0">
             <div class="col-md-4 left-section">
-                <header>   
-                    {% include '_header_settings.html' %}
-                </header>
+                {% block header_settings %}
+                {% endblock  %}
+
                 {% block friends %}
+                {% endblock  %} 
+
+                {% comment %} This can be found in user_profile.html in the accounts app {% endcomment %}
+                 {% comment %}  {% endcomment %}
+                {% block user_profile %}
+                
                 {% endblock  %}
             </div>
             <div class="col-md-8 right-section">

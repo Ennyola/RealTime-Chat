@@ -5,9 +5,9 @@ from django.conf import settings
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True, related_name="userprofile")
     about = models.TextField(blank=True)
     display_picture = models.ImageField(upload_to="profile_pictures", blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.about

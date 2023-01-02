@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="{% static 'chat/css/chatroom.css' %}">
 {% endblock  %}
 
+{% block header_settings %}
+    <header>   
+        {% include '_header_settings.html' %}
+    </header>
+{% endblock  %}
+
 {% block chat-room %}
     {{room_name|json_script:"room-name"}}
     {{request.user.username|json_script:"username"}}

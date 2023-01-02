@@ -1,7 +1,7 @@
 {% load static %}
 <div>
     <div class="header-settings">
-        <img src={% static 'chat/images/dp.svg' %} class="display-picture" alt="display-picture">
+       <a href="{% url 'user_profile' request.user.username %}"><img src={% static 'chat/images/dp.svg' %} class="display-picture" alt="display-picture"></a> 
         <span class="settings-icon">
            <a href= {% url 'find_friends:index' %} ><i class="fas fa-user-plus"></i></a> 
            <a href={% url 'friends' %}> <i class="fas fa-comment-alt"></i></a>
@@ -14,5 +14,5 @@
             <input class="form-control-sm" type="text" placeholder="search" name="" id="">
             <input  type="button" value="+">
         </div>
-    </div>
+    </div> 
 </div>
