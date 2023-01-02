@@ -127,7 +127,7 @@
     
     .messages {
         padding: 5px;
-        height: 563px;
+        height: 80vh;
         overflow-y: auto;
     }
     

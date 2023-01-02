@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
+from django.conf import settings
 from .helpers import get_room_name
 
 # Create your models here.
@@ -15,7 +15,7 @@ class Room(models.Model):
 
 
 class Participants(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     room = models.ForeignKey(
         Room, related_name="participants", on_delete=models.CASCADE
     )
@@ -60,7 +60,7 @@ class Message(models.Model):
         db_column="type", max_length=50, blank=True, null=True
     )
     status = models.CharField(max_length=20, blank=True, null=True)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
 
     def __str__(self) -> str:
