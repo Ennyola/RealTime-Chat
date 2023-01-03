@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'accounts/css/user_profile.css' %}">
+{% endblock  %} 
+
 {% block user_profile %}
     <div class="user-profile">
         <div class="user-profile__heading">
@@ -33,6 +37,9 @@
         </div>
     </div>
 {% endblock  %}
+
+
+
 
     {% comment %} <p class="user-profile__location">{{ user.location }}</p>
                 <p class="user-profile__website">
