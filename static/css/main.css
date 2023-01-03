@@ -185,6 +185,9 @@ body {
 }
 
 @media screen and (max-width: 768px) {
+    .col-md-4 {
+        border-right: none;
+    }
     .right-section {
         display: none;
     }

@@ -1,0 +1,80 @@
+.user-profile {
+    padding: 0px 20px;
+}
+
+.user-profile__heading {
+    position: fixed;
+    margin-bottom: 30px;
+    background-color: #272A35;
+    left: 0;
+    top: 0;
+    width: 33.17%;
+    height: 90px;
+    z-index: +1;
+}
+
+.user-profile__heading span {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-left: 25px;
+}
+
+.user-profile__heading p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.user-profile__heading span a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.user-profile__heading span i {
+    margin-right: 30px;
+    position: relative;
+    font-size: 20px;
+    top: 3px;
+}
+
+.user-profile__avatar {
+    margin-top: 120px;
+    display: flex;
+    justify-content: center;
+}
+
+.user-profile__avatar img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.user-profile__info {
+    margin-top: 30px;
+}
+
+.user-profile__username__label,
+.user-profile__bio__label,
+.user-profile__joined__label {
+    color: #b0bdec;
+    font-size: 14px;
+}
+
+.user-profile__username,
+.user-profile__bio,
+.user-profile__joined {
+    margin-top: 10px;
+    font-size: 17px;
+}
+
+.user_profile__bio__section,
+.user_profile__date_joined__section {
+    margin-top: 30px;
+}
+
+@media screen and (max-width: 768px) {
+    .user-profile__heading {
+        width: 100%;
+    }
+}

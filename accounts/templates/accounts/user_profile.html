@@ -2,11 +2,15 @@
 
 {% load static %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'accounts/css/user_profile.css' %}">
+{% endblock  %} 
+
 {% block user_profile %}
     <div class="user-profile">
         <div class="user-profile__heading">
             <span>
-                <i class="fas fa-long-arrow-alt-left"></i>
+                <a href="{% url 'homepage'  %}"><i class="fas fa-long-arrow-alt-left"></i></a> 
                 <p> Profile </p> 
             </span> 
         </div>
@@ -14,25 +18,29 @@
             <img src="{% static 'chat/images/dp.svg' %}" alt="{{ user.username }}'s avatar" />
         </div>
         <div class="user-profile__info">
-            <span>
-                <span>Your name</span>
-                <h5 class="user-profile__username">{{ user.username }}</h5>
-                <p>This is the name visible to your friends</p>
-            </span>
-            
-            <p class="user-profile__bio">{{ user.bio }}</p>
-            
-            {{user}}
-            
+            <div class="user_profile__username__section">
+                <span class="user-profile__username__label">Your name</span>
+                <p class="user-profile__username">{{ user.username }}</p>
+            </div>
+            <div class="user_profile__bio__section">
+                <span class="user-profile__bio__label">Bio</span>
+                <p class="user-profile__bio">{{ user.userprofile.bio }}</p>
+            </div>
+    
             {% if  request.user.username == user.username %}
-                <p class="user-profile__joined">
-                    Joined {{ user.date_joined|date:"F j, Y" }}
-                </p>
+                <div class="user_profile__date_joined__section">
+                    <span class="user-profile__joined__label">Joined</span>
+                    <p class="user-profile__joined">{{ user.date_joined|date:"F j, Y" }}</p>
+                </div> 
+
             {% endif %}
             
         </div>
     </div>
 {% endblock  %}
+
+
+
 
     {% comment %} <p class="user-profile__location">{{ user.location }}</p>
                 <p class="user-profile__website">
