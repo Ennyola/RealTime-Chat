@@ -16,6 +16,8 @@
         </div>
         <div class="user-profile__avatar">
             <img src="{% static 'chat/images/dp.svg' %}" alt="{{ user.username }}'s avatar" />
+            <i class="fas fa-camera"></i>
+            <a tabindex="0" class="btn btn-lg btn-danger" role="button" data-bs-placement="right" data-bs-toggle="popover" data-bs-trigger="focus" title="Dismissibjle popover" data-bs-content="  <a href='' title='test add link'>link on content</a> And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
         </div>
         <div class="user-profile__info">
             <div class="user_profile__username__section">
@@ -38,6 +40,10 @@
         </div>
     </div>
 {% endblock  %}
+
+{% block script %}
+      <script src="{% static 'accounts/js/userProfile.js' %}"></script>
+{% endblock  %} 
 
 
 
