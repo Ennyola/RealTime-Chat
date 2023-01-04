@@ -16,13 +16,22 @@
         </div>
         <div class="user-profile__avatar">
             <img src="{% static 'chat/images/dp.svg' %}" alt="{{ user.username }}'s avatar" />
-            <i class="fas fa-camera"></i>
-            <a tabindex="0" class="btn btn-lg btn-danger" role="button" data-bs-placement="right" data-bs-toggle="popover" data-bs-trigger="focus" title="Dismissibjle popover" data-bs-content="  <a href='' title='test add link'>link on content</a> And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
+            <i tabindex="0" class="fas fa-camera popover-option"></i>
+            <div class = "popover-list">
+                <ul class = "photo-options d-none">
+                    <li class="list-item">View Photo</li>
+                    <li class="list-item">Take Photo</li>
+                    <li class="list-item">Upload Photo</li>
+                    <li class="list-item">Delete Photo</li>
+                </ul>
+            </div>
+            
         </div>
         <div class="user-profile__info">
             <div class="user_profile__username__section">
                 <span class="user-profile__username__label">Your name</span>
                 <p class="user-profile__username">{{ user.username }}</p>
+               
             </div>
             <div class="user_profile__bio__section">
                 <span class="user-profile__bio__label">Bio</span>

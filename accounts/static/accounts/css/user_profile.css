@@ -73,6 +73,22 @@
     margin-top: 30px;
 }
 
+.photo-options {
+    background-color: #272A35;
+    padding: 10px 0px;
+    list-style-type: none;
+}
+
+.list-item {
+    padding: 10px 35px;
+    font-size: 15px;
+}
+
+.list-item:hover {
+    background-color: #3b3f4f;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 768px) {
     .user-profile__heading {
         width: 100%;

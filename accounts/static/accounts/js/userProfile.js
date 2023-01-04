@@ -1,9 +1,10 @@
-let popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
-    trigger: 'focus',
+let a = document.querySelector('.popover-option')
+let popover = new bootstrap.Popover(a, {
     html: true,
+    content: () => {
+        return document.querySelector('.popover-list').innerHTML
+    },
+    trigger: 'focus',
+    placement: 'right'
 
-})
-let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-let popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
-    return new bootstrap.Popover(popoverTriggerEl)
 })
