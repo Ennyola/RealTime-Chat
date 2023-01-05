@@ -11,7 +11,6 @@ let popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
         container: 'body',
         trigger: 'focus',
         placement: 'right',
-        // sanitize: false,
     })
 })
 

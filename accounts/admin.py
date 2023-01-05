@@ -24,14 +24,14 @@ class NewUserAdmin(UserAdmin):
         "is_superuser",
         "last_login",
         "date_joined",
-        "about",
-        "image"
+        "get_bio",
+        "get_image"
     ]
     
-    def about(self, obj):
-        return obj.userprofile.about
+    def get_bio(self, obj):
+        return obj.userprofile.bio
     
-    def image(self, obj):
+    def get_image(self, obj):
         return obj.userprofile.display_picture
 
 
