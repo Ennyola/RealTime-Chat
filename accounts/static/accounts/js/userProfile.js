@@ -9,11 +9,11 @@ let popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
             return document.querySelector('.popover-list').innerHTML
         },
         container: 'body',
-        trigger: 'focus',
+        // trigger: 'focus',
         placement: 'right',
     })
 })
 
 // To allow the use of form and inputs in the popover
-myDefaultAllowList.form = ['action', 'method']
+myDefaultAllowList.form = ['action', 'method', 'enctype']
 myDefaultAllowList.input = ['type', 'name', 'value', 'placeholder', 'autocomplete', 'required', 'id']

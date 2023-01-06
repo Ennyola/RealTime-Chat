@@ -15,7 +15,7 @@
             </span> 
         </div>
         <div class="user-profile__avatar">
-            <img src="{% static 'chat/images/dp.svg' %}" alt="{{ user.username }}'s avatar" />
+            <img src="{{user.userprofile.display_picture.url}}" alt="{{ user.username }}'s avatar" />
             <div class="user-profile__photo_option__section">
                 <i tabindex="0" class="fas fa-camera" data-bs-toggle="popover"></i>
                 <div class = "popover-list d-none"> 
@@ -23,8 +23,10 @@
                         <li class="list-item">View Photo</li>
                         <li class="list-item">Take Photo</li>
                         <li class="list-item">
-                            <form action="" method="POST">
-                                <input type="file" name="upload_photo">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{form.as_p}}
+                                <input type="submit" value="upload image">
                             </form>
                         </li>
                         <li class="list-item">Delete Photo</li>
