@@ -35,8 +35,11 @@
                             </form>
                         </li>
                         <li class="list-item">
-                            <form method="Post"></form>
-                            Delete Photo
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="submit" name="delete_photo" value="Delete Photo">
+                            </form>
+                            
                         </li>
                     </ul>
                 </div>

@@ -29,10 +29,15 @@ def user_logout(request):
 def user_profile(request, username):
     user = get_object_or_404(get_user_model(), username=username)
     profile = UserProfile.objects.get(user=user)
-    if request.method == "POST":
+    if request.method == "POST" and request.FILES:
         form = UploadImageForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
+            return redirect("user_profile", username=user.username)
+    elif request.method == "POST" and "delete_photo" in request.POST:
+        form = UploadImageForm(request.POST, instance=profile)
+        if form.is_valid():
+            profile.display_picture.delete()
             return redirect("user_profile", username=user.username)
     else:
         form = UploadImageForm()
