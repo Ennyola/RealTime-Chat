@@ -12,7 +12,6 @@ class UploadImageForm(forms.ModelForm):
         userprofile = self.instance
         print(self.cleaned_data['bio'])
         if self.cleaned_data['bio'] is not None:
-            print("hj")
             userprofile.bio = self.cleaned_data['bio']
         if self.cleaned_data['display_picture'] is not None:
             userprofile.display_picture = self.cleaned_data['display_picture']
