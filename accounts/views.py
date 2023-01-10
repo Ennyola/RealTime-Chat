@@ -29,29 +29,26 @@ def user_logout(request):
 def user_profile(request, username):
     user = get_object_or_404(get_user_model(), username=username)
     profile = UserProfile.objects.get(user=user)
-    form = UpdateProfileForm()
-    print(request.FILES)
-    if request.method == "POST" and request.FILES is not None:
-        form = UpdateProfileForm(request.POST,  request.FILES, instance=profile)
+    # Uploads and saves a users display picture.
+    if request.method == "POST" and "display_picture" in request.FILES:
+        form = UpdateProfileForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            profile.display_picture = form.cleaned_data["display_picture"]
+            profile.save()
             return redirect("user_profile", username=user.username)
-    if request.method == "POST" and request.FILES is None:
+    # When the user submits the form, the form is validated and the bio is updated.
+    elif request.method == "POST" and "bio" in request.POST:
         form = UpdateProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
             return redirect("user_profile", username=user.username)
-    # if request.method == "POST" and "delete_photo" not in request.POST:
-    #     form = UpdateProfileForm(request.POST, request.FILES, instance=profile)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect("user_profile", username=user.username)
-    # elif request.method == "POST" and "delete_photo" in request.POST:
-    #     form = UpdateProfileForm(request.POST)
-    #     if form.is_valid():
-    #         profile.display_picture.delete()
-    #         return redirect("user_profile", username=user.username)
-    # else:
-    #     form = UpdateProfileForm()
+    # When the user submits the form, the form is validated and the display picture is deleted.
+    elif request.method == "POST" and "delete_photo" in request.POST:
+        form = UpdateProfileForm(request.POST)
+        if form.is_valid():
+            profile.display_picture.delete()
+            return redirect("user_profile", username=user.username)
+    else:
+        form = UpdateProfileForm()
     context = {"user": user, "form": form}
     return render(request, "accounts/user_profile.html", context)

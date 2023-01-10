@@ -14,6 +14,7 @@ let popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
     })
 })
 
-// To allow the use of form and inputs in the popover
+// To allow the use of form, inputs and button elements in the popover
 myDefaultAllowList.form = ['action', 'method', 'enctype']
 myDefaultAllowList.input = ['type', 'name', 'value', 'placeholder', 'autocomplete', 'required', 'id']
+myDefaultAllowList.button = ['type', 'name', 'value', 'id']

@@ -10,4 +10,4 @@ class UserProfile(models.Model):
     display_picture = models.ImageField(upload_to="profile_pictures", blank=True, null=True)
 
     def __str__(self):
-        return f"{self.bio}"
+        return f"{self.bio} by {self.user.username}"

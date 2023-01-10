@@ -26,8 +26,11 @@
                 <div class = "popover-list d-none"> 
                     <ul class = "photo-options">
                         <li class="list-item">View Photo</li>
-                        <li class="list-item">Take Photo</li>
                         <li class="list-item">
+                            <button></button>
+                        </li>
+                        <li class="list-item">
+                            {% comment %} Upload photo form {% endcomment %}
                             <form method="POST" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{form.display_picture}}
@@ -35,11 +38,11 @@
                             </form>
                         </li>
                         <li class="list-item">
+                            {% comment %} Form to delete a user's display picture {% endcomment %}
                             <form method="POST">
                                 {% csrf_token %}
                                 <input type="submit" name="delete_photo" value="Delete Photo">
-                            </form>
-                            
+                            </form>   
                         </li>
                     </ul>
                 </div>
@@ -59,15 +62,13 @@
                 </form>
                 <p class="user-profile__bio">{{ user.userprofile.bio }}</p>
             </div>
-    
+
             {% if  request.user.username == user.username %}
                 <div class="user_profile__date_joined__section">
                     <span class="user-profile__joined__label">Joined</span>
                     <p class="user-profile__joined">{{ user.date_joined|date:"F j, Y" }}</p>
                 </div> 
-
-            {% endif %}
-            
+            {% endif %}     
         </div>
     </div>
 {% endblock  %}
