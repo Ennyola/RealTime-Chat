@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
 from .models import UserProfile
-from .forms import UploadImageForm
+from .forms import UpdateProfileForm
 
 
 # Create your views here.
@@ -29,17 +29,29 @@ def user_logout(request):
 def user_profile(request, username):
     user = get_object_or_404(get_user_model(), username=username)
     profile = UserProfile.objects.get(user=user)
-    if request.method == "POST" and "delete_photo" not in request.POST:
-        form = UploadImageForm(request.POST, request.FILES, instance=profile)
+    form = UpdateProfileForm()
+    print(request.FILES)
+    if request.method == "POST" and request.FILES is not None:
+        form = UpdateProfileForm(request.POST,  request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             return redirect("user_profile", username=user.username)
-    elif request.method == "POST" and "delete_photo" in request.POST:
-        form = UploadImageForm(request.POST)
+    if request.method == "POST" and request.FILES is None:
+        form = UpdateProfileForm(request.POST, instance=profile)
         if form.is_valid():
-            profile.display_picture.delete()
+            form.save()
             return redirect("user_profile", username=user.username)
-    else:
-        form = UploadImageForm()
+    # if request.method == "POST" and "delete_photo" not in request.POST:
+    #     form = UpdateProfileForm(request.POST, request.FILES, instance=profile)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect("user_profile", username=user.username)
+    # elif request.method == "POST" and "delete_photo" in request.POST:
+    #     form = UpdateProfileForm(request.POST)
+    #     if form.is_valid():
+    #         profile.display_picture.delete()
+    #         return redirect("user_profile", username=user.username)
+    # else:
+    #     form = UpdateProfileForm()
     context = {"user": user, "form": form}
     return render(request, "accounts/user_profile.html", context)
