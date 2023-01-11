@@ -27,7 +27,7 @@
                     <ul class = "photo-options">
                         <li class="list-item">View Photo</li>
                         <li class="list-item">
-                            <button></button>
+                            <button id="take-photo">Start Camera</button>
                         </li>
                         <li class="list-item">
                             {% comment %} Upload photo form {% endcomment %}
@@ -48,6 +48,12 @@
                 </div>
             </div>            
         </div>
+        <span class="take-photo-section">
+            
+            <video id="video" width="320" height="240" autoplay></video>
+            <button id="click-photo">Click Photo</button>
+            <canvas id="canvas" width="320" height="240"></canvas>
+        </span>
         <div class="user-profile__info">
             <div class="user_profile__username__section">
                 <span class="user-profile__username__label">Your name</span>
