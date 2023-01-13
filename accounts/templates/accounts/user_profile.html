@@ -28,6 +28,11 @@
                         <li class="list-item">View Photo</li>
                         <li class="list-item">
                             <button id="take-photo">Start Camera</button>
+                            <form id="take-photo-form" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="display_picture" id="image-input">
+                                <input type="submit" name="upload_photo" value="submit">
+                            </form>
                         </li>
                         <li class="list-item">
                             {% comment %} Upload photo form {% endcomment %}
@@ -49,8 +54,7 @@
             </div>            
         </div>
         <span class="take-photo-section">
-            
-            <video id="video" width="320" height="240" autoplay></video>
+            <video id="change-dp-video" width="320" height="240" autoplay></video>
             <button id="click-photo">Click Photo</button>
             <canvas id="canvas" width="320" height="240"></canvas>
         </span>

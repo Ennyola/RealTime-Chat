@@ -30,7 +30,9 @@ def user_profile(request, username):
     user = get_object_or_404(get_user_model(), username=username)
     profile = UserProfile.objects.get(user=user)
     # Uploads and saves a users display picture.
-    if request.method == "POST" and "display_picture" in request.FILES:
+    print(request.POST, request.FILES)
+    if request.method == "POST" and request.FILES:
+        print("hellp")
         form = UpdateProfileForm(request.POST, request.FILES)
         if form.is_valid():
             profile.display_picture = form.cleaned_data["display_picture"]
