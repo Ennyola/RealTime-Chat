@@ -36,8 +36,6 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
         let image_data_url = canvas.toDataURL('image/jpeg');
         imageInput.value = image_data_url;
 
-        // data url of the image
-        console.log(image_data_url);
     })
 
 })
