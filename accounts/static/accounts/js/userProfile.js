@@ -33,8 +33,10 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
     })
     capture.addEventListener("click", () => {
         canvas.getContext('2d').drawImage(changeDpVideo, 0, 0, canvas.width, canvas.height);
-        let image_base64 = document.querySelector("#canvas").toDataURL('image/jpeg').replace(/^data:image\/jpeg;base64,/, "");
-        console.log(image_base64);
+        let blob = canvas.toBlob((blob) =>     {
+            file = new File([blob], 'test.jpg', { type: 'image/jpeg' });
+        }, 'image/jpeg');
+        console.log(blob)
         imageInput.value = image_base64;
         console.log(imageInput.value);
         // document.forms['take-photo-form'].submit();
