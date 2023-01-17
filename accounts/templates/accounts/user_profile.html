@@ -28,10 +28,6 @@
                         <li class="list-item">View Photo</li>
                         <li class="list-item">
                             <button id="take-photo">Start Camera</button>
-                            <form id="take-photo-form" method="POST" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <input type="hidden" name="display_picture" id="image-input">
-                            </form>
                         </li>
                         <li class="list-item">
                             {% comment %} Upload photo form {% endcomment %}
