@@ -1,9 +1,17 @@
 let changeDpVideo = document.querySelector("#change-dp-video");
-let capture = document.querySelector("#click-photo");
+let capture = document.querySelector("#capture");
 let canvas = document.querySelector("#canvas");
 let cameraIcon = document.querySelector("#camera-icon");
-let myDefaultAllowList = bootstrap.Tooltip.Default.allowList
+let stream;
+let canvasContext
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+const savePhoto = document.querySelector("#save-photo");
+const cancelPhoto = document.querySelector("#cancel-photo");
+
+// Defining the default allow list for bootstrap popover
+let myDefaultAllowList = bootstrap.Tooltip.Default.allowList
+
+
 // To allow the use of form, inputs and button elements in the popover
 myDefaultAllowList.form = ['action', 'method', 'enctype']
 myDefaultAllowList.input = ['type', 'name', 'value', 'placeholder', 'autocomplete', 'required', 'id']
@@ -22,56 +30,58 @@ let popover = new bootstrap.Popover(cameraIcon, {
     delay: { "show": 500, "hide": 100 }
 })
 
-function dataURLToBlob(dataURL) {
-    var parts = dataURL.split(',');
-    var contentType = parts[0].split(':')[1].split(';')[0];
-    var raw = atob(parts[1]);
-    var rawLength = raw.length;
-    var uInt8Array = new Uint8Array(rawLength);
+// Function to convert canvas image to blob
+const dataURLToBlob = (dataURL) => {
+    let parts = dataURL.split(',');
+    let contentType = parts[0].split(':')[1].split(';')[0];
+    let raw = atob(parts[1]);
+    let rawLength = raw.length;
+    let uInt8Array = new Uint8Array(rawLength);
 
-    for (var i = 0; i < rawLength; ++i) {
+    for (let i = 0; i < rawLength; ++i) {
         uInt8Array[i] = raw.charCodeAt(i);
     }
-
     return new Blob([uInt8Array], { type: contentType });
 }
 
 // Triggering the take-photo button event within the popover when the popover is appears in the DOM
 cameraIcon.addEventListener('shown.bs.popover', () => {
     let takePhotoBtn = document.querySelector(".popover-body #take-photo");
-    let submitForm = document.querySelector(".popover-body #take-photo-form");
-    let imageInput = document.querySelector(".popover-body #image-input");
-    takePhotoBtn.addEventListener("click", async() => {
-        let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-        changeDpVideo.srcObject = stream;
 
+    takePhotoBtn.addEventListener("click", async() => {
+        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        changeDpVideo.srcObject = stream;
     })
     capture.addEventListener("click", () => {
+        // Setting the canvas width and height to the image captured from the video stream
         canvas.getContext('2d').drawImage(changeDpVideo, 0, 0, canvas.width, canvas.height);
-        let imageDataUrl = canvas.toDataURL('image/jpeg')
-        const formData = new FormData();
-        // Create a blob object from the data URL
-        let blob = dataURLToBlob(imageDataUrl);
-
-        // Create a file object from the blob
-        let file = new File([blob], "myImage.jpg", { type: "image/jpeg" });
-        console.log(file)
-        formData.append("display_picture", file);
-        fetch("", {
-            method: "POST",
-            body: formData,
-            credentials: 'same-origin',
-            headers: {
-                'X-CSRFToken': csrftoken,
-            }
-        })
-
-        // imageInput.value = image_data_url;
-        // const img = new Image();
-        // img.src = image_data_url;
-        // imageInput.appendChild(img);
-        // submitForm.submit()
-
+        // Stopping the video stream
+        stream.getTracks().forEach(track => track.stop());
+        changeDpVideo.srcObject = null;
+        capture.style.display = "none";
+        changeDpVideo.style.display = "none";
     })
+
+})
+savePhoto.addEventListener("click", () => {
+    let imageDataUrl = canvas.toDataURL('image/jpeg')
+    const formData = new FormData();
+    // Create a blob object from the data URL
+    let blob = dataURLToBlob(imageDataUrl);
+
+    // Create a file object from the blob
+    let file = new File([blob], "myImage.jpg", { type: "image/jpeg" });
+    formData.append("display_picture", file);
+    fetch("", {
+        method: "POST",
+        body: formData,
+        credentials: 'same-origin',
+        headers: {
+            'X-CSRFToken': csrftoken,
+        }
+    })
+
+})
+cancelPhoto.addEventListener("click", () => {
 
 })
