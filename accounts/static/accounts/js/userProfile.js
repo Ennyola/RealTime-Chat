@@ -24,7 +24,7 @@ let popover = new bootstrap.Popover(cameraIcon, {
 // Triggering the take-photo button event within the popover when the popover is appears in the DOM
 cameraIcon.addEventListener('shown.bs.popover', () => {
     let takePhotoBtn = document.querySelector(".popover-body #take-photo");
-    let submitForm = document.querySelector(".popover-body #submit-form");
+    let submitForm = document.querySelector(".popover-body #take-photo-form");
     let imageInput = document.querySelector(".popover-body #image-input");
     takePhotoBtn.addEventListener("click", async() => {
         let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
@@ -33,13 +33,9 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
     })
     capture.addEventListener("click", () => {
         canvas.getContext('2d').drawImage(changeDpVideo, 0, 0, canvas.width, canvas.height);
-        let blob = canvas.toBlob((blob) =>     {
-            file = new File([blob], 'test.jpg', { type: 'image/jpeg' });
-        }, 'image/jpeg');
-        console.log(blob)
-        imageInput.value = image_base64;
-        console.log(imageInput.value);
-        // document.forms['take-photo-form'].submit();
+        let image_data_url = canvas.toDataURL('image/jpeg')
+        imageInput.value = image_data_url;
+        submitForm.submit()
 
     })
 
