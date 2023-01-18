@@ -9,6 +9,7 @@ let username = document.querySelector("#username").textContent;
 let cameraPreview = document.querySelector(".camera-preview");
 let picturePreview = document.querySelector(".picture-preview");
 let capturePhotoSection = document.querySelector(".take-photo-section")
+let closeCamera = document.querySelector("#close-camera");
 let stream;
 let canvasContext
 
@@ -48,6 +49,11 @@ const dataURLToBlob = (dataURL) => {
     return new Blob([uInt8Array], { type: contentType });
 }
 
+const closeVideoStream = () => {
+    stream.getTracks().forEach(track => track.stop());
+    changeDpVideo.srcObject = null;
+}
+
 // Triggering the take-photo button event within the popover when the popover is appears in the DOM
 cameraIcon.addEventListener('shown.bs.popover', () => {
     let takePhotoBtn = document.querySelector(".popover-body #take-photo");
@@ -62,13 +68,19 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
         canvasContext = canvas.getContext('2d')
         canvasContext.drawImage(changeDpVideo, 0, 0, canvas.width, canvas.height);
         // Stopping the video stream
-        stream.getTracks().forEach(track => track.stop());
-        changeDpVideo.srcObject = null;
+        closeVideoStream()
+            //camera preview should disappear and then the picture should be displayed
         cameraPreview.classList.toggle("d-none")
         picturePreview.classList.toggle("d-none")
     })
 
 })
+
+closeCamera.addEventListener("click", () => {
+    closeVideoStream()
+    capturePhotoSection.classList.toggle("d-none")
+})
+
 savePhoto.addEventListener("click", () => {
     let imageDataUrl = canvas.toDataURL('image/jpeg')
     const formData = new FormData();
@@ -92,14 +104,23 @@ savePhoto.addEventListener("click", () => {
         .catch((error) => {
             console.log(error)
         });
-
+    // picture preview should disappear 
+    // and camera preview should appear in the dom tree based on the
+    // default html page
+    picturePreview.classList.toggle("d-none")
+    cameraPreview.classList.toggle("d-none")
+        //Closes the capture Photo section 
+    capturePhotoSection.classList.toggle("d-none")
 
 });
 cancelPhoto.addEventListener("click", () => {
     // Clearing the entire canvas
     canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-    //Closes the picture preview div
+    // picture preview should disappear 
+    // and camera preview should appear in the dom tree based on the
+    // default html page
     picturePreview.classList.toggle("d-none")
+    cameraPreview.classList.toggle("d-none")
         //Closes the capture Photo section 
     capturePhotoSection.classList.toggle("d-none")
 });

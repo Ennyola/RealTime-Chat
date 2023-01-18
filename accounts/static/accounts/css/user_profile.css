@@ -120,13 +120,14 @@
 }
 
 .take-photo-section {
-    border: 3px solid red;
     position: fixed;
     width: 50%;
     left: 25%;
     top: 0;
     height: 80%;
-    z-index: +1;
+    z-index: +9999999;
+    margin-top: 30px;
+    border: 3px solid red;
 }
 
 .take-photo-section .camera-preview,
@@ -155,16 +156,13 @@
     color: #c3cae2;
 }
 
-.take-photo-section .picture-preview .photo-decision {}
-
-#cancel-photo {
-    color: rgb(255, 0, 0);
-    margin-right: 70px;
+.cancel-icon {
     cursor: pointer;
     position: absolute;
     left: 0;
-    margin-left: 10px;
     font-size: 30px;
+    margin-left: 15px;
+    margin-top: 15px;
 }
 
 #save-photo {
