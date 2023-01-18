@@ -119,6 +119,38 @@
     display: none
 }
 
+.take-photo-section {
+    border: 3px solid red;
+    position: fixed;
+    width: 50%;
+    left: 25%;
+    top: 0;
+    height: 80%;
+    z-index: +1;
+}
+
+.take-photo-section .camera-preview {
+    height: 100%;
+}
+
+.take-photo-section .camera-preview #change-dp-video {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.take-photo-section .camera-preview #capture {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-bottom: 30px;
+    font-size: 50px;
+    font-weight: 100;
+    cursor: pointer;
+    color: #c3cae2;
+}
+
 @media screen and (max-width: 768px) {
     .user-profile__heading {
         width: 100%;
