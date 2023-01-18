@@ -2,6 +2,7 @@ let changeDpVideo = document.querySelector("#change-dp-video");
 let capture = document.querySelector("#capture");
 let canvas = document.querySelector("#canvas");
 let cameraIcon = document.querySelector("#camera-icon");
+let username = document.querySelector("#username").textContent;
 let stream;
 let canvasContext
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -54,7 +55,8 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
     })
     capture.addEventListener("click", () => {
         // Setting the canvas width and height to the image captured from the video stream
-        canvas.getContext('2d').drawImage(changeDpVideo, 0, 0, canvas.width, canvas.height);
+        canvasContext = canvas.getContext('2d')
+        canvasContext.drawImage(changeDpVideo, 0, 0, canvas.width, canvas.height);
         // Stopping the video stream
         stream.getTracks().forEach(track => track.stop());
         changeDpVideo.srcObject = null;
@@ -72,16 +74,25 @@ savePhoto.addEventListener("click", () => {
     // Create a file object from the blob
     let file = new File([blob], "myImage.jpg", { type: "image/jpeg" });
     formData.append("display_picture", file);
-    fetch("", {
-        method: "POST",
-        body: formData,
-        credentials: 'same-origin',
-        headers: {
-            'X-CSRFToken': csrftoken,
-        }
-    })
+    fetch('', {
+            method: "POST",
+            body: formData,
+            mode: 'same-origin',
+            headers: {
+                'X-CSRFToken': csrftoken,
+            }
+        })
+        .then((response) => {
+            window.location.reload();
+        })
+        .catch((error) => {
+            console.log(error)
+        });
 
-})
+
+});
 cancelPhoto.addEventListener("click", () => {
+    // Clearing the entire canvas
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
 
-})
+});
