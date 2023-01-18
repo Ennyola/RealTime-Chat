@@ -49,16 +49,16 @@
                 </div>
             </div>            
         </div>
-        <div class="take-photo-section">
+        <div class="take-photo-section d-none">
             <div class="camera-preview">
                 <video  id="change-dp-video" autoplay></video>
                 <i id="capture" class="far fa-dot-circle"></i>
             </div>   
-            <div class="picture-preview">
-                <canvas id="canvas" width="320" height="240"></canvas>
+            <div class="picture-preview d-none">
+                <canvas id="canvas"></canvas>
                 <span class="photo-decision">
-                    <button id="save-photo">Save Photo</button>
-                    <button id="cancel-photo">Cancel</button>
+                    <i id="cancel-photo" class="fas fa-times"></i>
+                    <i id="save-photo" class="far fa-check-circle"></i>
                 </span>
             </div>   
         </div>

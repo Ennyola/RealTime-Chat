@@ -1,17 +1,20 @@
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+const savePhoto = document.querySelector("#save-photo");
+const cancelPhoto = document.querySelector("#cancel-photo");
 let changeDpVideo = document.querySelector("#change-dp-video");
 let capture = document.querySelector("#capture");
 let canvas = document.querySelector("#canvas");
 let cameraIcon = document.querySelector("#camera-icon");
 let username = document.querySelector("#username").textContent;
+let cameraPreview = document.querySelector(".camera-preview");
+let picturePreview = document.querySelector(".picture-preview");
+let capturePhotoSection = document.querySelector(".take-photo-section")
 let stream;
 let canvasContext
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-const savePhoto = document.querySelector("#save-photo");
-const cancelPhoto = document.querySelector("#cancel-photo");
+
 
 // Defining the default allow list for bootstrap popover
 let myDefaultAllowList = bootstrap.Tooltip.Default.allowList
-
 
 // To allow the use of form, inputs and button elements in the popover
 myDefaultAllowList.form = ['action', 'method', 'enctype']
@@ -50,6 +53,7 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
     let takePhotoBtn = document.querySelector(".popover-body #take-photo");
 
     takePhotoBtn.addEventListener("click", async() => {
+        capturePhotoSection.classList.toggle("d-none")
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
         changeDpVideo.srcObject = stream;
     })
@@ -60,8 +64,8 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
         // Stopping the video stream
         stream.getTracks().forEach(track => track.stop());
         changeDpVideo.srcObject = null;
-        capture.style.display = "none";
-        changeDpVideo.style.display = "none";
+        cameraPreview.classList.toggle("d-none")
+        picturePreview.classList.toggle("d-none")
     })
 
 })
@@ -94,5 +98,8 @@ savePhoto.addEventListener("click", () => {
 cancelPhoto.addEventListener("click", () => {
     // Clearing the entire canvas
     canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-
+    //Closes the picture preview div
+    picturePreview.classList.toggle("d-none")
+        //Closes the capture Photo section 
+    capturePhotoSection.classList.toggle("d-none")
 });

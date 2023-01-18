@@ -129,15 +129,19 @@
     z-index: +1;
 }
 
-.take-photo-section .camera-preview {
+.take-photo-section .camera-preview,
+.take-photo-section .picture-preview {
     height: 100%;
 }
 
-.take-photo-section .camera-preview #change-dp-video {
+.take-photo-section .camera-preview #change-dp-video,
+.take-photo-section .picture-preview #canvas {
     height: 100%;
     width: 100%;
-    padding: 0;
-    margin: 0;
+}
+
+.take-photo-section .camera-preview #change-dp-video {
+    object-fit: cover;
 }
 
 .take-photo-section .camera-preview #capture {
@@ -149,6 +153,29 @@
     font-weight: 100;
     cursor: pointer;
     color: #c3cae2;
+}
+
+.take-photo-section .picture-preview .photo-decision {}
+
+#cancel-photo {
+    color: rgb(255, 0, 0);
+    margin-right: 70px;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    margin-left: 10px;
+    font-size: 30px;
+}
+
+#save-photo {
+    color: rgb(83, 253, 83);
+    margin-right: 70px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-bottom: 30px;
+    font-size: 50px;
 }
 
 @media screen and (max-width: 768px) {
