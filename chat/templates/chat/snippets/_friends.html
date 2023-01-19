@@ -2,7 +2,7 @@
 <div class="friends-list">
     {% for friend in friends %}
         <div class="single-friend" id={{friend.room_id}}>
-            <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
+            <img src="{{friend.display_picture}}" class="display-picture" alt="friend-picture"/>
             <div class = "text">
                 <h6>{{friend.room_name}}</h6>
                 {% if friend.latest_message %}
@@ -10,7 +10,6 @@
                 {% else %}
                     <p></p>
                 {% endif %}
-                
             </div>
             <span class="time">{{friend.latest_message.time.time}}</span>
         </div>

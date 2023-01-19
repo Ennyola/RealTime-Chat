@@ -51,6 +51,6 @@ def user_profile(request, username):
             profile.display_picture.delete()
             return redirect("user_profile", username=user.username)
     else:
-        form = UpdateProfileForm()
+        form = UpdateProfileForm(initial={"bio": profile.bio})
     context = {"user": user, "form": form}
     return render(request, "accounts/user_profile.html", context)

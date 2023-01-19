@@ -43,11 +43,13 @@ class Participants(models.Model):
             room_id = friend.room.id
             room_name = get_room_name(friend.room.name, user.username)
             latest_message = friend.room.messages.last()
+            display_picture = friend.user.userprofile.display_picture
             friend_list.append(
                 {
                     "room_id": room_id,
                     "room_name": room_name,
                     "latest_message": latest_message,
+                    "display_picture": display_picture,
                 }
             )
         return friend_list

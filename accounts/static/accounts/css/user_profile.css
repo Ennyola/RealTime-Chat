@@ -127,7 +127,6 @@
     height: 80%;
     z-index: +9999999;
     margin-top: 30px;
-    border: 3px solid red;
 }
 
 .take-photo-section .camera-preview,
@@ -139,6 +138,7 @@
 .take-photo-section .picture-preview #canvas {
     height: 100%;
     width: 100%;
+    border-radius: 10px;
 }
 
 .take-photo-section .camera-preview #change-dp-video {
@@ -174,6 +174,19 @@
     left: 50%;
     margin-bottom: 30px;
     font-size: 50px;
+}
+
+#id_bio {
+    background-color: transparent;
+    outline: none;
+    border-width: 0 0 2px;
+    width: 300px;
+    padding: 2px;
+    color: white;
+}
+
+#id_bio:focus {
+    border-color: #c3cae2;
 }
 
 @media screen and (max-width: 768px) {

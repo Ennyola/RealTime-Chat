@@ -8,6 +8,6 @@ class UpdateProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ["display_picture", "bio"]
         widgets = {
-            "bio": forms.TextInput(),
+            "bio": forms.TextInput(attrs={"disabled":True}),
         }
 
