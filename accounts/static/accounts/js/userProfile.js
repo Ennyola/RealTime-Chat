@@ -132,6 +132,4 @@ editBio.addEventListener("click", () => {
     bioInput.disabled = false
     bioInput.style.borderBottomWidth = "2px";
     bioInput.focus()
-
-
 })

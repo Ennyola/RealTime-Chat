@@ -16,7 +16,7 @@
     <div class="friends height">
         {% for friend in friends %}
             <div class="friend" id="{{friend.room_id}}">
-                <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="display-picture">
+                <img src="{{friend.display_picture}}" class="display-picture" alt="display-picture">
                 <span>{{friend.room_name}}</span>
             </div>
         {% endfor %} 

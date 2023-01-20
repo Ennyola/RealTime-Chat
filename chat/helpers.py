@@ -8,3 +8,4 @@ def get_room_name(room_name: str, username: str) -> str:
         return room_name.split("_")[1]
     else:
         return room_name.split("_")[0]
+    
