@@ -176,17 +176,31 @@
     font-size: 50px;
 }
 
+.bio-form__section {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
 #id_bio {
     background-color: transparent;
     outline: none;
-    border-width: 0 0 2px;
+    border-width: 0;
     width: 300px;
     padding: 2px;
     color: white;
+    margin-top: 10px;
+    font-size: 17px;
 }
 
 #id_bio:focus {
     border-color: #c3cae2;
+}
+
+#edit-bio {
+    cursor: pointer;
+    position: relative;
+    top: 20px;
 }
 
 @media screen and (max-width: 768px) {

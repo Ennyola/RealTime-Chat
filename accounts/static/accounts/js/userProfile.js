@@ -10,6 +10,8 @@ let cameraPreview = document.querySelector(".camera-preview");
 let picturePreview = document.querySelector(".picture-preview");
 let capturePhotoSection = document.querySelector(".take-photo-section")
 let closeCamera = document.querySelector("#close-camera");
+let editBio = document.querySelector("#edit-bio");
+let bioInput = document.querySelector("#id_bio");
 let stream;
 let canvasContext
 
@@ -124,3 +126,12 @@ cancelPhoto.addEventListener("click", () => {
         //Closes the capture Photo section 
     capturePhotoSection.classList.toggle("d-none")
 });
+
+// The makes the bio input editable
+editBio.addEventListener("click", () => {
+    bioInput.disabled = false
+    bioInput.style.borderBottomWidth = "2px";
+    bioInput.focus()
+
+
+})
