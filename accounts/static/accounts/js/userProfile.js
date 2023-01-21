@@ -5,7 +5,6 @@ let changeDpVideo = document.querySelector("#change-dp-video");
 let capture = document.querySelector("#capture");
 let canvas = document.querySelector("#canvas");
 let cameraIcon = document.querySelector("#camera-icon");
-let username = document.querySelector("#username").textContent;
 let cameraPreview = document.querySelector(".camera-preview");
 let picturePreview = document.querySelector(".picture-preview");
 let capturePhotoSection = document.querySelector(".take-photo-section")
@@ -23,7 +22,7 @@ let myDefaultAllowList = bootstrap.Tooltip.Default.allowList
 myDefaultAllowList.form = ['action', 'method', 'enctype']
 myDefaultAllowList.input = ['type', 'name', 'value', 'placeholder', 'autocomplete', 'required', 'id']
 myDefaultAllowList.button = ['type', 'name', 'value', 'id']
-
+myDefaultAllowList.label = ['for']
 
 // Enabling our popover to be used with bootstrap
 let popover = new bootstrap.Popover(cameraIcon, {

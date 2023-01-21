@@ -11,8 +11,7 @@
         <div class="user-profile__heading">
             <span>
                 <a href="{% url 'homepage'  %}"><i class="fas fa-long-arrow-alt-left"></i></a> 
-                <p> Profile </p>
-                {{user.username|json_script:"username"}} 
+                <p> Profile </p> 
             </span> 
         </div>
         <div class="user-profile__avatar">
@@ -32,8 +31,12 @@
                         </li>
                         <li class="list-item">
                             {% comment %} Upload photo form {% endcomment %}
-                            <form method="POST" enctype="multipart/form-data">
+                            <form method="POST" id="upload-image" enctype="multipart/form-data">
                                 {% csrf_token %}
+                                {{form.display_picture.errors}}
+                                <label for="{{ form.display_picture.id_for_label }}">
+                                    {{ form.display_picture.label }}
+                                </label>
                                 {{form.display_picture}}
                                 <input type="submit" name="upload_photo" value="upload image">
                             </form>

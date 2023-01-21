@@ -95,7 +95,7 @@
 }
 
 .list-item {
-    padding: 10px 35px;
+    padding: 10px 0;
     font-size: 15px;
     color: white;
 }
@@ -201,6 +201,10 @@
     cursor: pointer;
     position: relative;
     top: 20px;
+}
+
+#upload-image {
+    border: 3px solid red;
 }
 
 @media screen and (max-width: 768px) {
