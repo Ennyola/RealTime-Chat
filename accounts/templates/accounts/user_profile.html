@@ -35,10 +35,9 @@
                                 {% csrf_token %}
                                 {{form.display_picture.errors}}
                                 <label for="{{ form.display_picture.id_for_label }}">
-                                    {{ form.display_picture.label }}
+                                    <span class="dp-image-label"> {{ form.display_picture.label }}</span>
+                                    {{form.display_picture}}
                                 </label>
-                                {{form.display_picture}}
-                                {% comment %} <input type="submit" name="upload_photo" value="upload image"> {% endcomment %}
                             </form>
                         </li>
                         <li class="list-item">

@@ -202,11 +202,39 @@
 }
 
 #upload-image-form {
-    border: 3px solid red;
+    position: relative;
 }
+
+#upload-image-form label {
+    padding: 20px 0px;
+}
+
+.dp-image-label {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+/* The display_image file input */
 
 #id_display_picture {
     opacity: 0;
+    width: 100%;
+    cursor: pointer;
+}
+
+
+/* The button that a user clicks to select a file in html */
+
+#id_display_picture::-webkit-file-upload-button {
+    visibility: hidden;
 }
 
 @media screen and (max-width: 768px) {
