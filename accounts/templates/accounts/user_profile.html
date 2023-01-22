@@ -31,7 +31,7 @@
                         </li>
                         <li class="list-item">
                             {% comment %} Upload photo form {% endcomment %}
-                            <form method="POST" id="upload-image" enctype="multipart/form-data">
+                            <form method="POST" id="upload-image-form" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{form.display_picture.errors}}
                                 <label for="{{ form.display_picture.id_for_label }}">

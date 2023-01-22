@@ -95,7 +95,6 @@
 }
 
 .list-item {
-    padding: 10px 0;
     font-size: 15px;
     color: white;
 }
@@ -203,9 +202,14 @@
     top: 20px;
 }
 
-#upload-image {
+#upload-image-form {
     border: 3px solid red;
 }
+
+
+/* #id_display_picture {
+    visibility: hidden;
+} */
 
 @media screen and (max-width: 768px) {
     .user-profile__heading {
