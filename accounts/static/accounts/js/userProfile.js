@@ -57,13 +57,16 @@ const closeVideoStream = () => {
 
 // Triggering the take-photo button event within the popover when the popover is appears in the DOM
 cameraIcon.addEventListener('shown.bs.popover', () => {
-    let takePhotoBtn = document.querySelector(".popover-body #take-photo");
+    const takePhotoBtn = document.querySelector(".popover-body #take-photo");
+    const displayPictureInput = document.querySelector(".popover-body form #id_display_picture");
+    const uploadImageForm = document.querySelector(".popover-body #upload-image-form");
 
     takePhotoBtn.addEventListener("click", async() => {
         capturePhotoSection.classList.toggle("d-none")
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
         changeDpVideo.srcObject = stream;
     })
+
     capture.addEventListener("click", () => {
         // Setting the canvas width and height to the image captured from the video stream
         canvasContext = canvas.getContext('2d')
@@ -75,13 +78,20 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
         picturePreview.classList.toggle("d-none")
     })
 
+    //submit form on image input change
+    displayPictureInput.addEventListener("change", () => {
+        uploadImageForm.submit()
+    })
+
 })
 
+// Closing the camera preview section
 closeCamera.addEventListener("click", () => {
     closeVideoStream()
     capturePhotoSection.classList.toggle("d-none")
 })
 
+// Saving the photo to the database
 savePhoto.addEventListener("click", () => {
     let imageDataUrl = canvas.toDataURL('image/jpeg')
     const formData = new FormData();
@@ -114,6 +124,8 @@ savePhoto.addEventListener("click", () => {
     capturePhotoSection.classList.toggle("d-none")
 
 });
+
+// Cancelling the photo. This will clear the canvas and the picture preview
 cancelPhoto.addEventListener("click", () => {
     // Clearing the entire canvas
     canvasContext.clearRect(0, 0, canvas.width, canvas.height);

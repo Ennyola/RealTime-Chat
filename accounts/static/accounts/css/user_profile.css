@@ -101,7 +101,6 @@
 
 .list-item:hover {
     background-color: #3b3f4f;
-    cursor: pointer;
 }
 
 .popover {
@@ -206,10 +205,9 @@
     border: 3px solid red;
 }
 
-
-/* #id_display_picture {
-    visibility: hidden;
-} */
+#id_display_picture {
+    opacity: 0;
+}
 
 @media screen and (max-width: 768px) {
     .user-profile__heading {
