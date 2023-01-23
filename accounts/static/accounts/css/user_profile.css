@@ -201,12 +201,19 @@
     top: 20px;
 }
 
+#take-photo {
+    cursor: pointer;
+    padding: 20px 0px;
+    text-align: center;
+}
+
 #upload-image-form {
     position: relative;
+    width: 200px;
 }
 
 #upload-image-form label {
-    padding: 10px 0px;
+    padding: 20px 0px;
 }
 
 .dp-image-label {
@@ -284,15 +291,10 @@
     visibility: hidden;
 }
 
-#delete-image-form {
-    border: 3px solid red;
-}
-
 #delete-image-form span {
-    border: 3px solid green;
     display: block;
     text-align: center;
-    padding: 10px 0px;
+    padding: 20px 0px;
     cursor: pointer;
 }
 

@@ -65,10 +65,17 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
     const uploadImageForm = document.querySelector(".popover-body #upload-image-form");
     const deleteOption = document.querySelector(".popover-body .delete-option");
     const DeleteImageForm = document.querySelector(".popover-body #delete-image-form");
+    const uploadInputLabel = document.querySelector(".popover-body #upload-image-form label");
 
     takePhotoBtn.addEventListener("click", async() => {
         capturePhotoSection.classList.remove("d-none")
-        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        popover.hide()
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        } catch (error) {
+            alert("error")
+        }
+
         changeDpVideo.srcObject = stream;
     })
 
@@ -85,12 +92,12 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
 
     //submit form on image input change
     displayPictureInput.addEventListener("change", () => {
-        console.log("image changed")
         uploadImageForm.submit()
     })
 
     //Open up the delete cnfirmation modal
     deleteOption.addEventListener("click", () => {
+        popover.hide()
         confirmationWrapper.classList.remove("d-none")
     })
 
@@ -104,7 +111,9 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
         DeleteImageForm.submit()
     })
 
+
 })
+
 
 // Closing the camera preview sectconst
 closeCamera.addEventListener("click", () => {
@@ -134,7 +143,7 @@ savePhoto.addEventListener("click", () => {
             window.location.reload();
         })
         .catch((error) => {
-            console.log(error)
+            alert(error)
         });
     // picture preview should disappear 
     // and camera preview should appear in the dom tree based on the
