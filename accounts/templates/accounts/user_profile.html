@@ -47,7 +47,7 @@
                             {% comment %} Form to delete a user's display picture {% endcomment %}
                             <form id="delete-image-form" method="POST">
                                 {% csrf_token %}
-                                <span> Delete Photo</span>
+                                <span class="delete-option"> Delete Photo</span>
                                 <input id="delete-photo" type="hidden" name="delete_photo" value="Delete Photo">
                             </form>   
                         </li>
@@ -56,8 +56,14 @@
             </div>            
         </div>
         {% comment %} Delete confirmation section {% endcomment %}
-        <div class="overlay">
-
+        <div class="confirmation-wrapper overlay">
+            <div class="confirmation-body">
+                <p>Are you sure you want to delete your display picture?</p>
+                <div class="delete-confirmation">
+                    <button id="delete-confirmation__no">No</button>
+                    <button id="delete-confirmation__yes">Yes</button>
+                </div>
+            </div>
         </div>
 
         {% comment %} The camera preview section that captures the users photo {% endcomment %}

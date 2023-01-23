@@ -1,15 +1,15 @@
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 const savePhoto = document.querySelector("#save-photo");
 const cancelPhoto = document.querySelector("#cancel-photo");
+const closeCamera = document.querySelector("#close-camera");
+const editBio = document.querySelector("#edit-bio");
+const cameraIcon = document.querySelector("#camera-icon");
 let changeDpVideo = document.querySelector("#change-dp-video");
 let capture = document.querySelector("#capture");
 let canvas = document.querySelector("#canvas");
-let cameraIcon = document.querySelector("#camera-icon");
 let cameraPreview = document.querySelector(".camera-preview");
 let picturePreview = document.querySelector(".picture-preview");
 let capturePhotoSection = document.querySelector(".take-photo-section")
-let closeCamera = document.querySelector("#close-camera");
-let editBio = document.querySelector("#edit-bio");
 let bioInput = document.querySelector("#id_bio");
 let stream;
 let canvasContext
@@ -55,12 +55,12 @@ const closeVideoStream = () => {
     changeDpVideo.srcObject = null;
 }
 
-// Triggering the take-photo button event within the popover when the popover is appears in the DOM
+// Triggering the take-photo button event within the popover when the popover is appears in the const
 cameraIcon.addEventListener('shown.bs.popover', () => {
     const takePhotoBtn = document.querySelector(".popover-body #take-photo");
     const displayPictureInput = document.querySelector(".popover-body form #id_display_picture");
     const uploadImageForm = document.querySelector(".popover-body #upload-image-form");
-
+    const deleteOption = document.querySelector(".popover-body .delete-option");
     takePhotoBtn.addEventListener("click", async() => {
         capturePhotoSection.classList.toggle("d-none")
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
@@ -83,9 +83,13 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
         uploadImageForm.submit()
     })
 
+    deleteOption.addEventListener("click", () => {
+        confirm("Are you sure you want to delete your display picture?")
+    })
+
 })
 
-// Closing the camera preview section
+// Closing the camera preview sectconst
 closeCamera.addEventListener("click", () => {
     closeVideoStream()
     capturePhotoSection.classList.toggle("d-none")
