@@ -11,6 +11,9 @@ let cameraPreview = document.querySelector(".camera-preview");
 let picturePreview = document.querySelector(".picture-preview");
 let capturePhotoSection = document.querySelector(".take-photo-section")
 let bioInput = document.querySelector("#id_bio");
+let confirmationWrapper = document.querySelector(".confirmation-wrapper");
+let cancelDelete = document.querySelector("#delete-confirmation__no");
+let confirmDelete = document.querySelector("#delete-confirmation__yes");
 let stream;
 let canvasContext
 
@@ -61,8 +64,10 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
     const displayPictureInput = document.querySelector(".popover-body form #id_display_picture");
     const uploadImageForm = document.querySelector(".popover-body #upload-image-form");
     const deleteOption = document.querySelector(".popover-body .delete-option");
+    const DeleteImageForm = document.querySelector(".popover-body #delete-image-form");
+
     takePhotoBtn.addEventListener("click", async() => {
-        capturePhotoSection.classList.toggle("d-none")
+        capturePhotoSection.classList.remove("d-none")
         stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
         changeDpVideo.srcObject = stream;
     })
@@ -80,11 +85,23 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
 
     //submit form on image input change
     displayPictureInput.addEventListener("change", () => {
+        console.log("image changed")
         uploadImageForm.submit()
     })
 
+    //Open up the delete cnfirmation modal
     deleteOption.addEventListener("click", () => {
-        confirm("Are you sure you want to delete your display picture?")
+        confirmationWrapper.classList.remove("d-none")
+    })
+
+    //Close the delete confirmation modal
+    cancelDelete.addEventListener("click", () => {
+        confirmationWrapper.classList.add("d-none")
+    })
+
+    //Delete the user's display picture
+    confirmDelete.addEventListener("click", () => {
+        DeleteImageForm.submit()
     })
 
 })

@@ -264,7 +264,7 @@
 
 .delete-confirmation button {
     margin: 0px 10px;
-    padding: 5px 40px;
+    padding: 7px 40px;
     border-radius: 5px;
     border: 0;
     outline: none;
@@ -273,7 +273,7 @@
 }
 
 .delete-confirmation #delete-confirmation__yes {
-    background-color: rgb(22, 70, 22);
+    background-color: rgb(23, 37, 23);
     color: white;
 }
 
