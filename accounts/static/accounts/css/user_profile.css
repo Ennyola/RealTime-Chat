@@ -90,7 +90,7 @@
 
 .photo-options {
     background-color: #272A35;
-    padding: 10px 0px;
+    padding: 0px;
     list-style-type: none;
 }
 
@@ -235,6 +235,18 @@
 
 #id_display_picture::-webkit-file-upload-button {
     visibility: hidden;
+}
+
+#delete-image-form {
+    border: 3px solid red;
+}
+
+#delete-image-form span {
+    border: 3px solid green;
+    display: block;
+    text-align: center;
+    padding: 10px 0px;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {

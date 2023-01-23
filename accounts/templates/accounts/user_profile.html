@@ -7,6 +7,7 @@
 {% endblock  %} 
 
 {% block user_profile %}
+    {% comment %} The header section{% endcomment %}
     <div class="user-profile">
         <div class="user-profile__heading">
             <span>
@@ -14,6 +15,8 @@
                 <p> Profile </p> 
             </span> 
         </div>
+
+        {% comment %}The Avatar/Display picture section  {% endcomment %}
         <div class="user-profile__avatar">
             {% if user.userprofile.display_picture %}
                 <img src="{{user.userprofile.display_picture.url}}" alt="{{ user.username }}'s avatar" />
@@ -23,8 +26,8 @@
             
             <div class="user-profile__photo_option__section">
                 <i tabindex="0" class="fas fa-camera" id="camera-icon" data-bs-toggle="popover"></i>
-                <div class = "popover-list d-none"> 
-                    <ul class = "photo-options">
+                <div class="popover-list d-none"> 
+                    <ul class="photo-options">
                         {% comment %} <li class="list-item">View Photo</li> {% endcomment %}
                         <li class="list-item">
                             <button id="take-photo">Start Camera</button>
@@ -42,22 +45,27 @@
                         </li>
                         <li class="list-item">
                             {% comment %} Form to delete a user's display picture {% endcomment %}
-                            <form method="POST">
+                            <form id="delete-image-form" method="POST">
                                 {% csrf_token %}
-                                <input type="submit" name="delete_photo" value="Delete Photo">
+                                <span> Delete Photo</span>
+                                <input id="delete-photo" type="hidden" name="delete_photo" value="Delete Photo">
                             </form>   
                         </li>
                     </ul>
                 </div>
             </div>            
         </div>
+        {% comment %} Delete confirmation section {% endcomment %}
+        <div class="overlay">
+
+        </div>
+
+        {% comment %} The camera preview section that captures the users photo {% endcomment %}
         <div class="take-photo-section d-none">
             <div class="camera-preview">
-                
                 <video  id="change-dp-video" autoplay></video>
                 <i id="close-camera" class="fas fa-times text-danger cancel-icon"></i>
                 <i id="capture" class="far fa-dot-circle"></i>
-
             </div>   
             <div class="picture-preview d-none">
                 <canvas id="canvas"></canvas>
@@ -67,6 +75,8 @@
                 </span>
             </div>   
         </div>
+
+        {% comment %} The user's information section {% endcomment %}
         <div class="user-profile__info">
             <div class="user_profile__username__section">
                 <span class="user-profile__username__label">Your name</span>
