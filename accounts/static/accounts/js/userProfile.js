@@ -3,6 +3,7 @@ const savePhoto = document.querySelector("#save-photo");
 const cancelPhoto = document.querySelector("#cancel-photo");
 const closeCamera = document.querySelector("#close-camera");
 const editBio = document.querySelector("#edit-bio");
+const editBioForm = document.querySelector(".bio-form__section form")
 const cameraIcon = document.querySelector("#camera-icon");
 let changeDpVideo = document.querySelector("#change-dp-video");
 let capture = document.querySelector("#capture");
@@ -11,6 +12,7 @@ let cameraPreview = document.querySelector(".camera-preview");
 let picturePreview = document.querySelector(".picture-preview");
 let capturePhotoSection = document.querySelector(".take-photo-section")
 let bioInput = document.querySelector("#id_bio");
+let bioInputCheckMark = document.querySelector(".bio-form__section .fa-check")
 let confirmationWrapper = document.querySelector(".confirmation-wrapper");
 let cancelDelete = document.querySelector("#delete-confirmation__no");
 let confirmDelete = document.querySelector("#delete-confirmation__yes");
@@ -41,11 +43,11 @@ let popover = new bootstrap.Popover(cameraIcon, {
 
 // Function to convert canvas image to blob
 const dataURLToBlob = (dataURL) => {
-    let parts = dataURL.split(',');
-    let contentType = parts[0].split(':')[1].split(';')[0];
-    let raw = atob(parts[1]);
-    let rawLength = raw.length;
-    let uInt8Array = new Uint8Array(rawLength);
+    const parts = dataURL.split(',');
+    const contentType = parts[0].split(':')[1].split(';')[0];
+    const raw = atob(parts[1]);
+    const rawLength = raw.length;
+    const uInt8Array = new Uint8Array(rawLength);
 
     for (let i = 0; i < rawLength; ++i) {
         uInt8Array[i] = raw.charCodeAt(i);
@@ -53,12 +55,6 @@ const dataURLToBlob = (dataURL) => {
     return new Blob([uInt8Array], { type: contentType });
 }
 
-const closeVideoStream = () => {
-    stream.getTracks().forEach(track => track.stop());
-    changeDpVideo.srcObject = null;
-}
-
-// Triggering the take-photo button event within the popover when the popover is appears in the const
 cameraIcon.addEventListener('shown.bs.popover', () => {
     const takePhotoBtn = document.querySelector(".popover-body #take-photo");
     const displayPictureInput = document.querySelector(".popover-body form #id_display_picture");
@@ -73,7 +69,7 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
         try {
             stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
         } catch (error) {
-            alert("error")
+            alert(error)
         }
 
         changeDpVideo.srcObject = stream;
@@ -110,10 +106,12 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
     confirmDelete.addEventListener("click", () => {
         DeleteImageForm.submit()
     })
-
-
 })
 
+const closeVideoStream = () => {
+    stream.getTracks().forEach(track => track.stop());
+    changeDpVideo.srcObject = null;
+}
 
 // Closing the camera preview sectconst
 closeCamera.addEventListener("click", () => {
@@ -173,4 +171,10 @@ editBio.addEventListener("click", () => {
     bioInput.disabled = false
     bioInput.style.borderBottomWidth = "2px";
     bioInput.focus()
+    bioInputCheckMark.classList.remove("d-none")
+    editBio.classList.add("d-none")
+})
+
+bioInputCheckMark.addEventListener("click", () => {
+    editBioForm.submit()
 })

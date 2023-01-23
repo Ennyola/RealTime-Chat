@@ -176,16 +176,19 @@
 
 .bio-form__section {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: nowrap;
+}
+
+.bio-form__section form {
+    width: 100%;
 }
 
 #id_bio {
     background-color: transparent;
     outline: none;
     border-width: 0;
-    width: 300px;
+    width: 100%;
     padding: 2px;
+    padding-right: 45px;
     color: white;
     margin-top: 10px;
     font-size: 17px;
@@ -199,6 +202,7 @@
     cursor: pointer;
     position: relative;
     top: 20px;
+    right: 40px;
 }
 
 #take-photo {

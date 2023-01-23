@@ -94,9 +94,10 @@
                     <form method="POST">
                         {% csrf_token %}
                         {{form.bio}}
-                        {% comment %} <input type="submit" class="btn btn-warning" value="save"> {% endcomment %}
                     </form>
+                    
                     <i class="fas fa-pencil-alt" id="edit-bio"></i>
+                    <i class="fas fa-check d-none" id="edit-bio"></i>
                 </div>
             </div>
 
