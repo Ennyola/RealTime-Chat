@@ -18,14 +18,17 @@
 
         {% comment %}The Avatar/Display picture section  {% endcomment %}
         <div class="user-profile__avatar">
-            {% if user.userprofile.display_picture %}
+            {% if user.userprofile.display_picture.url %}
                 <img src="{{user.userprofile.display_picture.url}}" alt="{{ user.username }}'s avatar" />
             {% else %}
                 <img src="{% static 'accounts/img/user-icon.png' %}" alt="{{ user.username }}'s avatar" />
             {% endif %}
             
             <div class="user-profile__photo_option__section">
-                <i tabindex="0" class="fas fa-camera" id="camera-icon" data-bs-toggle="popover"></i>
+                {% if  request.user.username == user.username %}
+                    <i tabindex="0" class="fas fa-camera" id="camera-icon" data-bs-toggle="popover"></i>
+                {% endif %}
+                
                 <div class="popover-list d-none"> 
                     <ul class="photo-options">
                         <li class="list-item">
@@ -82,7 +85,7 @@
         {% comment %} The user's information section {% endcomment %}
         <div class="user-profile__info">
             <div class="user_profile__username__section">
-                <span class="user-profile__username__label">Your name</span>
+                <span class="user-profile__username__label">Username</span>
                 <p class="user-profile__username">{{ user.username }}</p>
             </div>
             <div class="user_profile__bio__section">
@@ -92,8 +95,9 @@
                         {% csrf_token %}
                         {{form.bio}}
                     </form>
-                    
-                    <i class="fas fa-pencil-alt" id="edit-bio"></i>
+                    {% if  request.user.username == user.username %}
+                        <i class="fas fa-pencil-alt" id="edit-bio"></i>
+                    {% endif %}
                     <i class="fas fa-check d-none" id="edit-bio"></i>
                 </div>
             </div>
