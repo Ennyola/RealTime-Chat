@@ -9,6 +9,7 @@ USER = get_user_model()
 
 @receiver(post_save, sender=USER)
 def create_user_profile(sender, **kwargs):
-    pass
-    # if not kwargs["instance"].userprofile:
-    #     kwargs["instance"].userprofile = UserProfile.objects.create(user=kwargs["instance"], bio="I am a new")
+    if kwargs["created"]:
+        UserProfile.objects.create(user=kwargs["instance"])
+    else:
+        kwargs["instance"].userprofile.save()
