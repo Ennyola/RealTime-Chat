@@ -21,19 +21,17 @@
             {% if user.userprofile.display_picture %}
                 <img src="{{user.userprofile.display_picture.url}}" alt="{{ user.username }}'s avatar" />
             {% else %}
-                <img src="" alt="{{ user.username }}'s avatar" />
+                <img src="{% static 'accounts/img/user-icon.png' %}" alt="{{ user.username }}'s avatar" />
             {% endif %}
             
             <div class="user-profile__photo_option__section">
                 <i tabindex="0" class="fas fa-camera" id="camera-icon" data-bs-toggle="popover"></i>
                 <div class="popover-list d-none"> 
                     <ul class="photo-options">
-                        {% comment %} <li class="list-item">View Photo</li> {% endcomment %}
                         <li class="list-item">
                             <div id="take-photo">Start Camera</div>
                         </li>
                         <li class="list-item">
-                            {% comment %} Upload photo form {% endcomment %}
                             <form method="POST" id="upload-image-form" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 {{form.display_picture.errors}}
@@ -44,7 +42,6 @@
                             </form>
                         </li>
                         <li class="list-item">
-                            {% comment %} Form to delete a user's display picture {% endcomment %}
                             <form id="delete-image-form" method="POST">
                                 {% csrf_token %}
                                 <span class="delete-option"> Delete Photo</span>

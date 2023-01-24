@@ -36,7 +36,6 @@ let popover = new bootstrap.Popover(cameraIcon, {
         return document.querySelector('.popover-list').innerHTML
     },
     container: 'body',
-    // trigger: 'focus',
     placement: 'right',
     delay: { "show": 500, "hide": 100 }
 })
@@ -55,13 +54,17 @@ const dataURLToBlob = (dataURL) => {
     return new Blob([uInt8Array], { type: contentType });
 }
 
+const closeVideoStream = () => {
+    stream.getTracks().forEach(track => track.stop());
+    changeDpVideo.srcObject = null;
+}
+
 cameraIcon.addEventListener('shown.bs.popover', () => {
+
     const takePhotoBtn = document.querySelector(".popover-body #take-photo");
     const displayPictureInput = document.querySelector(".popover-body form #id_display_picture");
     const uploadImageForm = document.querySelector(".popover-body #upload-image-form");
     const deleteOption = document.querySelector(".popover-body .delete-option");
-    const DeleteImageForm = document.querySelector(".popover-body #delete-image-form");
-    const uploadInputLabel = document.querySelector(".popover-body #upload-image-form label");
 
     takePhotoBtn.addEventListener("click", async() => {
         capturePhotoSection.classList.remove("d-none")
@@ -93,25 +96,25 @@ cameraIcon.addEventListener('shown.bs.popover', () => {
 
     //Open up the delete cnfirmation modal
     deleteOption.addEventListener("click", () => {
-        popover.hide()
         confirmationWrapper.classList.remove("d-none")
+        popover.hide()
     })
 
-    //Close the delete confirmation modal
-    cancelDelete.addEventListener("click", () => {
-        confirmationWrapper.classList.add("d-none")
-    })
 
-    //Delete the user's display picture
-    confirmDelete.addEventListener("click", () => {
-        DeleteImageForm.submit()
-    })
 })
 
-const closeVideoStream = () => {
-    stream.getTracks().forEach(track => track.stop());
-    changeDpVideo.srcObject = null;
-}
+//Delete the user's display picture
+confirmDelete.addEventListener("click", () => {
+    const DeleteImageForm = document.querySelector("#delete-image-form");
+    DeleteImageForm.submit()
+})
+
+//Close the delete confirmation modal
+cancelDelete.addEventListener("click", () => {
+    confirmationWrapper.classList.add("d-none")
+})
+
+
 
 // Closing the camera preview sectconst
 closeCamera.addEventListener("click", () => {
@@ -162,7 +165,8 @@ cancelPhoto.addEventListener("click", () => {
     // default html page
     picturePreview.classList.toggle("d-none")
     cameraPreview.classList.toggle("d-none")
-        //Closes the capture Photo section 
+
+    //Closes the capture Photo section 
     capturePhotoSection.classList.toggle("d-none")
 });
 

@@ -119,17 +119,22 @@
 
 .take-photo-section {
     position: fixed;
-    width: 50%;
-    left: 25%;
+    width: 100%;
+    left: 0;
     top: 0;
-    height: 80%;
-    z-index: +9999999;
-    margin-top: 30px;
+    height: 100%;
+    z-index: +100;
 }
 
 .take-photo-section .camera-preview,
 .take-photo-section .picture-preview {
-    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -40%);
+    background-color: #272A35;
+    width: 50%;
+    height: 80%;
 }
 
 .take-photo-section .camera-preview #change-dp-video,
@@ -305,5 +310,17 @@
 @media screen and (max-width: 768px) {
     .user-profile__heading {
         width: 100%;
+    }
+    .take-photo-section .camera-preview,
+    .take-photo-section .picture-preview {
+        width: 100% !important;
+        height: 100%;
+    }
+}
+
+@media screen and (max-width:1250px) {
+    .take-photo-section .camera-preview,
+    .take-photo-section .picture-preview {
+        width: 70%;
     }
 }
