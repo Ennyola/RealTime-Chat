@@ -1,7 +1,7 @@
 {% load static %}
 <div>
     <div class="header-settings">
-       <a href="{% url 'user_profile' request.user.username %}"><img src="{{request.user.userprofile.display_picture.url}}" class="display-picture" alt="display-picture"></a> 
+       <a href="{% url 'user_profile' request.user.username %}"><img src="{{request.user.userprofile.get_image}}" class="display-picture" alt="display-picture"></a> 
         <span class="settings-icon">
            <a href= {% url 'find_friends:index' %} ><i class="fas fa-user-plus"></i></a> 
            <a href={% url 'friends' %}> <i class="fas fa-comment-alt"></i></a>

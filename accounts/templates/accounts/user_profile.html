@@ -18,12 +18,7 @@
 
         {% comment %}The Avatar/Display picture section  {% endcomment %}
         <div class="user-profile__avatar">
-            {% if user.userprofile.display_picture %}
-                <img src="{{user.userprofile.display_picture.url}}" alt="{{ user.username }}'s avatar" />
-            {% else %}
-                <img src="{% static 'accounts/img/user-icon.png' %}" alt="{{ user.username }}'s avatar" />
-            {% endif %}
-            
+            <img src="{{user.userprofile.get_image}}" alt="{{ user.username }}'s avatar" />
             <div class="user-profile__photo_option__section">
                 {% if  request.user.username == user.username %}
                     <i tabindex="0" class="fas fa-camera" id="camera-icon" data-bs-toggle="popover"></i>
