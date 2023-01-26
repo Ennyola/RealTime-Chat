@@ -20,4 +20,7 @@ urlpatterns = [
     path('chat/',include('chat.urls', namespace="chat")),
     path('emoji/', include('emoji.urls')),
     path('<str:username>/', user_profile, name="user_profile"),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

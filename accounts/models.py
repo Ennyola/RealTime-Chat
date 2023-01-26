@@ -3,6 +3,8 @@ import os
 from django.db import models
 from django.conf import settings
 
+from django.contrib.staticfiles.storage import staticfiles_storage
+
 # Create your models here.
 
 
@@ -16,7 +18,7 @@ class UserProfile(models.Model):
     bio = models.TextField(blank=True)
     display_picture = models.ImageField(
         upload_to="profile_pictures",
-        default="profile_pictures/user-icon.png",
+        default=staticfiles_storage.url('accounts/img/user-icon.png'),
         blank=True,
     )
 
@@ -29,8 +31,7 @@ class UserProfile(models.Model):
         Returns the display picture of the user or the default image
         if the user has not uploaded a display picture.
         """
-        print([settings.BASE_DIR / "media" / "profile_pictures" / "user-icon.png"])
         if not self.display_picture:
-            return "../media/profile_pictures/user-icon.png"
+            return staticfiles_storage.url('accounts/img/user-icon.png')
         else:
             return self.display_picture.url
