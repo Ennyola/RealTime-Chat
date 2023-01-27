@@ -18,7 +18,7 @@ class UserProfile(models.Model):
     bio = models.TextField(blank=True)
     display_picture = models.ImageField(
         upload_to="profile_pictures",
-        default=staticfiles_storage.url('accounts/img/user-icon.png'),
+        null = True,
         blank=True,
     )
 
