@@ -72,14 +72,19 @@ body {
 
 .settings-options{
     background-color: #272A35;
-    padding: 0px;
     list-style-type: none;
+    text-align:center;
+    padding: 0;
+    width:150px;
 }
-.settings-options .list-item {
+.settings-options .list-item  a{
     color: white;
+    text-decoration:none;
+    display:block;
+    padding:15px;
 }
 
-.settings-options .list-item:hover {
+.settings-options .list-item a:hover {
     background-color: #3b3f4f;
 }
 
@@ -196,6 +201,22 @@ body {
     font-size: 18px;
 }
 
+
+/* Popover general style */
+
+.popover {
+    background-color: transparent;
+    border: 0;
+}
+
+.popover-body {
+    padding: 0px;
+}
+
+.popover .popover-arrow::after,
+.popover .popover-arrow::before {
+    display: none
+}
 
 @media screen and (max-width: 768px) {
     .col-md-4 {

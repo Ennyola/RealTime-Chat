@@ -103,20 +103,6 @@
     background-color: #3b3f4f;
 }
 
-.popover {
-    background-color: transparent;
-    border: 0;
-}
-
-.popover-body {
-    padding: 0px;
-}
-
-.popover .popover-arrow::after,
-.popover .popover-arrow::before {
-    display: none
-}
-
 .take-photo-section {
     position: fixed;
     width: 100%;
