@@ -1,11 +1,11 @@
 {% load static %}
-<div>
+<div class="header-settings-wrapper">
     <div class="header-settings">
        <a href="{% url 'user_profile' request.user.username %}"><img src="{{request.user.userprofile.get_image}}" class="display-picture" alt="display-picture"></a> 
         <span class="settings-icon">
            <a href= {% url 'find_friends:index' %} ><i class="fas fa-user-plus"></i></a> 
            <a href={% url 'friends' %}> <i class="fas fa-comment-alt"></i></a>
-            <i class="fas fa-ellipsis-v"></i>
+            <i class="fas fa-ellipsis-v" id="settings-icon"></i>
         </span>
     </div>
     <div class="search-box">
@@ -17,8 +17,17 @@
     </div> 
 </div>
 
+<div class="popover-list">
+    <ul class="settings-options">
+        <li class="list-item"><a href="{% url 'user_profile' request.user.username %}">Profile</a></li>
+        <li class="list-item"><a href="{% url 'user_profile' request.user.username %}">Settings</a></li>
+        <li class="list-item"><a href="{% url 'accounts:logout' %}">Logout</a></li>
+    </ul>
+</div>
+
+
 {% block script %}
-<script src="header_settings.js"></script>
+<script type="module" src="{% static 'js/headerSettings.js' %}"></script>
 {% endblock  %}
 
 

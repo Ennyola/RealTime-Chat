@@ -26,48 +26,6 @@ body {
     padding: var(--padding);
     border-radius: 5px;
 }
-
-.display-picture {
-    width: 40px;
-    height: 40px;
-    border-radius: 25px;
-}
-
-.friends-list {
-    margin-top: 30px;
-    height: 600px;
-    overflow-y: auto;
-}
-
-.single-friend {
-    display: flex;
-    border-bottom: 1px solid #3c444b;
-    transition: 0.5s;
-    padding: 5px;
-}
-
-.single-friend:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    color: black !important;
-}
-
-.single-friend .text {
-    margin: 0px 15px;
-    width: 80%;
-}
-
-.single-friend .text h6 {
-    position: relative;
-    top: 3px;
-    margin-bottom: 5px;
-}
-
-.single-friend .text p {
-    color: grey;
-    font-size: 16px;
-}
-
 .settings-icon {
     float: right;
 }
@@ -110,6 +68,60 @@ body {
     border-radius: 25px;
     width: 80%;
     outline: none;
+}
+
+.settings-options{
+    background-color: #272A35;
+    padding: 0px;
+    list-style-type: none;
+}
+.settings-options .list-item {
+    color: white;
+}
+
+.settings-options .list-item:hover {
+    background-color: #3b3f4f;
+}
+
+.display-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 25px;
+}
+
+.friends-list {
+    margin-top: 30px;
+    height: 600px;
+    overflow-y: auto;
+}
+
+.single-friend {
+    display: flex;
+    border-bottom: 1px solid #3c444b;
+    transition: 0.5s;
+    padding: 5px;
+}
+
+.single-friend:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    color: black !important;
+}
+
+.single-friend .text {
+    margin: 0px 15px;
+    width: 80%;
+}
+
+.single-friend .text h6 {
+    position: relative;
+    top: 3px;
+    margin-bottom: 5px;
+}
+
+.single-friend .text p {
+    color: grey;
+    font-size: 16px;
 }
 
 .stories {
@@ -183,6 +195,7 @@ body {
     transition: 0.5s;
     font-size: 18px;
 }
+
 
 @media screen and (max-width: 768px) {
     .col-md-4 {
