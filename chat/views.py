@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 
 from emoji import Emoji
 
@@ -26,9 +26,11 @@ class ChatIndexView(FriendListMixin, View):
 
 class ChatRoomView(FriendListMixin, View):
     def get(self, request, **kwargs):
+        context = super().get_context_data(user=request.user)
         messages = Message.objects.filter(room_id=kwargs["room_id"])
         room = Room.objects.get(id=kwargs["room_id"])
-        context = super().get_context_data(user=request.user)
         context["messages"] = messages
         context["room_name"] = get_room_name(room.name, request.user.username)
+        friend = get_user_model().objects.get(username=context["room_name"])
+        context["display_picture"] = friend.userprofile.get_image
         return render(request, "chat/chat-room.html", context)

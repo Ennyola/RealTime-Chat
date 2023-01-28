@@ -20,7 +20,7 @@
     {{request.user.username|json_script:"username"}}
     <div class="header-settings">
         <div class="single-friend">
-            <img src="{% static 'chat/images/dp.svg' %}" class="display-picture" alt="friend-picture">
+            <img src="{{display_picture}}" class="display-picture" alt="friend-picture">
             <div class = "text">
                 <h6> {{room_name}}</h6>
             </div>
