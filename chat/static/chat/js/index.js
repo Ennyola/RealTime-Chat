@@ -13,7 +13,6 @@ import { formatAMPM } from "./chatroom.js";
 
 const videoCallIcon = document.querySelector("#video-call-icon");
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
-const url = `ws://${window.location.host}/ws/chat/${friendName}/`
 export const chatSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/chat/${friendName}/`);
 const currentuUser = document.querySelector("#username").textContent;
 const hangupButton = document.querySelector('#hangup-button');

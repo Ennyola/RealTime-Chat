@@ -38,7 +38,9 @@ body {
     transition: 0.5s;
     font-size: 18px;
 }
-
+.header-settings .settings-icon a{
+    color:white
+}
 .settings-icon i:hover {
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.3);
