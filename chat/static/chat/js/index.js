@@ -30,9 +30,7 @@ hangupButton.addEventListener("click", (e) => {
 
 
 //Open Chatwebsocket connection
-chatSocket.addEventListener('open', (e) => {
-    console.log("Connection Established")
-})
+chatSocket.addEventListener('open', (e) => {})
 
 
 chatSocket.addEventListener('message', (e) => {
