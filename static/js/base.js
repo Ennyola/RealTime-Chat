@@ -6,16 +6,17 @@ import {
     hangUpCall
 } from "/static/chat/js/videoCall.js";
 
-import { hangupButton, callControlContainer } from "/static/chat/js/index.js";
+import { callWebSocket } from "/static/js/webSocket.js";
 
-// console.log(invite)
-console.log("hhi")
+let hangupButton = document.querySelector('#hangup-button');
+let callControlContainer = document.querySelector('.call-control')
 
-export var callWebSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/call/`);
 
-callWebSocket.addEventListener('open', (e) => {
-    console.log("call connected")
+//End the call
+hangupButton.addEventListener("click", (e) => {
+    hangUpCall()
 })
+
 
 callWebSocket.addEventListener('message', (e) => {
     const msg = JSON.parse(e.data)

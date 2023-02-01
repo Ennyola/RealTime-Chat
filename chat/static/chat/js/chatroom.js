@@ -1,5 +1,8 @@
-import { chatSocket } from '/static/chat/js/index.js'
-const currentuUser = document.querySelector("#username").textContent;
+import { getChatSocket } from '/static/js/webSocket.js'
+const friendName = JSON.parse(document.getElementById('room-name').textContent);
+let chatSocket = getChatSocket(friendName)
+let chatHolder = document.querySelectorAll(".messages")[0];
+const currentUser = document.querySelector("#username").textContent;
 let inputBox = document.querySelector("#input-message"),
     sendButton = document.querySelector("#send-button")
 
@@ -27,7 +30,31 @@ sendButton.addEventListener('click', (e) => {
     chatSocket.send(JSON.stringify({
         type: "message",
         messageContent: inputBox.value,
-        sender: currentuUser
+        sender: currentUser
     }));
     inputBox.value = ""
+})
+
+chatSocket.addEventListener('message', (e) => {
+    const msg = JSON.parse(e.data)
+    switch (msg.type) {
+        case "message":
+            //If the current user is the sender, then the message is sent to the right side, else, the left
+            const messageType = currentUser === msg.sender ? "outgoing-message" : "incoming-message";
+            let text = `<div class=${messageType}>
+                <div class="chat-bubble">
+                    <div class="msg">${msg.message_content}</div>
+                        <span class ="msg-metadata">
+                            <span class = "msg-time">${formatAMPM(new Date)}</span> 
+                            <span class="chat-status">
+                            ${currentUser === msg.sender?'<i class="fas fa-check"></i>':""}
+                        </span>
+                    </span>
+                </div>
+            </div>`
+            chatHolder.innerHTML += text
+            chatHolder.scrollTop = chatHolder.scrollHeight;
+        default:
+            break;
+    }
 })

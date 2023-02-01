@@ -1,13 +1,7 @@
-import { callWebSocket } from "/static/js/base.js";
+import { callWebSocket } from "/static/js/webSocket.js";
+
 const user = document.querySelector("#username").textContent;
 const videoContainer = document.querySelector('.video-container')
-let friendName = document.querySelector('#room-name');
-if (friendName) {
-    friendName = JSON.parse(friendName.textContent)
-} else {
-    friendName = null
-}
-console.log(friendName)
 const acceptCall = document.querySelector("#accept_call");
 const rejectCall = document.querySelector("#reject_call");
 const callControlContainer = document.querySelector('.call-control')
@@ -16,13 +10,19 @@ const mediaConstraints = {
     audio: true,
     video: true
 };
-let targetUsername = friendName;
+const videoCallIcon = document.querySelector("#video-call-icon");
+
 let myPeerConnection = null;
 let myStream = null;
 let userVideo = document.querySelector("#local_video")
 let incomingVideo = document.querySelector("#received_video");
-
-console.log(videoContainer)
+let friendName = document.querySelector('#room-name');
+if (friendName) {
+    friendName = JSON.parse(friendName.textContent)
+} else {
+    friendName = null
+}
+let targetUsername = friendName;
 
 export const closeVideoCall = () => {
     if (myPeerConnection) {
@@ -251,3 +251,7 @@ const createPeerConnection = () => {
     myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
     myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
 }
+
+// Start the call if the user clicks the "call" button.
+// This is only possible if the user is in the chatroom page hence the conditional statement
+if (videoCallIcon) videoCallIcon.addEventListener("click", invite)

@@ -223,7 +223,7 @@ class CallConsumer(AsyncWebsocketConsumer):
         await self.accept()
         await self.channel_layer.group_add("calls", self.channel_name)
 
-    async def disconnect(self) -> None:
+    async def disconnect(self,close_code) -> None:
         await self.channel_layer.group_discard("calls", self.channel_name)
 
     async def receive(self, text_data: str, bytes_data: bytes = None) -> None:
