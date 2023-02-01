@@ -30,7 +30,7 @@
             </span>
         </div>
     </div>
-    <div class="video-container d-none">
+    {% comment %} <div class="video-container d-none">
         <div class="video-box">
             <video class="incoming-video" id="received_video" autoplay></video>
             <video class="user-video" id="local_video" autoplay></video>
@@ -43,7 +43,7 @@
                 <i class="fa fa-phone" aria-hidden="true"></i> 
             </span> 
         </div>
-    </div>
+    </div>  {% endcomment %}
     <div class="messages">
         {% for message in messages %}
             {% if message.sender == request.user %}

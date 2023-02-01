@@ -26,6 +26,20 @@
                 {% block header_settings %}
                 {% endblock  %}
 
+                <div class="video-container d-none">
+                    <div class="video-box">
+                        <video class="incoming-video" id="received_video" autoplay></video>
+                        <video class="user-video" id="local_video" autoplay></video>
+                        <div class="call-control d-none">
+                            <span id="accept_call" class="call-control-button"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                            <span id="reject_call" class="call-control-button"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                        </div>  
+                        
+                        <span class ="call-control-button " id="hangup-button">
+                            <i class="fa fa-phone" aria-hidden="true"></i> 
+                        </span> 
+                    </div>
+                </div> 
                 {% block friends %}
                 {% endblock  %} 
 

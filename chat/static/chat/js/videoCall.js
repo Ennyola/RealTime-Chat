@@ -16,6 +16,7 @@ let myStream = null;
 let userVideo = document.querySelector("#local_video")
 let incomingVideo = document.querySelector("#received_video");
 
+console.log(videoContainer)
 
 export const closeVideoCall = () => {
     if (myPeerConnection) {
@@ -66,6 +67,7 @@ const handleGetUserMediaError = (e) => {
     }
     // The caller initiating the call
 export const invite = async(e) => {
+
     if (myPeerConnection) {
         alert("You can't start a call because you already have one open!");
     } else {
