@@ -216,3 +216,107 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                     }
                 )
             )
+
+
+class CallConsumer(AsyncWebsocketConsumer):
+    async def connect(self) -> None:
+        await self.accept()
+        await self.channel_layer.group_add("calls", self.channel_name)
+
+    async def disconnect(self) -> None:
+        pass
+
+    async def receive(self, text_data: str, bytes_data: bytes = None) -> None:
+        text_data_json = json.loads(text_data)
+        if text_data_json["type"] == "video-offer":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "video_offer",
+                    "msg_type": text_data_json["type"],
+                    "caller": text_data_json["caller"],
+                    "target": text_data_json["target"],
+                    "sdp": text_data_json["sdp"],
+                },
+            )
+        if text_data_json["type"] == "video-answer":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "video_answer",
+                    "msg_type": text_data_json["type"],
+                    "caller": text_data_json["caller"],
+                    "target": text_data_json["target"],
+                    "sdp": text_data_json["sdp"],
+                },
+            )
+        if text_data_json["type"] == "new-ice-candidate":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "new_ice_candidate",
+                    "msg_type": text_data_json["type"],
+                    "target": text_data_json["target"],
+                    "candidate": text_data_json["candidate"],
+                },
+            )
+        if text_data_json["type"] == "hang-up":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "hang_up",
+                    "msg_type": text_data_json["type"],
+                    "target": text_data_json["target"],
+                    "name": text_data_json["name"],
+                },
+            )
+
+    async def video_offer(self, event):
+        # If caller is not the currently logged in user, send the offer to the user.
+        if self.scope["user"].username != event["caller"].strip('"'):
+            await self.send(
+                json.dumps(
+                    {
+                        "type": event["msg_type"],
+                        "caller": event["caller"],
+                        "target": event["target"],
+                        "sdp": event["sdp"],
+                    }
+                )
+            )
+
+    async def video_answer(self, event):
+        if self.scope["user"].username != event["caller"].strip('"'):
+            await self.send(
+                json.dumps(
+                    {
+                        "type": event["msg_type"],
+                        "caller": event["caller"],
+                        "target": event["target"],
+                        "sdp": event["sdp"],
+                    }
+                )
+            )
+
+    async def new_ice_candidate(self, event):
+        if self.scope["user"].username == event["target"].strip('"'):
+            await self.send(
+                json.dumps(
+                    {
+                        "type": event["msg_type"],
+                        "target": event["target"],
+                        "candidate": event["candidate"],
+                    }
+                )
+            )
+
+    async def hang_up(self, event):
+        await self.send(
+            json.dumps(
+                {
+                    "type": event["msg_type"],
+                    "target": event["target"],
+                    "name": event["name"],
+                }
+            )
+        )
