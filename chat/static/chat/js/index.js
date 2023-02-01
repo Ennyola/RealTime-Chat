@@ -5,18 +5,27 @@ import {
     handleNewICECandidateMsg,
     handleHangUpMsg,
     hangUpCall
-} from "./videoCall.js";
-import { formatAMPM } from "./chatroom.js";
+} from "/static/chat/js/videoCall.js";
+// import { formatAMPM } from "/static/chat/js/chatroom.js";
 
-
+const formatAMPM = (date) => {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+}
 
 
 const videoCallIcon = document.querySelector("#video-call-icon");
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 export const chatSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/chat/${friendName}/`);
 const currentuUser = document.querySelector("#username").textContent;
-const hangupButton = document.querySelector('#hangup-button');
-const callControlContainer = document.querySelector('.call-control')
+export var hangupButton = document.querySelector('#hangup-button');
+export var callControlContainer = document.querySelector('.call-control')
 
 let chatHolder = document.querySelectorAll(".messages")[0];
 
@@ -53,20 +62,20 @@ chatSocket.addEventListener('message', (e) => {
             chatHolder.innerHTML += text
             chatHolder.scrollTop = chatHolder.scrollHeight;
             break;
-        case "video-offer":
-            callControlContainer.classList.remove('d-none')
-            hangupButton.classList.add("d-none")
-            handleVideoOfferMsg(msg)
-            break;
-        case "video-answer":
-            handleVideoAnswerMsg(msg)
-            break;
-        case "new-ice-candidate":
-            handleNewICECandidateMsg(msg)
-            break;
-        case "hang-up":
-            handleHangUpMsg(msg)
-            break;
+            // case "video-offer":
+            //     callControlContainer.classList.remove('d-none')
+            //     hangupButton.classList.add("d-none")
+            //     handleVideoOfferMsg(msg)
+            //     break;
+            // case "video-answer":
+            //     handleVideoAnswerMsg(msg)
+            //     break;
+            // case "new-ice-candidate":
+            //     handleNewICECandidateMsg(msg)
+            //     break;
+            // case "hang-up":
+            //     handleHangUpMsg(msg)
+            //     break;
         default:
             break;
     }

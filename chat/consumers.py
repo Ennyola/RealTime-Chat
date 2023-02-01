@@ -224,13 +224,13 @@ class CallConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add("calls", self.channel_name)
 
     async def disconnect(self) -> None:
-        pass
+        await self.channel_layer.group_discard("calls", self.channel_name)
 
     async def receive(self, text_data: str, bytes_data: bytes = None) -> None:
         text_data_json = json.loads(text_data)
         if text_data_json["type"] == "video-offer":
             await self.channel_layer.group_send(
-                self.room_group_name,
+                "calls",
                 {
                     "type": "video_offer",
                     "msg_type": text_data_json["type"],
@@ -241,7 +241,7 @@ class CallConsumer(AsyncWebsocketConsumer):
             )
         if text_data_json["type"] == "video-answer":
             await self.channel_layer.group_send(
-                self.room_group_name,
+                "calls",
                 {
                     "type": "video_answer",
                     "msg_type": text_data_json["type"],
@@ -252,7 +252,7 @@ class CallConsumer(AsyncWebsocketConsumer):
             )
         if text_data_json["type"] == "new-ice-candidate":
             await self.channel_layer.group_send(
-                self.room_group_name,
+                "calls",
                 {
                     "type": "new_ice_candidate",
                     "msg_type": text_data_json["type"],
@@ -262,7 +262,7 @@ class CallConsumer(AsyncWebsocketConsumer):
             )
         if text_data_json["type"] == "hang-up":
             await self.channel_layer.group_send(
-                self.room_group_name,
+                "calls",
                 {
                     "type": "hang_up",
                     "msg_type": text_data_json["type"],

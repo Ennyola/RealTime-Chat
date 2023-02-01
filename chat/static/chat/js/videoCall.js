@@ -1,7 +1,13 @@
-import { chatSocket } from "./index.js";
+import { callWebSocket } from "/static/js/base.js";
 const user = document.querySelector("#username").textContent;
 const videoContainer = document.querySelector('.video-container')
-const friendName = JSON.parse(document.getElementById('room-name').textContent);
+let friendName = document.querySelector('#room-name');
+if (friendName) {
+    friendName = JSON.parse(friendName.textContent)
+} else {
+    friendName = null
+}
+console.log(friendName)
 const acceptCall = document.querySelector("#accept_call");
 const rejectCall = document.querySelector("#reject_call");
 const callControlContainer = document.querySelector('.call-control')
@@ -96,7 +102,7 @@ export const handleNegotiationNeededEvent = async() => {
         }
 
         await myPeerConnection.setLocalDescription(offer);
-        chatSocket.send(JSON.stringify({
+        callWebSocket.send(JSON.stringify({
             caller: user,
             target: targetUsername,
             type: "video-offer",
@@ -111,7 +117,7 @@ export const handleNegotiationNeededEvent = async() => {
 
 export const hangUpCall = () => {
     closeVideoCall();
-    chatSocket.send(JSON.stringify({
+    callWebSocket.send(JSON.stringify({
         name: user,
         target: targetUsername,
         type: "hang-up"
@@ -119,7 +125,7 @@ export const hangUpCall = () => {
 }
 
 
-export const handleVideoOfferMsg = async(msg) => {
+export var handleVideoOfferMsg = async(msg) => {
     targetUsername = msg.caller;
     createPeerConnection();
 
@@ -137,7 +143,7 @@ export const handleVideoOfferMsg = async(msg) => {
 
         let answer = await myPeerConnection.createAnswer();
         await myPeerConnection.setLocalDescription(answer);
-        await chatSocket.send(JSON.stringify({
+        await callWebSocket.send(JSON.stringify({
                 caller: user,
                 target: targetUsername,
                 type: "video-answer",
@@ -154,7 +160,7 @@ export const handleVideoOfferMsg = async(msg) => {
 
 }
 
-export const handleVideoAnswerMsg = (msg) => {
+export var handleVideoAnswerMsg = (msg) => {
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
     let desc = new RTCSessionDescription(msg.sdp);
@@ -164,7 +170,7 @@ export const handleVideoAnswerMsg = (msg) => {
 
 export const handleICECandidateEvent = (event) => {
     if (event.candidate) {
-        chatSocket.send(JSON.stringify({
+        callWebSocket.send(JSON.stringify({
             type: "new-ice-candidate",
             target: targetUsername,
             candidate: event.candidate
@@ -172,8 +178,9 @@ export const handleICECandidateEvent = (event) => {
     };
 }
 
-export const handleNewICECandidateMsg = (msg) => {
+export var handleNewICECandidateMsg = (msg) => {
     let candidate = new RTCIceCandidate(msg.candidate);
+    console.log(candidate)
     myPeerConnection.addIceCandidate(candidate)
         .catch(reportError);
 }
@@ -221,7 +228,7 @@ export const handleICEGatheringStateChangeEvent = (event) => {
     console.log(event)
 }
 
-export const handleHangUpMsg = (msg) => {
+export var handleHangUpMsg = (msg) => {
     closeVideoCall();
 }
 

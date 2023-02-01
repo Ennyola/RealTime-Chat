@@ -1,9 +1,9 @@
-import { chatSocket } from './index.js'
+import { chatSocket } from '/static/chat/js/index.js'
 const currentuUser = document.querySelector("#username").textContent;
 let inputBox = document.querySelector("#input-message"),
     sendButton = document.querySelector("#send-button")
 
-export const formatAMPM = (date) => {
+export var formatAMPM = (date) => {
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'pm' : 'am';

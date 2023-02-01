@@ -17,7 +17,6 @@
 
 {% block chat-room %}
     {{room_name|json_script:"room-name"}}
-    {{request.user.username|json_script:"username"}}
     <div class="header-settings">
         <div class="single-friend">
             <img src="{{display_picture}}" class="display-picture" alt="friend-picture">
@@ -30,20 +29,6 @@
             </span>
         </div>
     </div>
-    {% comment %} <div class="video-container d-none">
-        <div class="video-box">
-            <video class="incoming-video" id="received_video" autoplay></video>
-            <video class="user-video" id="local_video" autoplay></video>
-            <div class="call-control d-none">
-                <span id="accept_call" class="call-control-button"><i class="fa fa-phone" aria-hidden="true"></i></span>
-                <span id="reject_call" class="call-control-button"><i class="fa fa-phone" aria-hidden="true"></i></span>
-            </div>  
-            
-            <span class ="call-control-button " id="hangup-button">
-                <i class="fa fa-phone" aria-hidden="true"></i> 
-            </span> 
-        </div>
-    </div>  {% endcomment %}
     <div class="messages">
         {% for message in messages %}
             {% if message.sender == request.user %}
