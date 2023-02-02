@@ -8,7 +8,6 @@ const callControlContainer = document.querySelector('.call-control')
 const hangupButton = document.querySelector('#hangup-button');
 const mediaConstraints = {
     audio: true,
-    video: true
 };
 const videoCallIcon = document.querySelector("#video-call-icon");
 
@@ -72,15 +71,17 @@ const handleGetUserMediaError = (e) => {
         closeVideoCall();
     }
     // The caller initiating the call
-export const invite = async(e) => {
-
+export const invite = async(type) => {
     if (myPeerConnection) {
         alert("You can't start a call because you already have one open!");
     } else {
         createPeerConnection();
         try {
+            if (type === "video-call") {
+                mediaConstraints["video"] = true;
+            }
             myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
-                // Make the user videos visible
+                // Make the user video element visible.
             videoContainer.classList.remove("d-none")
             incomingVideo.srcObject = myStream;
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
@@ -126,6 +127,7 @@ export const hangUpCall = () => {
 
 
 export var handleVideoOfferMsg = async(msg) => {
+    if (msg.type === "video-offer") mediaConstraints["video"] = true;
     targetUsername = msg.caller;
     createPeerConnection();
 
@@ -254,4 +256,6 @@ const createPeerConnection = () => {
 
 // Start the call if the user clicks the "call" button.
 // This is only possible if the user is in the chatroom page hence the conditional statement
-if (videoCallIcon) videoCallIcon.addEventListener("click", invite)
+if (videoCallIcon) videoCallIcon.addEventListener("click", () => {
+    invite("video-call")
+})

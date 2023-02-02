@@ -46,59 +46,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        if text_data_json["type"] == "message":
-            message = text_data_json["messageContent"]
-            sender = text_data_json["sender"]
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {"type": "chat_message", "message": message, "sender": sender},
-            )
-        else:
-            if text_data_json["type"] == "video-offer":
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        "type": "video_offer",
-                        "msg_type": text_data_json["type"],
-                        "caller": text_data_json["caller"],
-                        "target": text_data_json["target"],
-                        "sdp": text_data_json["sdp"],
-                    },
-                )
-            if text_data_json["type"] == "video-answer":
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        "type": "video_answer",
-                        "msg_type": text_data_json["type"],
-                        "caller": text_data_json["caller"],
-                        "target": text_data_json["target"],
-                        "sdp": text_data_json["sdp"],
-                    },
-                )
-            if text_data_json["type"] == "new-ice-candidate":
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        "type": "new_ice_candidate",
-                        "msg_type": text_data_json["type"],
-                        "target": text_data_json["target"],
-                        "candidate": text_data_json["candidate"],
-                    },
-                )
-            if text_data_json["type"] == "hang-up":
-                await self.channel_layer.group_send(
-                    self.room_group_name,
-                    {
-                        "type": "hang_up",
-                        "msg_type": text_data_json["type"],
-                        "target": text_data_json["target"],
-                        "name": text_data_json["name"],
-                    },
-                )
-
-                # await self.send(json.dumps(text_data_json))
-
+        message = text_data_json["messageContent"]
+        sender = text_data_json["sender"]
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {"type": "chat_message", "message": message, "sender": sender},
+        )
+        
     # Receive message from room group
     async def chat_message(self, event):
         message = event["message"]
