@@ -1,7 +1,7 @@
 import { callWebSocket } from "/static/js/webSocket.js";
 
-const user = document.querySelector("#username").textContent;
-const videoContainer = document.querySelector('.video-container')
+const user = JSON.parse(document.querySelector("#username").textContent);
+const videoContainer = document.querySelector('.video-container');
 const acceptCall = document.querySelector("#accept_call");
 const rejectCall = document.querySelector("#reject_call");
 const callControlContainer = document.querySelector('.call-control')
@@ -10,7 +10,7 @@ const mediaConstraints = {
     audio: true,
 };
 const videoCallIcon = document.querySelector("#video-call-icon");
-
+let friendDisplayPicture = document.querySelector(".display-picture");
 let myPeerConnection = null;
 let myStream = null;
 let userVideo = document.querySelector("#local_video")
@@ -20,6 +20,9 @@ if (friendName) {
     friendName = JSON.parse(friendName.textContent)
 } else {
     friendName = null
+}
+if (friendDisplayPicture) {
+    friendDisplayPicture = friendDisplayPicture.src
 }
 let targetUsername = friendName;
 
