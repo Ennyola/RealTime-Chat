@@ -87,6 +87,9 @@ export const invite = async(type) => {
                 // Make the user video element visible.
             videoContainer.classList.remove("d-none")
             incomingVideo.srcObject = myStream;
+            if (type === "voice-call") {
+                incomingVideo.style.background = "yellow"
+            }
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
         } catch (error) {
             handleGetUserMediaError(error)
