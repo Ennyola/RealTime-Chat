@@ -1,15 +1,12 @@
 import { callWebSocket } from "/static/js/webSocket.js";
 
 const user = JSON.parse(document.querySelector("#username").textContent);
+const userDisplayPicture = JSON.parse(document.querySelector("#user-display-picture").textContent);
 const videoContainer = document.querySelector('.video-container');
 const acceptCall = document.querySelector("#accept_call");
 const rejectCall = document.querySelector("#reject_call");
 const callControlContainer = document.querySelector('.call-control')
 const hangupButton = document.querySelector('#hangup-button');
-let mediaConstraints = {
-    audio: true,
-    video: false
-};
 const videoCallIcon = document.querySelector("#video-call-icon");
 const voiceCallIcon = document.querySelector("#voice-call-icon");
 let friendDisplayPicture = document.querySelector("#friend-display-picture");
@@ -18,10 +15,12 @@ let myStream = null;
 let userVideo = document.querySelector("#local_video")
 let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
+let mediaConstraints = {
+    audio: true,
+    video: false
+};
 if (friendName) {
     friendName = JSON.parse(friendName.textContent)
-} else {
-    friendName = null
 }
 if (friendDisplayPicture) {
     friendDisplayPicture = friendDisplayPicture.src
@@ -50,10 +49,11 @@ export const closeVideoCall = () => {
         myStream = null;
     }
 
-    // incomingVideo.removeAttribute("src");
-    // incomingVideo.removeAttribute("srcObject");
-    // userVideo.removeAttribute("src");
-    // incomingVideo.removeAttribute("srcObject");
+    incomingVideo.removeAttribute("src");
+    incomingVideo.removeAttribute("srcObject");
+    userVideo.removeAttribute("src");
+    incomingVideo.removeAttribute("srcObject");
+    incomingVideo.style.background = `none`;
     // document.querySelector("#hangup-button").disabled = true;
     videoContainer.classList.add("d-none")
     mediaConstraints["video"] = false;
@@ -104,7 +104,6 @@ export const invite = async(type) => {
 export const handleNegotiationNeededEvent = async() => {
     try {
         let offer = await myPeerConnection.createOffer();
-
         // If the connection hasn't yet achieved the "stable" state,
         // return to the caller. Another negotiationneeded event
         // will be fired when the state stabilizes.
@@ -113,13 +112,22 @@ export const handleNegotiationNeededEvent = async() => {
         }
 
         await myPeerConnection.setLocalDescription(offer);
-        callWebSocket.send(JSON.stringify({
-            caller: user,
-            target: targetUsername,
-            type: "video-offer",
-            sdp: myPeerConnection.localDescription
-        }));
-
+        if (myStream.getTracks().length === 1 && myStream.getTracks()[0].kind === "audio") {
+            callWebSocket.send(JSON.stringify({
+                caller: user,
+                target: targetUsername,
+                type: "offer",
+                callerPicture: userDisplayPicture,
+                sdp: myPeerConnection.localDescription,
+            }));
+        } else {
+            callWebSocket.send(JSON.stringify({
+                caller: user,
+                target: targetUsername,
+                type: "offer",
+                sdp: myPeerConnection.localDescription
+            }));
+        }
     } catch (e) {
         reportError(e)
     }
@@ -137,12 +145,21 @@ export const hangUpCall = () => {
 
 
 export var handleVideoOfferMsg = async(msg) => {
-    if (msg.type === "video-offer") mediaConstraints["video"] = true;
     targetUsername = msg.caller;
     createPeerConnection();
-
     videoContainer.classList.remove("d-none")
-        // Opens the camera and microphone of the calle
+
+    // This conditions checks if the incoming call is a video call or a voice call.
+    // If the incoming call is a voice call, the background of the incoming video 
+    // element is set to the caller's display picture.
+    if (msg.caller_picture) {
+        incomingVideo.style.background = `url(${msg.caller_picture}) no-repeat center center`;
+        incomingVideo.style.backgroundSize = "cover";
+    } else {
+        mediaConstraints["video"] = true;
+    }
+
+    // Opens the camera and microphone of the calle
     myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
     // Add the stream to the video element
     incomingVideo.srcObject = myStream;
@@ -158,7 +175,7 @@ export var handleVideoOfferMsg = async(msg) => {
         await callWebSocket.send(JSON.stringify({
                 caller: user,
                 target: targetUsername,
-                type: "video-answer",
+                type: "answer",
                 sdp: myPeerConnection.localDescription
             }))
             //makes the accept and reject button disappear

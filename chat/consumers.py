@@ -59,62 +59,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         sender = event["sender"]
         # If the currently logged in user is not the sender, do not save the message sent to the server.
         # This logic is useful because we do not want to save the message twice in the database.
-        if self.scope["user"].username == sender.strip('"'):
+        if self.scope["user"].username == sender:
             await self.save_message(self.scope["user"], message, self.room)
         # Send message to WebSocket
         await self.send(
             text_data=json.dumps(
                 {"type": "message", "message_content": message, "sender": sender}
-            )
-        )
-
-    async def video_offer(self, event):
-        # If caller is not the currently logged in user, send the offer to the user.
-        if self.scope["user"].username != event["caller"].strip('"'):
-            await self.send(
-                json.dumps(
-                    {
-                        "type": event["msg_type"],
-                        "caller": event["caller"],
-                        "target": event["target"],
-                        "sdp": event["sdp"],
-                    }
-                )
-            )
-
-    async def video_answer(self, event):
-        if self.scope["user"].username != event["caller"].strip('"'):
-            await self.send(
-                json.dumps(
-                    {
-                        "type": event["msg_type"],
-                        "caller": event["caller"],
-                        "target": event["target"],
-                        "sdp": event["sdp"],
-                    }
-                )
-            )
-
-    async def new_ice_candidate(self, event):
-        if self.scope["user"].username == event["target"].strip('"'):
-            await self.send(
-                json.dumps(
-                    {
-                        "type": event["msg_type"],
-                        "target": event["target"],
-                        "candidate": event["candidate"],
-                    }
-                )
-            )
-
-    async def hang_up(self, event):
-        await self.send(
-            json.dumps(
-                {
-                    "type": event["msg_type"],
-                    "target": event["target"],
-                    "name": event["name"],
-                }
             )
         )
 
@@ -182,22 +132,23 @@ class CallConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data: str, bytes_data: bytes = None) -> None:
         text_data_json = json.loads(text_data)
-        if text_data_json["type"] == "video-offer":
+        if text_data_json["type"] == "offer":
             await self.channel_layer.group_send(
                 "calls",
                 {
-                    "type": "video_offer",
+                    "type": "offer",
                     "msg_type": text_data_json["type"],
                     "caller": text_data_json["caller"],
                     "target": text_data_json["target"],
-                    "sdp": text_data_json["sdp"],
+                    "caller_picture": text_data_json.get("callerPicture"),
+                    "sdp": text_data_json["sdp"]
                 },
             )
-        if text_data_json["type"] == "video-answer":
+        if text_data_json["type"] == "answer":
             await self.channel_layer.group_send(
                 "calls",
                 {
-                    "type": "video_answer",
+                    "type": "answer",
                     "msg_type": text_data_json["type"],
                     "caller": text_data_json["caller"],
                     "target": text_data_json["target"],
@@ -225,22 +176,24 @@ class CallConsumer(AsyncWebsocketConsumer):
                 },
             )
 
-    async def video_offer(self, event):
+    async def offer(self, event):
         # If caller is not the currently logged in user, send the offer to the user.
-        if self.scope["user"].username != event["caller"].strip('"'):
+        if self.scope["user"].username != event["caller"]:
+            print(event["caller"])
             await self.send(
                 json.dumps(
                     {
                         "type": event["msg_type"],
                         "caller": event["caller"],
                         "target": event["target"],
+                        "caller_picture": event["caller_picture"],
                         "sdp": event["sdp"],
                     }
                 )
             )
 
-    async def video_answer(self, event):
-        if self.scope["user"].username != event["caller"].strip('"'):
+    async def answer(self, event):
+        if self.scope["user"].username != event["caller"]:
             await self.send(
                 json.dumps(
                     {
@@ -253,7 +206,7 @@ class CallConsumer(AsyncWebsocketConsumer):
             )
 
     async def new_ice_candidate(self, event):
-        if self.scope["user"].username == event["target"].strip('"'):
+        if self.scope["user"].username == event["target"]:
             await self.send(
                 json.dumps(
                     {

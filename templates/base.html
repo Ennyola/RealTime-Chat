@@ -19,6 +19,7 @@
         <div class="row g-0">
             <div class="col-md-4 left-section">
                 {{request.user.username|json_script:"username"}}
+                {{request.user.userprofile.get_image|json_script:"user-display-picture"}}
                 {% comment %} 
                     Header settings snippet found in most 
                     pages containg the user d.p and links to other pages 

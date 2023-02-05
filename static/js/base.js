@@ -19,12 +19,12 @@ hangupButton.addEventListener("click", (e) => {
 callWebSocket.addEventListener('message', (e) => {
     const msg = JSON.parse(e.data)
     switch (msg.type) {
-        case "video-offer":
+        case "offer":
             callControlContainer.classList.remove('d-none')
             hangupButton.classList.add("d-none")
             handleVideoOfferMsg(msg)
             break;
-        case "video-answer":
+        case "answer":
             handleVideoAnswerMsg(msg)
             break;
         case "new-ice-candidate":
