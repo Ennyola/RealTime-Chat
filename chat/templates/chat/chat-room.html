@@ -19,13 +19,12 @@
     {{room_name|json_script:"room-name"}}
     <div class="header-settings">
         <div class="single-friend">
-            {{display_picture|json_script:"friend-display-picture"}}}
-            <img src="{{display_picture}}" class="display-picture" alt="friend-picture">
+            <img src="{{display_picture}}" id="friend-display-picture" class="display-picture" alt="friend-picture">
             <div class="text">
                 <h6> {{room_name}}</h6>
             </div>
             <span class="settings-icon">
-                <i class="fas fa-phone"></i>
+                <i id="voice-call-icon" class="fas fa-phone"></i>
                 <i id="video-call-icon" class="fas fa-video"></i>
             </span>
         </div>

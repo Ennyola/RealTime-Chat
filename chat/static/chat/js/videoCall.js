@@ -6,11 +6,13 @@ const acceptCall = document.querySelector("#accept_call");
 const rejectCall = document.querySelector("#reject_call");
 const callControlContainer = document.querySelector('.call-control')
 const hangupButton = document.querySelector('#hangup-button');
-const mediaConstraints = {
+let mediaConstraints = {
     audio: true,
+    video: false
 };
 const videoCallIcon = document.querySelector("#video-call-icon");
-let friendDisplayPicture = document.querySelector(".display-picture");
+const voiceCallIcon = document.querySelector("#voice-call-icon");
+let friendDisplayPicture = document.querySelector("#friend-display-picture");
 let myPeerConnection = null;
 let myStream = null;
 let userVideo = document.querySelector("#local_video")
@@ -54,6 +56,7 @@ export const closeVideoCall = () => {
     // incomingVideo.removeAttribute("srcObject");
     // document.querySelector("#hangup-button").disabled = true;
     videoContainer.classList.add("d-none")
+    mediaConstraints["video"] = false;
 }
 
 const handleGetUserMediaError = (e) => {
@@ -88,7 +91,8 @@ export const invite = async(type) => {
             videoContainer.classList.remove("d-none")
             incomingVideo.srcObject = myStream;
             if (type === "voice-call") {
-                incomingVideo.style.background = "yellow"
+                incomingVideo.style.background = `url(${friendDisplayPicture}) no-repeat center center`;
+                incomingVideo.style.backgroundSize = "cover";
             }
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
         } catch (error) {
@@ -188,7 +192,6 @@ export const handleICECandidateEvent = (event) => {
 
 export var handleNewICECandidateMsg = (msg) => {
     let candidate = new RTCIceCandidate(msg.candidate);
-    console.log(candidate)
     myPeerConnection.addIceCandidate(candidate)
         .catch(reportError);
 }
@@ -233,7 +236,10 @@ export const handleSignalingStateChangeEvent = (event) => {
 };
 
 export const handleICEGatheringStateChangeEvent = (event) => {
-    console.log(event)
+    switch (myPeerConnection.iceGatheringState) {
+        case "complete":
+            break;
+    }
 }
 
 export var handleHangUpMsg = (msg) => {
@@ -264,4 +270,7 @@ const createPeerConnection = () => {
 // This is only possible if the user is in the chatroom page hence the conditional statement
 if (videoCallIcon) videoCallIcon.addEventListener("click", () => {
     invite("video-call")
+})
+if (voiceCallIcon) voiceCallIcon.addEventListener("click", () => {
+    invite("voice-call")
 })
