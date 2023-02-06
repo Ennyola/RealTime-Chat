@@ -11,7 +11,7 @@ from .models import Message, Room, Participants
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        print("Connection Established")
+        print("Connection Established in chat consumer")
         self.friend_username = self.scope["url_route"]["kwargs"]["username"]
         self.friend_model_object = await sync_to_async(User.objects.get)(
             username=self.friend_username
@@ -89,6 +89,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        print("Connection Established in notification consumer")
         await self.accept()
         await self.channel_layer.group_add("notifications", self.channel_name)
 
@@ -124,6 +125,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
 
 class CallConsumer(AsyncWebsocketConsumer):
     async def connect(self) -> None:
+        print("Connection Established in call consumer")
         await self.accept()
         await self.channel_layer.group_add("calls", self.channel_name)
 
