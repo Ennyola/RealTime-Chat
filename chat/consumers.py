@@ -52,7 +52,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {"type": "chat_message", "message": message, "sender": sender},
         )
-        
+
     # Receive message from room group
     async def chat_message(self, event):
         message = event["message"]
@@ -127,7 +127,7 @@ class CallConsumer(AsyncWebsocketConsumer):
         await self.accept()
         await self.channel_layer.group_add("calls", self.channel_name)
 
-    async def disconnect(self,close_code) -> None:
+    async def disconnect(self, close_code) -> None:
         await self.channel_layer.group_discard("calls", self.channel_name)
 
     async def receive(self, text_data: str, bytes_data: bytes = None) -> None:
@@ -141,7 +141,7 @@ class CallConsumer(AsyncWebsocketConsumer):
                     "caller": text_data_json["caller"],
                     "target": text_data_json["target"],
                     "caller_picture": text_data_json.get("callerPicture"),
-                    "sdp": text_data_json["sdp"]
+                    "sdp": text_data_json["sdp"],
                 },
             )
         if text_data_json["type"] == "answer":

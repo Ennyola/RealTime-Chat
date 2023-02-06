@@ -60,23 +60,24 @@ export const closeVideoCall = () => {
 }
 
 const handleGetUserMediaError = (e) => {
-        switch (e.name) {
-            case "NotFoundError":
-                alert("Unable to open your call because no camera and/or microphone" +
-                    "were found.");
-                break;
-            case "SecurityError":
-            case "PermissionDeniedError":
-                // Do nothing; this is the same as the user canceling the call.
-                break;
-            default:
-                alert("Error opening your camera and/or microphone: " + e.message);
-                break;
-        }
-
-        closeVideoCall();
+    switch (e.name) {
+        case "NotFoundError":
+            alert("Unable to open your call because no camera and/or microphone" +
+                "were found.");
+            break;
+        case "SecurityError":
+        case "PermissionDeniedError":
+            // Do nothing; this is the same as the user canceling the call.
+            break;
+        default:
+            alert("Error opening your camera and/or microphone: " + e.message);
+            break;
     }
-    // The caller initiating the call
+
+    closeVideoCall();
+}
+
+// The caller initiating the call
 export const invite = async(type) => {
     if (myPeerConnection) {
         alert("You can't start a call because you already have one open!");
@@ -87,7 +88,8 @@ export const invite = async(type) => {
                 mediaConstraints["video"] = true;
             }
             myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
-                // Make the user video element visible.
+
+            // Make the user video element visible.
             videoContainer.classList.remove("d-none")
             incomingVideo.srcObject = myStream;
             if (type === "voice-call") {
@@ -104,6 +106,7 @@ export const invite = async(type) => {
 export const handleNegotiationNeededEvent = async() => {
     try {
         let offer = await myPeerConnection.createOffer();
+
         // If the connection hasn't yet achieved the "stable" state,
         // return to the caller. Another negotiationneeded event
         // will be fired when the state stabilizes.
