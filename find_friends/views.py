@@ -1,7 +1,11 @@
 import random
+
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
+
 from chat.models import Participants, Room
+
+from .models import FriendRequest, Friendship
 
 # Create your views here.
 

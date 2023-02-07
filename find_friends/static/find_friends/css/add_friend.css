@@ -39,23 +39,24 @@
     top: 10px;
 }
 
-.add_users .add-remove a {
-    text-decoration: none;
+.add_users .add-remove button {
     color: white;
     font-weight: bold;
     margin-right: 10px;
-    padding: 10px;
+    padding: 8px;
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 45px;
     transition: ease-in 0.2s;
     font-size: 14px;
+    outline: none;
+    border: none;
 }
 
-.add_users .add-remove a i {
+.add_users .add-remove button i {
     margin-right: 5px;
 }
 
-.add_users .add-remove a:hover {
+.add_users .add-remove button:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 

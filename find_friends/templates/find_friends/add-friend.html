@@ -23,10 +23,14 @@
                         <span>{{user.username}}</span>
                     </div> 
                     <div class="add-remove">
-                        <form action="">
-                            <a href={% url 'find_friends:add_friend' user.id %}> <i class="fas fa-user-plus"></i>Add friend</a> 
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <button>
+                                <i class="fas fa-user-plus"></i>
+                                Add friend
+                            </button>
                             <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
-                        </form>  
+                        </form> 
                     </div>       
                 </div>
             {% endfor %} 
@@ -40,8 +44,12 @@
                         <span>{{user.username}}</span>
                     </div> 
                     <div class="add-remove">
-                        <form action="">
-                            <a href={% url 'find_friends:add_friend' user.id %}> <i class="fas fa-user-plus"></i>Add friend</a> 
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <button>
+                                <i class="fas fa-user-plus"></i>
+                                Add friend
+                            </button>
                             <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
                         </form>  
                     </div>       
