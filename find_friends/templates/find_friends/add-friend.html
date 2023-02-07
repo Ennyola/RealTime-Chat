@@ -14,17 +14,39 @@
 
 {% block friends %}
     <div class="add_users height">
-        {% for user in random_users %}
-            <form>
-                <div class="user">
-                    <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
-                    <span>{{user.username}}</span>
-                </div> 
-                <div class="add-remove">
-                    <a href={% url 'find_friends:add_friend' user.id %}> <i class="fas fa-user-plus"></i>Add friend</a> 
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </div>       
-            </form>
-        {% endfor %}
+        <div class="friend-requests">
+            <h5 class="friend-request-header">Friend Requests</h5>
+            {% for user in random_users %}
+                <div class="users">
+                    <div class="user">
+                        <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
+                        <span>{{user.username}}</span>
+                    </div> 
+                    <div class="add-remove">
+                        <form action="">
+                            <a href={% url 'find_friends:add_friend' user.id %}> <i class="fas fa-user-plus"></i>Add friend</a> 
+                            <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
+                        </form>  
+                    </div>       
+                </div>
+            {% endfor %} 
+        </div>
+        <div class="send-requests">
+            <h5 class="send-request-header">Add Friends</h5>
+            {% for user in random_users %}
+                <div class="users">
+                    <div class="user">
+                        <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
+                        <span>{{user.username}}</span>
+                    </div> 
+                    <div class="add-remove">
+                        <form action="">
+                            <a href={% url 'find_friends:add_friend' user.id %}> <i class="fas fa-user-plus"></i>Add friend</a> 
+                            <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
+                        </form>  
+                    </div>       
+                </div>
+            {% endfor %}
+        </div>      
     </div>
 {% endblock  %}

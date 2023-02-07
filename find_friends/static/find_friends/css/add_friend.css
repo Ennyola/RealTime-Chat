@@ -1,65 +1,83 @@
-
-.height{
-    height:620px;
-    overflow-y:auto;
+.height {
+    height: 85vh;
+    overflow-y: auto;
 }
 
-
-.add_users form{
-    margin:10px;
-    padding:10px;
+.users {
     display: flex;
-    justify-content:space-between;
+    margin: 10px;
+    padding: 10px;
+    justify-content: space-between;
 }
 
-.add_users .user span{
-    margin:5px;
-    padding:5px;
-    border-radius:5px;
-}
-.add_users .add-remove{
+.users form {
     position: relative;
-    top:10px;
+    bottom: 10px;
+    padding: 5px;
 }
 
-.add_users .add-remove a{
-    text-decoration:none;
+.friend-requests,
+.send-requests {
+    padding: 10px;
+}
+
+.friend-request-header,
+.send-request-header {
+    margin: 10px;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.add_users .user span {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.add_users .add-remove {
+    position: relative;
+    top: 10px;
+}
+
+.add_users .add-remove a {
+    text-decoration: none;
     color: white;
-    font-weight:bold;
-    margin-right:10px;
-    padding:10px;
-    background-color: rgba(255,255,255,0.2);
-    border-radius:45px;
-    transition:ease-in 0.2s;
-    font-size:14px;
-}
-.add_users .add-remove a i{
-    margin-right:5px;
+    font-weight: bold;
+    margin-right: 10px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 45px;
+    transition: ease-in 0.2s;
+    font-size: 14px;
 }
 
-.add_users .add-remove a:hover{
-    background-color: rgba(255,255,255,0.1);
+.add_users .add-remove a i {
+    margin-right: 5px;
 }
 
-.add_users .add-remove i{
-    cursor: pointer;
-}
-.add_users .add-remove i:hover{
-    color:rgba(255,255,255,0.5);
+.add_users .add-remove a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.friends .friend{
-    margin:10px 0px;
-    padding:10px;
+#remove-user {
     cursor: pointer;
 }
 
-.friends .friend:hover{
-    background-color: rgba(255,255,255,0.1);
+#remove-user:hover {
+    color: rgba(255, 255, 255, 0.5);
 }
 
+.friends .friend {
+    margin: 10px 0px;
+    padding: 10px;
+    cursor: pointer;
+}
 
-.friends .friend span{
-    margin:5px;
-    padding:5px;
+.friends .friend:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.friends .friend span {
+    margin: 5px;
+    padding: 5px;
 }
