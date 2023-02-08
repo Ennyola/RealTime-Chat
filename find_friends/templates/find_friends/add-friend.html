@@ -27,7 +27,7 @@
                             {% csrf_token %}
                             <button>
                                 <i class="fas fa-user-plus"></i>
-                                Add friend
+                                Accept
                             </button>
                             <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
                         </form> 
@@ -44,10 +44,11 @@
                         <span>{{user.username}}</span>
                     </div> 
                     <div class="add-remove">
-                        <form action="" method="post">
+                        <form action=" {% url 'find_friends:add_friend' user.id %} " method="post">
                             {% csrf_token %}
-                            <button>
+                            <button name="send-request">
                                 <i class="fas fa-user-plus"></i>
+                                {% comment %} <i class="fas fa-user-check"></i> {% endcomment %}
                                 Add friend
                             </button>
                             <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>

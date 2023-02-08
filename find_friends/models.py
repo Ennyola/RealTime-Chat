@@ -29,7 +29,6 @@ class FriendRequest(models.Model):
     to_user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="friend_requests_received"
     )
-    message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 

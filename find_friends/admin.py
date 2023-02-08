@@ -10,4 +10,4 @@ class FriendshipAdmin(admin.ModelAdmin):
     
 @admin.register(FriendRequest)
 class FriendshipRequestAdmin(admin.ModelAdmin):
-    list_display = ("from_user", "to_user", "message", "created_at")
+    list_display = ("from_user", "to_user", "created_at")
