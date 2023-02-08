@@ -5,6 +5,16 @@ User = get_user_model()
 
 
 class Friendship(models.Model):
+    ACCEPTED = "ACC"
+    REJECTED = "REJ"
+    PENDING = "PND"
+    CANCELLED = "CNC"
+    STATUS_CHOICES = [
+        (ACCEPTED, "Accepted"),
+        (REJECTED, "Rejected"),
+        (PENDING, "Pending"),
+        (CANCELLED, "Cancelled"),
+    ]
     from_user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="friendships_sent"
     )
@@ -13,13 +23,11 @@ class Friendship(models.Model):
     )
     status = models.CharField(
         max_length=10,
-        choices=[
-            ("pending", "Pending"),
-            ("accepted", "Accepted"),
-            ("rejected", "Rejected"),
-            ("cancelled", "Cancelled"),
-        ],
+        choices=STATUS_CHOICES,
     )
+    
+    def __str__(self):
+        return f"{self.from_user} to {self.to_user} - {self.status}"
 
 
 class FriendRequest(models.Model):
@@ -30,6 +38,9 @@ class FriendRequest(models.Model):
         User, on_delete=models.CASCADE, related_name="friend_requests_received"
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.from_user} to {self.to_user}"
 
 
 class Block(models.Model):
