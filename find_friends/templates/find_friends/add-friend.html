@@ -47,13 +47,17 @@
                     </div> 
                     <div class="add-remove">
                         {% if user in recipients %}
-                            <button name="send-request">
-                                <i class="fas fa-user-check"></i>
-                                Added
-                            </button>
-                            <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
+                            <form action="{% url 'find_friends:send_or_cancel_request' user.id %}">
+                                {% csrf_token %}
+                                <button name="cancel-request">
+                                    <i class="fas fa-user-check"></i>
+                                    {% comment %} <i class="fas fa-user-times"></i> {% endcomment %}
+                                    Added
+                                </button>
+                                <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
+                            </form>
                         {% else %}
-                            <form action=" {% url 'find_friends:send_or_cancel_request' user.id %} " method="post">
+                            <form action="{% url 'find_friends:send_or_cancel_request' user.id %}" method="post">
                                 {% csrf_token %}
                                 <button name="send-request">
                                     <i class="fas fa-user-plus"></i>
@@ -62,8 +66,7 @@
                                 </button>
                                 <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
                             </form>
-                        {% endif %}
-                          
+                        {% endif %} 
                     </div>       
                 </div>
             {% endfor %}

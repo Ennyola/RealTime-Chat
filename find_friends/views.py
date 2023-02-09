@@ -17,7 +17,7 @@ def index(request):
     users = list(User.objects.all().exclude(username=request.user))
     # Getting all the friend requests sent to the current user
     friend_requests = FriendRequest.objects.filter(to_user=request.user)
-    
+
     sent_friend_requests = FriendRequest.objects.filter(from_user=request.user)
     recipients = User.objects.filter(friend_requests_received__in=sent_friend_requests)
     count = len(users)
@@ -25,19 +25,34 @@ def index(request):
         random_five = random.sample(users, count)
     else:
         random_five = random.sample(users, 10)
-    context = {"random_users": random_five, "friend_requests": friend_requests, "recipients": recipients}
+    context = {
+        "random_users": random_five,
+        "friend_requests": friend_requests,
+        "recipients": recipients,
+    }
     return render(request, "find_friends/add-friend.html", context)
 
 
 def send_or_cancel_request(request, id):
     potential_friend = User.objects.get(id=id)
-    friend_request = FriendRequest.objects.create(
-        from_user=request.user, to_user=potential_friend
-    )
-    pending_friendship = Friendship.objects.create(
-        from_user=request.user, to_user=potential_friend, status="PND"
-    )
-    # FriendRequest.objects.filter(to_user=request.user, from_user__in=users).delete()
+    if "send-request" in request.POST:
+        # Send friend request
+        friend_request = FriendRequest.objects.create(
+            from_user=request.user, to_user=potential_friend
+        )
+        pending_friendship = Friendship.objects.create(
+            from_user=request.user, to_user=potential_friend, status="PND"
+        )
+    else:
+        # Cancel friend request
+        FriendRequest.objects.filter(
+            from_user=request.user, to_user=potential_friend
+        ).delete()
+        
+        Friendship.objects.get(
+            from_user=request.user, to_user=potential_friend
+        ).delete()
+        
     return redirect("find_friends:index")
     # Check if a room already exists.
     # if (
