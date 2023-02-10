@@ -52,7 +52,6 @@ def send_or_cancel_request(request, id):
         Friendship.objects.get(
             from_user=request.user, to_user=potential_friend
         ).delete()
-        
     return redirect("find_friends:index")
     # Check if a room already exists.
     # if (
@@ -66,6 +65,8 @@ def send_or_cancel_request(request, id):
     #     Participants.objects.create(user=friend, room=room)
     # return redirect("find_friends:index")
 
+def accept_or_delete_request(request,id):
+    pass
 
 def show_friends(request):
     friend_list = Participants.get_friends(request.user)
