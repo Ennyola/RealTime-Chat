@@ -25,9 +25,9 @@
                             <span>{{friend.from_user.username}}</span>
                         </div> 
                         <div class="add-remove">
-                            <form action="" method="post">
+                            <form action=" {% url 'find_friends:accept_or_delete_request' friend.from_user.id%} " method="post">
                                 {% csrf_token %}
-                                <button>
+                                <button name="accept-request">
                                     <i class="fas fa-user-plus"></i>
                                     Accept
                                 </button>

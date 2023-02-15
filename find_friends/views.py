@@ -48,7 +48,7 @@ def send_or_cancel_request(request, id):
         FriendRequest.objects.filter(
             from_user=request.user, to_user=potential_friend
         ).delete()
-        
+
         Friendship.objects.get(
             from_user=request.user, to_user=potential_friend
         ).delete()
@@ -65,8 +65,28 @@ def send_or_cancel_request(request, id):
     #     Participants.objects.create(user=friend, room=room)
     # return redirect("find_friends:index")
 
-def accept_or_delete_request(request,id):
-    pass
+
+def accept_or_delete_request(request, id):
+    potential_friend = User.objects.get(id=id)
+    if "accept-request" in request.POST:
+        # Accept friend request
+        Friendship.objects.filter(
+            from_user=potential_friend, to_user=request.user
+        ).update(status="ACC")
+        FriendRequest.objects.filter(
+            from_user=potential_friend, to_user=request.user
+        ).delete()
+        # Create a room for the two users
+        room = Room.objects.create(name=f"{request.user}_{potential_friend.username}")
+        Participants.objects.create(user=request.user, room=room)
+        Participants.objects.create(user=potential_friend, room=room)
+    else:
+        # Delete friend request
+        Friendship.objects.filter(
+            from_user=potential_friend, to_user=request.user
+        ).delete()
+    return redirect("find_friends:index")
+
 
 def show_friends(request):
     friend_list = Participants.get_friends(request.user)
