@@ -2,6 +2,7 @@ import random
 
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 from chat.models import Participants, Room
 
@@ -13,20 +14,13 @@ User = get_user_model()
 
 
 def index(request):
-
-    users = list(User.objects.all().exclude(username=request.user))
+    users = User.objects.exclude(username=request.user).order_by('?')[:10]
     # Getting all the friend requests sent to the current user
     friend_requests = FriendRequest.objects.filter(to_user=request.user)
-
     sent_friend_requests = FriendRequest.objects.filter(from_user=request.user)
     recipients = User.objects.filter(friend_requests_received__in=sent_friend_requests)
-    count = len(users)
-    if count < 10:
-        random_five = random.sample(users, count)
-    else:
-        random_five = random.sample(users, 10)
     context = {
-        "random_users": random_five,
+        "random_users": users,
         "friend_requests": friend_requests,
         "recipients": recipients,
     }
@@ -53,17 +47,7 @@ def send_or_cancel_request(request, id):
             from_user=request.user, to_user=potential_friend
         ).delete()
     return redirect("find_friends:index")
-    # Check if a room already exists.
-    # if (
-    #     Room.objects.filter(name=f"{friend.username}_{request.user}").exists()
-    #     or Room.objects.filter(name=f"{request.user}_{friend.username}").exists()
-    # ):
-    #     print("User already added")
-    # else:
-    #     room = Room.objects.create(name=f"{request.user}_{friend.username}")
-    #     Participants.objects.create(user=request.user, room=room)
-    #     Participants.objects.create(user=friend, room=room)
-    # return redirect("find_friends:index")
+    
 
 
 def accept_or_delete_request(request, id):
@@ -89,9 +73,31 @@ def accept_or_delete_request(request, id):
 
 
 def show_friends(request):
-    friend_list = Participants.get_friends(request.user)
+    # This is a list of all the friendships that the current user has.
+    # It goes to the friendship table to filter out all the object that has the current user as either the from_user or the to_user.
+    # with the status of accepted. So all pending requests are not fetched4
+    friend_list = Friendship.objects.filter(
+        Q(Q(from_user=request.user) | Q(to_user=request.user)) & Q(status="ACC")
+    )
+    
+    # Getting the friend user objects from the friend_list queryset
+    friends = User.objects.filter(Q(friendships_received__in=friend_list)|Q(friendships_sent__in=friend_list)).exclude(username=request.user.username)
     context = {
-        "friends": friend_list,
+        "friends": friends,
     }
 
     return render(request, "find_friends/show_friends.html", context)
+
+
+
+# Check if a room already exists.
+    # if (
+    #     Room.objects.filter(name=f"{friend.username}_{request.user}").exists()
+    #     or Room.objects.filter(name=f"{request.user}_{friend.username}").exists()
+    # ):
+    #     print("User already added")
+    # else:
+    #     room = Room.objects.create(name=f"{request.user}_{friend.username}")
+    #     Participants.objects.create(user=request.user, room=room)
+    #     Participants.objects.create(user=friend, room=room)
+    # return redirect("find_friends:index")

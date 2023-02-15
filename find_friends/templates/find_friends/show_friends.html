@@ -16,8 +16,11 @@
     <div class="friends height">
         {% for friend in friends %}
             <div class="friend" id="{{friend.room_id}}">
-                <img src="{{friend.display_picture}}" class="display-picture" alt="display-picture">
-                <span>{{friend.room_name}}</span>
+                <img src="{{friend.userprofile.get_image}}" class="display-picture" alt="display-picture">
+                <div>
+                    <p>{{friend.username}}</p>
+                    <p>{{friend.userprofile.bio}}</p>
+                </div>
             </div>
         {% endfor %} 
     </div>
