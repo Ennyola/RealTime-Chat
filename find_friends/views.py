@@ -14,10 +14,13 @@ User = get_user_model()
 
 
 def index(request):
-    users = User.objects.exclude(username=request.user).order_by('?')[:10]
     # Getting all the friend requests sent to the current user
     friend_requests = FriendRequest.objects.filter(to_user=request.user)
     sent_friend_requests = FriendRequest.objects.filter(from_user=request.user)
+    
+    received_friend_requests = FriendRequest.objects.filter(to_user=request.user)
+    users = User.objects.exclude(Q(username=request.user)|Q(friend_requests_sent__in=received_friend_requests)).order_by('?')[:10]
+    
     recipients = User.objects.filter(friend_requests_received__in=sent_friend_requests)
     context = {
         "random_users": users,
