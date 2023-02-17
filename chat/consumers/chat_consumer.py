@@ -1,6 +1,6 @@
 import json
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from asgiref.sync import sync_to_async
 from django.db.models import Q
 
@@ -8,6 +8,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 from chat.models import Message, Room, Participants
 
+User = get_user_model()
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.friend_username = self.scope["url_route"]["kwargs"]["username"]
