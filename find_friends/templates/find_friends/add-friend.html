@@ -18,21 +18,27 @@
         {% if friend_requests %}
             <div class="friend-requests">
                 <h5 class="friend-request-header">Friend Requests</h5>
-                {% for friend in friend_requests %}
+                {% for user in friend_requests %}
                     <div class="users">
                         <div class="user">
-                            <img src="{{friend.from_user.userprofile.get_image}}" class="display-picture" alt="display-picture">
-                            <span>{{friend.from_user.username}}</span>
+                            <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
+                            <span>{{user.username}}</span>
                         </div> 
                         <div class="add-remove">
-                            <form action=" {% url 'find_friends:accept_or_delete_request' friend.from_user.id%} " method="post">
+                            <form action=" {% url 'find_friends:accept_or_reject_request' user.id%} " method="post">
                                 {% csrf_token %}
                                 <button name="accept-request">
                                     <i class="fas fa-user-plus"></i>
                                     Accept
                                 </button>
-                                <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
                             </form> 
+                            <form action=" {% url 'find_friends:accept_or_reject_request' user.id%} " method="post">
+                                {% csrf_token %}
+                                <button name="reject-request">
+                                    <i class="fas fa-user-times"></i>
+                                    Reject
+                                </button>
+                            </form>
                         </div>       
                     </div>
                 {% endfor %}
@@ -52,20 +58,16 @@
                                 {% csrf_token %}
                                 <button name="cancel-request">
                                     <i class="fas fa-user-check"></i>
-                                    {% comment %} <i class="fas fa-user-times"></i> {% endcomment %}
                                     Added
                                 </button>
-                                <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
                             </form>
                         {% else %}
                             <form action="{% url 'find_friends:send_or_cancel_request' user.id %}" method="post">
                                 {% csrf_token %}
                                 <button name="send-request">
                                     <i class="fas fa-user-plus"></i>
-                                    {% comment %} <i class="fas fa-user-check"></i> {% endcomment %}
                                     Add friend
                                 </button>
-                                <i class="fa fa-times" id="remove-user" aria-hidden="true"></i>
                             </form>
                         {% endif %} 
                     </div>       
