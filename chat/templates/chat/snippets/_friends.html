@@ -8,7 +8,7 @@
                 {% if friend.latest_message %}
                     <p id="latest_message">{{friend.latest_message.content}}</p>
                 {% else %}
-                    <p></p>
+                    <p id="latest_message">New Message</p>
                 {% endif %}
             </div>
             <span class="time">{{friend.latest_message.time.time}}</span>
