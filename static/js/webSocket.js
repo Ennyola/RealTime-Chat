@@ -6,7 +6,7 @@ export const getChatSocket = (friendName) => {
 
 export const friendRequestWebSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/friend-request/`);
 
-export const notificationSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/chat/`)
+export const notificationSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/notification/`)
 
 
 // export const getGroupChatSocket = (groupName) => {

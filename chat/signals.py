@@ -14,7 +14,7 @@ def send_notification(sender, **kwargs):
     async_to_sync(channel_layer.group_send)(
         "notifications",
         {
-            "type": "notify_user",
+            "type": "new_message",
             "event": "New Message",
             "sender": message.sender.username,
             "message": message.content,
