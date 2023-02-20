@@ -24,17 +24,14 @@ def index(request):
     # This ensures the current user, the users that have sent a friend request,
     # and the users that are already friends are not
     # shown in the list of people to be added
-    # It also orders them by adding the sent requests to the top of the list and 
-    # randomly orders the remaining users 
-    users = (
-        User.objects.exclude(
-            Q(username=request.user)
-            | Q(friend_requests_sent__in=received_friend_requests)
-            | Q(friendships_received__in=friend_list)
-            | Q(friendships_sent__in=friend_list)
-        )
-        .order_by("friend_requests_received","?")[:10]
-    ) 
+    # It also orders them by adding the sent requests to the top of the list and
+    # randomly orders the remaining users
+    users = User.objects.exclude(
+        Q(username=request.user)
+        | Q(friend_requests_sent__in=received_friend_requests)
+        | Q(friendships_received__in=friend_list)
+        | Q(friendships_sent__in=friend_list)
+    ).order_by("friend_requests_received", "?")[:10]
 
     recipients = User.objects.filter(friend_requests_received__in=sent_friend_requests)
     senders = User.objects.filter(friend_requests_sent__in=received_friend_requests)

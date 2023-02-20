@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'chat.apps.ChatConfig',
+    'find_friends.apps.FindFriendsConfig',
     'accounts',
-    'find_friends',
     'emoji',
 ]
 
