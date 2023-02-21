@@ -15,62 +15,78 @@
 {% block friends %}
     <div class="add_users height">
         {% comment %} Friend request section {% endcomment %}
-        {% if friend_requests %}
-            <div class="friend-requests">
-                <h5 class="friend-request-header">Friend Requests</h5>
-                {% for user in friend_requests %}
+            {% if friend_requests %}
+                <div class="friend-requests">
+                    <h5 class="friend-request-header">Friend Requests</h5>
                     <div class="users">
-                        <div class="user">
-                            <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
-                            <span>{{user.username}}</span>
-                        </div> 
-                        <div class="add-remove">
-                            <form action=" {% url 'find_friends:accept_or_reject_request' user.id%} " method="post">
-                                {% csrf_token %}
-                                <button name="accept-request">
-                                    <i class="fas fa-user-plus"></i>
-                                    Accept
-                                </button>
-                            </form> 
-                            <form action=" {% url 'find_friends:accept_or_reject_request' user.id%} " method="post">
-                                {% csrf_token %}
-                                <button name="reject-request">
-                                    <i class="fas fa-user-times"></i>
-                                    Reject
-                                </button>
-                            </form>
-                        </div>       
+                        {% for user in friend_requests %}
+                                <div class="user">
+                                    <div class="user-info">
+                                        <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
+                                        <span>{{user.username}}</span>
+                                    </div>
+                                    
+                                    <div class="add-remove">
+                                        {% comment %} Creates 2 forms. The first to accept requests and the second to reject requests  {% endcomment %}
+                                        {% for i in loop_count %}
+                                            <form action=" {% url 'find_friends:accept_or_reject_request' user.id%} " method="post">
+                                                {% csrf_token %}
+                                                {% if forloop.counter == 1 %}
+                                                    <button name="accept-request">
+                                                        <i class="fas fa-user-plus"></i>
+                                                        Accept
+                                                    </button>
+                                                {% else %}
+                                                    <button name="reject-request">
+                                                        <i class="fas fa-user-times"></i>
+                                                        Reject
+                                                    </button>
+                                                {% endif %}
+                                            </form> 
+                                        {% endfor %}
+                                    </div> 
+                                </div> 
+                                          
+                        {% endfor %}  
                     </div>
-                {% endfor %}
-            </div>
-        {% endif %}
+                </div>
+            {% else %}
+                <div class="friend-requests d-none">
+                    <h5 class="friend-request-header">Friend Requests</h5>   
+                    <div class="users">
+                    </div>
+                </div>
+            {% endif %}
+        
         <div class="send-requests">
             <h5 class="send-request-header">Add Friends</h5>
             {% for user in random_users %}
                 <div class="users">
                     <div class="user">
-                        <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
-                        <span>{{user.username}}</span>
-                    </div> 
-                    <div class="add-remove">
-                        {% if user in recipients %}
-                            <form action="{% url 'find_friends:send_or_cancel_request' user.id %}" method="post">
-                                {% csrf_token %}
-                                <button name="cancel-request">
-                                    <i class="fas fa-user-check"></i>
-                                    Added
-                                </button>
-                            </form>
-                        {% else %}
-                            <form action="{% url 'find_friends:send_or_cancel_request' user.id %}" method="post">
-                                {% csrf_token %}
-                                <button name="send-request">
-                                    <i class="fas fa-user-plus"></i>
-                                    Add friend
-                                </button>
-                            </form>
-                        {% endif %} 
-                    </div>       
+                        <div class="user-info">
+                            <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
+                            <span>{{user.username}}</span>
+                        </div>
+                        <div class="add-remove">
+                            {% if user in recipients %}
+                                <form action="{% url 'find_friends:send_or_cancel_request' user.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button name="cancel-request">
+                                        <i class="fas fa-user-check"></i>
+                                        Added
+                                    </button>
+                                </form>
+                            {% else %}
+                                <form action="{% url 'find_friends:send_or_cancel_request' user.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button name="send-request">
+                                        <i class="fas fa-user-plus"></i>
+                                        Add friend
+                                    </button>
+                                </form>
+                            {% endif %} 
+                        </div>   
+                    </div>        
                 </div>
             {% endfor %}
         </div>      

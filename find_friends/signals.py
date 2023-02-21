@@ -6,6 +6,7 @@ from channels.layers import get_channel_layer
 
 from .models import FriendRequest, Friendship
 
+
 @receiver(post_save, sender=FriendRequest)
 def send_friend_request(sender, **kwargs):
     friend_request = kwargs["instance"]
@@ -15,8 +16,9 @@ def send_friend_request(sender, **kwargs):
         {
             "type": "friend_request",
             "event": "New Friend Request",
+            "sender_id": friend_request.from_user.id,
             "sender": friend_request.from_user.username,
             "receiver": friend_request.to_user.username,
-            "image": friend_request.from_user.userprofile.get_image,
+            "sender_avatar": friend_request.from_user.userprofile.get_image,
         },
     )

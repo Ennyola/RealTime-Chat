@@ -3,14 +3,14 @@
     overflow-y: auto;
 }
 
-.users {
+.user {
     display: flex;
     margin: 10px;
     padding: 10px;
     justify-content: space-between;
 }
 
-.users form {
+.user form {
     position: relative;
     bottom: 10px;
     padding: 5px;
@@ -28,7 +28,7 @@
     font-weight: bold;
 }
 
-.add_users .user span {
+.add_users .user-info span {
     margin: 5px;
     padding: 5px;
     border-radius: 5px;

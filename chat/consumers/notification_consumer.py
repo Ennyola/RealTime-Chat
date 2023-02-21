@@ -2,6 +2,7 @@ import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+
 class NotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         await self.accept()
@@ -35,6 +36,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                     }
                 )
             )
+
     async def friend_request(self, event):
         print(event)
         # Send friend requst to the receiver
@@ -43,10 +45,10 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 json.dumps(
                     {
                         "type": "friend_request",
+                        "sender_id": event["sender_id"],
                         "sender": event["sender"],
                         "receiver": event["receiver"],
-                        "image": event["image"],
+                        "sender_avatar": event["sender_avatar"],
                     }
                 )
             )
-
