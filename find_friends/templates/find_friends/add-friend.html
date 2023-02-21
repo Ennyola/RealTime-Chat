@@ -25,7 +25,6 @@
                                         <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
                                         <span>{{user.username}}</span>
                                     </div>
-                                    
                                     <div class="add-remove">
                                         {% comment %} Creates 2 forms. The first to accept requests and the second to reject requests  {% endcomment %}
                                         {% for i in loop_count %}
@@ -45,8 +44,7 @@
                                             </form> 
                                         {% endfor %}
                                     </div> 
-                                </div> 
-                                          
+                                </div>            
                         {% endfor %}  
                     </div>
                 </div>

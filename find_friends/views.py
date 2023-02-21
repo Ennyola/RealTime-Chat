@@ -14,14 +14,12 @@ User = get_user_model()
 
 
 def index(request):
-    # Getting all the friend requests sent to the current user
     sent_friend_requests = FriendRequest.objects.filter(from_user=request.user)
     received_friend_requests = FriendRequest.objects.filter(to_user=request.user)
     # Getting all the friendships that the current user has
     friend_list = Friendship.objects.filter(
         Q(Q(from_user=request.user) | Q(to_user=request.user)) & Q(status="ACC")
     )
-    
     # This ensures the current user, the users that have sent a friend request,
     # and the users that are already friends are not
     # shown in the list of people to be added
@@ -35,13 +33,15 @@ def index(request):
     ).order_by("?")[:10]
 
     recipients = User.objects.filter(friend_requests_received__in=sent_friend_requests)
-    senders = User.objects.filter(friend_requests_sent__in=received_friend_requests)
+    senders = User.objects.filter(
+        friend_requests_sent__in=received_friend_requests
+    ).order_by("-friend_requests_sent__created_at")
     loop_count = range(2)
     context = {
         "random_users": users,
         "friend_requests": senders,
         "recipients": recipients,
-        "loop_count":loop_count
+        "loop_count": loop_count,
     }
     return render(request, "find_friends/add-friend.html", context)
 

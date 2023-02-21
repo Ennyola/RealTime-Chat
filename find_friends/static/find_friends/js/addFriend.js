@@ -14,28 +14,28 @@ notificationSocket.addEventListener('message', (e => {
             if (msg.receiver === user) {
                 friendRequestsContainer.classList.remove("d-none");
                 userInfo = `<div class="user">
-                                <img src="${msg.sender_avatar}" class="display-picture" alt="display-picture">
-                                <span>${msg.sender}</span>
-                            </div> 
-                            <div class="add-remove">
+                                <div class="user-info">
+                                    <img src="${msg.sender_avatar}" class="display-picture" alt="display-picture">
+                                    <span>${msg.sender}</span>
+                                </div>
+                                <div class="add-remove">
                                     <form action="/add-friend/${msg.sender_id}/accept-or-reject/" method="post">
-                                    <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
+                                        <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
                                         <button name="accept-request">
                                             <i class="fas fa-user-plus"></i>
                                             Accept
                                         </button>
                                     </form> 
                                     <form action="/add-friend/${msg.sender_id}/accept-or-reject/" method="post">
-                                    <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
+                                        <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
                                         <button name="reject-request">
                                             <i class="fas fa-user-times"></i>
                                             Reject
                                         </button>
                                     </form>
+                                </div> 
                             </div>`;
-
-                users.innerHTML += userInfo;
-                console.log(...users.children)
+                users.insertAdjacentHTML("beforebegin", userInfo);
             }
 
     }
