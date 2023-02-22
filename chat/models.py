@@ -7,24 +7,23 @@ from .helpers import get_room_name
 
 # Create your models here.
 
-USER = get_user_model()
+User = get_user_model()
 
 
 class Room(models.Model):
     name = models.CharField(max_length=500)
+    room_type = models.CharField(max_length=10, default="private")
 
     def __str__(self) -> str:
         return f"{self.name}"
 
 
 class Participants(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    room = models.ForeignKey(
-        Room, related_name="participants", on_delete=models.CASCADE
-    )
+    users = models.ManyToManyField(User, related_name="participants")
+    room = models.ForeignKey(Room, related_name="chats", on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.room.name} {self.user}"
+        return f"{self.room.name}"
 
     @classmethod
     def get_friends(cls, user) -> list:
@@ -34,10 +33,9 @@ class Participants(models.Model):
         # with the current user nd orders the query by the room's last message.
         participants = (
             cls.objects.select_related("room")
-            .filter(user=user)
+            .filter(users=user)
             .order_by("-room__messages__time")
         )
-
         # Ordering the rooms using their
         # last message returns a queryset with duplicate rooms
         # The code below removes duplicates rooms
@@ -53,7 +51,7 @@ class Participants(models.Model):
             room_id = friend.room.id
             room_name = get_room_name(friend.room.name, user.username)
             latest_message = friend.room.messages.last()
-            friend_user_object = USER.objects.get(username=room_name)
+            friend_user_object = User.objects.get(username=room_name)
             display_picture = friend_user_object.userprofile.get_image
             friend_list.append(
                 {
@@ -73,7 +71,7 @@ class Message(models.Model):
         db_column="type", max_length=50, blank=True, null=True
     )
     status = models.CharField(max_length=20, blank=True, null=True)
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_message")
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
 
     def __str__(self) -> str:

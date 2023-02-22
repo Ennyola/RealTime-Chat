@@ -2,7 +2,7 @@ import random
 
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
-from django.db.models import Q, Count
+from django.db.models import Q
 
 from chat.models import Participants, Room
 
@@ -17,6 +17,7 @@ def change_friendship_status(queryset, status):
     frienship = queryset[0]
     frienship.status = status
     frienship.save()
+
 
 def index(request):
     sent_friend_requests = FriendRequest.objects.filter(from_user=request.user)
@@ -53,7 +54,9 @@ def index(request):
 
 def send_or_cancel_request(request, id):
     potential_friend = User.objects.get(id=id)
-    friendship = Friendship.objects.filter(from_user=request.user, to_user=potential_friend)
+    friendship = Friendship.objects.filter(
+        from_user=request.user, to_user=potential_friend
+    )
     if "send-request" in request.POST:
         # Send friend request
         FriendRequest.objects.create(from_user=request.user, to_user=potential_friend)
@@ -86,13 +89,17 @@ def accept_or_reject_request(request, id):
         ).delete()
         # Create a room for the two users
         room = Room.objects.create(name=f"{request.user}_{potential_friend.username}")
-        Participants.objects.create(user=request.user, room=room)
-        Participants.objects.create(user=potential_friend, room=room)
-    else:
+        participants = Participants.objects.create(room=room)
+        participants.users.add(request.user, potential_friend)
+
+    if "reject-request" in request.POST:
         # Delete friend request
         FriendRequest.objects.filter(
             from_user=potential_friend, to_user=request.user
         ).delete()
+        Friendship.objects.filter(
+            from_user=potential_friend, to_user=request.user
+        ).update(status="REJ")
     return redirect("find_friends:index")
 
 
