@@ -13,6 +13,11 @@ from .models import FriendRequest, Friendship
 User = get_user_model()
 
 
+def change_friendship_status(queryset, status):
+    frienship = queryset[0]
+    frienship.status = status
+    frienship.save()
+
 def index(request):
     sent_friend_requests = FriendRequest.objects.filter(from_user=request.user)
     received_friend_requests = FriendRequest.objects.filter(to_user=request.user)
@@ -48,20 +53,24 @@ def index(request):
 
 def send_or_cancel_request(request, id):
     potential_friend = User.objects.get(id=id)
+    friendship = Friendship.objects.filter(from_user=request.user, to_user=potential_friend)
     if "send-request" in request.POST:
         # Send friend request
         FriendRequest.objects.create(from_user=request.user, to_user=potential_friend)
-        Friendship.objects.create(
-            from_user=request.user, to_user=potential_friend, status="PND"
-        )
-    else:
+        # check if the friendship already exists. If it does, update the status to pending
+        if friendship.exists():
+            change_friendship_status(friendship, "PND")
+        else:
+            Friendship.objects.create(
+                from_user=request.user, to_user=potential_friend, status="PND"
+            )
+    if "cancel-request" in request.POST:
         # Cancel friend request
         FriendRequest.objects.filter(
             from_user=request.user, to_user=potential_friend
         ).delete()
-        Friendship.objects.filter(
-            from_user=request.user, to_user=potential_friend
-        ).delete()
+        # Since the friendship already exists, update the status to cancelled
+        change_friendship_status(friendship, "CNC")
     return redirect("find_friends:index")
 
 

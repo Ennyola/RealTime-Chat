@@ -38,7 +38,6 @@ class NotificationConsumer(AsyncWebsocketConsumer):
             )
 
     async def friend_request(self, event):
-        print(event)
         # Send friend requst to the receiver
         if self.scope["user"].username == event["receiver"]:
             await self.send(
@@ -51,4 +50,14 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                         "sender_avatar": event["sender_avatar"],
                     }
                 )
+            )
+    async def cancel_friend_request(self, event):
+        print(event)
+        if self.scope["user"].username == event["to_user"]:
+            await self.send(
+                json.dumps({
+                    "type":"cancel_friend_request",
+                    "from": event["from_user"],
+                    "to": event["to_user"] 
+                })
             )

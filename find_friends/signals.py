@@ -22,3 +22,20 @@ def send_friend_request(sender, **kwargs):
             "sender_avatar": friend_request.from_user.userprofile.get_image,
         },
     )
+    
+@receiver(post_save, sender=Friendship)
+def cancel_friend_request(sender, **kwargs):
+    friendship = kwargs["instance"]
+    if not kwargs["created"] and friendship.status == "CNC":  
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "notifications",
+            {
+                "type":"cancel_friend_request",
+                "event": "New Friend Request",
+                "from_user": friendship.from_user.username,
+                "to_user": friendship.to_user.username,
+                
+            }
+        )
+        
