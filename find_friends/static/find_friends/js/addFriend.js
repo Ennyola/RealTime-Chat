@@ -4,13 +4,10 @@ const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 const user = JSON.parse(document.querySelector("#username").textContent);
 const friendRequestsContainer = document.querySelector(".friend-requests");
 const users = document.querySelector(".friend-requests .users");
-let singleUsers = users.querySelectorAll(".user"),
-    userInfo,
-    sendersName
+let userInfo
 
 notificationSocket.addEventListener('message', (e => {
-    const msg = JSON.parse(e.data)
-    console.log(msg.type)
+    const msg = JSON.parse(e.data);
     switch (msg.type) {
         case "friend_request":
             friendRequestsContainer.classList.remove("d-none");
@@ -36,16 +33,19 @@ notificationSocket.addEventListener('message', (e => {
                                     </form>
                                 </div> 
                             </div>`;
-            users.insertAdjacentHTML("beforebegin", userInfo);
+            // Add the user to the beginning of the list.
+            users.insertAdjacentHTML("afterbegin", userInfo);
+            break;
         case "cancel_friend_request":
-
-            singleUsers.forEach((user) => {
-                sendersName = user.querySelector(".user-name")
-                console.log(sendersName.textContent, msg.from)
+            let senders = users.querySelectorAll(".user")
+            senders.forEach((user) => {
+                let sendersName = user.querySelector(".user-name")
+                    // Remove user from dom if he/she cancels the request
                 if (sendersName.textContent === msg.from) {
                     user.remove()
                 }
             })
+            break;
         default:
             break;
 
