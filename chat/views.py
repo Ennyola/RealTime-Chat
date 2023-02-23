@@ -38,7 +38,10 @@ class ChatRoomView(RoomListMixin, View):
         messages = Message.objects.filter(room_id=kwargs["room_id"])
         room = Room.objects.get(id=kwargs["room_id"])
         context["messages"] = messages
-        context["room_name"] = get_room_name(room.name, request.user.username)
+        if room.room_type =="private": 
+            context["room_name"] = get_room_name(room.name, request.user.username)
+        else:
+            context["room_name"] = room.name
         friend = get_user_model().objects.get(username=context["room_name"])
         context["display_picture"] = friend.userprofile.get_image
         return render(request, "chat/chat-room.html", context)
