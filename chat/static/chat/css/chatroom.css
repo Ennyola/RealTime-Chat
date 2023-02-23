@@ -35,6 +35,7 @@
     
     .time {
         color: grey;
+        text-transform: lowercase;
     }
     
     .chat-date {

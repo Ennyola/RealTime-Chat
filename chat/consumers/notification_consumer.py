@@ -21,17 +21,19 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                         "sender": event["sender"],
                         "receiver": event["receiver"],
                         "message": event["message"],
+                        "message_time":event["message_time"],
                         "room_id": event["room_id"],
                     }
                 )
             )
-        else:
+        if self.scope["user"].username == event["sender"]:
             await self.send(
                 json.dumps(
                     {
                         "type": "new_message",
                         "receiver": event["receiver"],
                         "message": event["message"],
+                        "message_time":event["message_time"],
                         "room_id": event["room_id"],
                     }
                 )

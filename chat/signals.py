@@ -7,6 +7,7 @@ from channels.layers import get_channel_layer
 from .models import Message
 from .helpers import get_room_name
 
+
 @receiver(post_save, sender=Message)
 def send_notification(sender, **kwargs):
     message = kwargs["instance"]
@@ -18,6 +19,7 @@ def send_notification(sender, **kwargs):
             "event": "New Message",
             "sender": message.sender.username,
             "message": message.content,
+            "message_time": message.time.strftime("%I:%M %p"),
             "receiver": get_room_name(message.room.name, message.sender.username),
             "room_id": message.room.id,
         },

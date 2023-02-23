@@ -12,12 +12,15 @@ export const goToPage = (friends = friendList) => {
 
 notificationSocket.addEventListener('message', (e => {
     const msg = JSON.parse(e.data)
+    console.log(msg)
     switch (msg.type) {
         case "new_message":
             let position = 0
             friendList.forEach((item, id) => {
                 if (parseInt(item.id) === msg.room_id) {
                     item.querySelector("#latest_message").innerHTML = msg.message
+                    console.log(msg.message_time)
+                    item.querySelector(".time").innerHTML = msg.message_time
                     position = id;
                 }
             })
