@@ -9,6 +9,8 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from chat.models import Message, Room, Participants
 
 User = get_user_model()
+
+
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.friend_username = self.scope["url_route"]["kwargs"]["username"]

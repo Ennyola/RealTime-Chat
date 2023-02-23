@@ -1,17 +1,17 @@
 {% load static %}
 <div class="friends-list">
-    {% for friend in friends %}
-        <div class="single-friend" id={{friend.room_id}}>
+    {% for room in rooms %}
+        <div class="single-friend" id={{room.id}}>
             <img src="{{friend.display_picture}}" class="display-picture" alt="friend-picture"/>
             <div class = "text">
-                <h6>{{friend.room_name}}</h6>
+                <h6>{{room.name}}</h6>
                 {% if friend.latest_message %}
-                    <p id="latest_message">{{friend.latest_message.content}}</p>
+                    <p id="latest_message">{{room.messages.last}}</p>
                 {% else %}
                     <p id="latest_message">New Message</p>
                 {% endif %}
             </div>
-            <span class="time">{{friend.latest_message.time.time}}</span>
+            {% comment %} <span class="time">{{friend.latest_message.time.time}}</span> {% endcomment %}
         </div>
     {% endfor %}  
 </div>

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.db.models import Max
 
 from .helpers import get_room_name
 
@@ -16,6 +17,35 @@ class Room(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}"
+
+    @classmethod
+    def get_rooms_and_related_info(cls, user):
+        rooms = cls.objects.filter(chats__users=user)
+        # Order the rooms by their last message
+        rooms = rooms.annotate(last_message_time=Max("messages__time")).order_by(
+            "-last_message_time"
+        )
+        list_info = []
+        for room in rooms:
+            room_name = (
+                get_room_name(room.name, user.username)
+                if cls.room_type == "private"
+                else cls.name
+            )
+            print(room_name)
+            print(get_room_name(room.name, user.username))
+            # friend = User.objects.get(username=room_name)
+            # display_picture = friend.userprofile.get_image
+            last_message = room.messages.last()
+            list_info.append(
+                {
+                    "room_id": room.id,
+                    "room_name": room_name,
+                    "last_message": last_message,
+                    "last_message_time": last_message.time.strftime("%H:%M"),
+                    # "display_picture": display_picture,
+                }
+            )
 
 
 class Participants(models.Model):
@@ -48,6 +78,7 @@ class Participants(models.Model):
         ]
         friend_list = []
         for friend in unique_participants:
+            print(friend)
             room_id = friend.room.id
             room_name = get_room_name(friend.room.name, user.username)
             latest_message = friend.room.messages.last()
@@ -71,7 +102,9 @@ class Message(models.Model):
         db_column="type", max_length=50, blank=True, null=True
     )
     status = models.CharField(max_length=20, blank=True, null=True)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_message")
+    sender = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="sent_message"
+    )
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
 
     def __str__(self) -> str:

@@ -12,7 +12,6 @@ export const goToPage = (friends = friendList) => {
 
 notificationSocket.addEventListener('message', (e => {
     const msg = JSON.parse(e.data)
-    console.log(msg)
     switch (msg.type) {
         case "new_message":
             let position = 0
