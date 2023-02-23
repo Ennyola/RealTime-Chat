@@ -27,15 +27,12 @@ class Room(models.Model):
         )
         list_info = []
         for room in rooms:
-            room_name = (
-                get_room_name(room.name, user.username)
-                if cls.room_type == "private"
-                else cls.name
-            )
-            print(room_name)
-            print(get_room_name(room.name, user.username))
-            # friend = User.objects.get(username=room_name)
-            # display_picture = friend.userprofile.get_image
+            if room.room_type == "private":
+                room_name = get_room_name(room.name, user.username)
+            else:
+                room_name = room.name
+            friend = User.objects.get(username=room_name)
+            display_picture = friend.userprofile.get_image
             last_message = room.messages.last()
             list_info.append(
                 {
@@ -43,9 +40,10 @@ class Room(models.Model):
                     "room_name": room_name,
                     "last_message": last_message,
                     "last_message_time": last_message.time.strftime("%H:%M"),
-                    # "display_picture": display_picture,
+                    "friend_display_picture": display_picture,
                 }
             )
+        return list_info
 
 
 class Participants(models.Model):
@@ -54,45 +52,6 @@ class Participants(models.Model):
 
     def __str__(self):
         return f"{self.room.name}"
-
-    @classmethod
-    def get_friends(cls, user) -> list:
-        """To get all the friends associated with a user"""
-
-        # This fetches all participants in a room having a relationship
-        # with the current user nd orders the query by the room's last message.
-        participants = (
-            cls.objects.select_related("room")
-            .filter(users=user)
-            .order_by("-room__messages__time")
-        )
-        # Ordering the rooms using their
-        # last message returns a queryset with duplicate rooms
-        # The code below removes duplicates rooms
-        # while still ordering the rooms by their last message
-        unique_participants = []
-        [
-            unique_participants.append(x)
-            for x in participants
-            if x not in unique_participants
-        ]
-        friend_list = []
-        for friend in unique_participants:
-            print(friend)
-            room_id = friend.room.id
-            room_name = get_room_name(friend.room.name, user.username)
-            latest_message = friend.room.messages.last()
-            friend_user_object = User.objects.get(username=room_name)
-            display_picture = friend_user_object.userprofile.get_image
-            friend_list.append(
-                {
-                    "room_id": room_id,
-                    "room_name": room_name,
-                    "latest_message": latest_message,
-                    "display_picture": display_picture,
-                }
-            )
-        return friend_list
 
 
 class Message(models.Model):

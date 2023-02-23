@@ -19,7 +19,7 @@ def send_notification(sender, **kwargs):
             "event": "New Message",
             "sender": message.sender.username,
             "message": message.content,
-            "message_time": message.time.strftime("%I:%M %p"),
+            "message_time": message.time.strftime("%H:%M"),
             "receiver": get_room_name(message.room.name, message.sender.username),
             "room_id": message.room.id,
         },

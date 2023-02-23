@@ -14,8 +14,7 @@ from .helpers import get_room_name
 class RoomListMixin:
     def get_rooms(self, **kwargs):
         user = kwargs.get("user")
-        rooms = Room.get_rooms_and_related_info(user=user)
-        print(rooms)
+        rooms = Room.get_rooms_and_related_info(user)
         return rooms
 
     def get_context_data(self, **kwargs):
