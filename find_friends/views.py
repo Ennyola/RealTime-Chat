@@ -1,5 +1,3 @@
-import random
-
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
 from django.db.models import Q
@@ -111,7 +109,6 @@ def show_friends(request):
     friend_list = Friendship.objects.filter(
         Q(Q(from_user=request.user) | Q(to_user=request.user)) & Q(status="ACC")
     )
-
     # Getting the friend user objects from the friend_list queryset and ordering them alphabetically
     friends = (
         User.objects.filter(
@@ -121,21 +118,15 @@ def show_friends(request):
         .exclude(username=request.user.username)
         .order_by("username")
     )
+    friends_and_room_id = []
+    for friend in friends:
+        room = Room.objects.filter(
+            Q(name=f"{friend.username}_{request.user}")
+            | Q(name=f"{request.user}_{friend.username}")
+        ).values("id")
+        friends_and_room_id.append({"friend": friend, "room_id": room[0].get("id")})
     context = {
-        "friends": friends,
+        "friends": friends_and_room_id,
     }
 
     return render(request, "find_friends/show_friends.html", context)
-
-
-# Check if a room already exists.
-# if (
-#     Room.objects.filter(name=f"{friend.username}_{request.user}").exists()
-#     or Room.objects.filter(name=f"{request.user}_{friend.username}").exists()
-# ):
-#     print("User already added")
-# else:
-#     room = Room.objects.create(name=f"{request.user}_{friend.username}")
-#     Participants.objects.create(user=request.user, room=room)
-#     Participants.objects.create(user=friend, room=room)
-# return redirect("find_friends:index")

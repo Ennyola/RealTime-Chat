@@ -24,7 +24,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             | Q(name=f'{self.scope["user"]}_{self.friend_username}')
         )
         self.room_group_name = self.room.name
-       
+
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
 

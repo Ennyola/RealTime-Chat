@@ -15,11 +15,12 @@
 {% block friends %}
     <div class="friends height">
         {% for friend in friends %}
+            
             <div class="friend" id="{{friend.room_id}}">
-                <img src="{{friend.userprofile.get_image}}" class="display-picture" alt="display-picture">
+                <img src="{{friend.friend.userprofile.get_image}}" class="display-picture" alt="display-picture">
                 <div>
-                    <p>{{friend.username}}</p>
-                    <p>{{friend.userprofile.bio}}</p>
+                    <p>{{friend.friend.username}}</p>
+                    <p>{{friend.friend.userprofile.bio}}</p>
                 </div>
             </div>
         {% endfor %} 
