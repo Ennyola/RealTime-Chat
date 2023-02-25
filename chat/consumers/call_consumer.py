@@ -118,9 +118,10 @@ class CallConsumer(AsyncWebsocketConsumer):
                     }
                 )
             )
-    async def ringing(self,event):
+
+    async def ringing(self, event):
         if self.scope["user"].username == event["target"]:
-             await self.send(
+            await self.send(
                 json.dumps(
                     {
                         "type": event["msg_type"],
@@ -129,4 +130,3 @@ class CallConsumer(AsyncWebsocketConsumer):
                     }
                 )
             )
-        

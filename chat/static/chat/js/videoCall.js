@@ -230,7 +230,6 @@ export var handleVideoAnswerMsg = (msg) => {
     myPeerConnection.setRemoteDescription(desc).catch(reportError);
 }
 
-
 export const handleICECandidateEvent = (event) => {
     if (event.candidate) {
         callWebSocket.send(JSON.stringify({

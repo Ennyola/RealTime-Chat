@@ -1,19 +1,25 @@
 import { getChatSocket } from '/static/js/webSocket.js'
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 let chatSocket = getChatSocket(friendName)
-let chatHolder = document.querySelectorAll(".messages")[0];
+let chatHolder = document.querySelector(".messages");
 const currentUser = JSON.parse(document.querySelector("#username").textContent);
 let inputBox = document.querySelector("#input-message"),
     sendButton = document.querySelector("#send-button")
 
-export var formatAMPM = (date) => {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
+// Go to the last message on page load
+window.onload = () => {
+    chatHolder.scrollTop = chatHolder.scrollHeight;
+}
+
+// Converts the Javascript datetime object in a time string format
+const formatAMPM = (date) => {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
+    let strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
 }
 

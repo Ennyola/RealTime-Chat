@@ -18,7 +18,6 @@ notificationSocket.addEventListener('message', (e => {
             friendList.forEach((item, id) => {
                 if (parseInt(item.id) === msg.room_id) {
                     item.querySelector("#latest_message").innerHTML = msg.message
-                    console.log(msg.message_time)
                     item.querySelector(".time").innerHTML = msg.message_time
                     position = id;
                 }
