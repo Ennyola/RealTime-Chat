@@ -26,6 +26,7 @@ body {
     padding: var(--padding);
     border-radius: 5px;
 }
+
 .settings-icon {
     float: right;
 }
@@ -38,9 +39,11 @@ body {
     transition: 0.5s;
     font-size: 18px;
 }
-.header-settings .settings-icon a{
-    color:white
+
+.header-settings .settings-icon a {
+    color: white
 }
+
 .settings-icon i:hover {
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.3);
@@ -72,18 +75,19 @@ body {
     outline: none;
 }
 
-.settings-options{
+.settings-options {
     background-color: #272A35;
     list-style-type: none;
-    text-align:center;
+    text-align: center;
     padding: 0;
-    width:150px;
+    width: 150px;
 }
-.settings-options .list-item  a{
+
+.settings-options .list-item a {
     color: white;
-    text-decoration:none;
-    display:block;
-    padding:15px;
+    text-decoration: none;
+    display: block;
+    padding: 15px;
 }
 
 .settings-options .list-item a:hover {
@@ -234,6 +238,24 @@ body {
     width: 100%;
 }
 
+.video-box .call-info {
+    position: absolute;
+    left: 50%;
+    top: 40px;
+    color: #260f52;
+}
+
+.call-info .user-calling {
+    font-weight: 900;
+}
+
+.call-info .calling-state {
+    margin-top: 30px;
+    font-style: italic;
+    font-weight: 900;
+    text-align: center;
+}
+
 .incoming-video {
     width: 100%;
     height: 100%;
@@ -273,6 +295,8 @@ body {
     bottom: 10px;
     left: 50%;
 }
+
+
 /* #hangup-button i {
 text-align: center;
 display: block;
@@ -329,9 +353,9 @@ margin: 0 auto;
         right: 0;
         bottom: 20px;
         /* border-bottom-right-radius: 10px; */
-        padding: 0;
-    /* } */ */
-    .col-md-4 {
+    /* padding: 0; */
+    /* } */
+    */ .col-md-4 {
         border-right: none;
     }
     .right-section {

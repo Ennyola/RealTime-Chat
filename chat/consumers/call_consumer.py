@@ -2,6 +2,7 @@ import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+
 class CallConsumer(AsyncWebsocketConsumer):
     async def connect(self) -> None:
         await self.accept()
@@ -55,10 +56,20 @@ class CallConsumer(AsyncWebsocketConsumer):
                     "name": text_data_json["name"],
                 },
             )
+        if text_data_json["type"] == "ringing":
+            await self.channel_layer.group_send(
+                "calls",
+                {
+                    "type": "ringing",
+                    "msg_type": text_data_json["type"],
+                    "target": text_data_json["target"],
+                    "caller": text_data_json["caller"],
+                },
+            )
 
     async def offer(self, event):
         # If caller is not the currently logged in user, send the offer to the user.
-        if self.scope["user"].username != event["caller"]:
+        if self.scope["user"].username == event["target"]:
             await self.send(
                 json.dumps(
                     {
@@ -72,7 +83,7 @@ class CallConsumer(AsyncWebsocketConsumer):
             )
 
     async def answer(self, event):
-        if self.scope["user"].username != event["caller"]:
+        if self.scope["user"].username == event["target"]:
             await self.send(
                 json.dumps(
                     {
@@ -97,12 +108,25 @@ class CallConsumer(AsyncWebsocketConsumer):
             )
 
     async def hang_up(self, event):
-        await self.send(
-            json.dumps(
-                {
-                    "type": event["msg_type"],
-                    "target": event["target"],
-                    "name": event["name"],
-                }
+        if self.scope["user"].username == event["target"]:
+            await self.send(
+                json.dumps(
+                    {
+                        "type": event["msg_type"],
+                        "target": event["target"],
+                        "name": event["name"],
+                    }
+                )
             )
-        )
+    async def ringing(self,event):
+        if self.scope["user"].username == event["target"]:
+             await self.send(
+                json.dumps(
+                    {
+                        "type": event["msg_type"],
+                        "target": event["target"],
+                        "caller": event["caller"],
+                    }
+                )
+            )
+        

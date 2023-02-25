@@ -10,11 +10,14 @@ const hangupButton = document.querySelector('#hangup-button');
 const videoCallIcon = document.querySelector("#video-call-icon");
 const voiceCallIcon = document.querySelector("#voice-call-icon");
 let friendDisplayPicture = document.querySelector("#friend-display-picture");
-let myPeerConnection = null;
-let myStream = null;
+let userCallInfo = document.querySelector(".call-info .user-calling")
+let callingState = document.querySelector(".call-info .calling-state")
 let userVideo = document.querySelector("#local_video")
 let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
+let myPeerConnection = null;
+let myStream = null;
+
 let mediaConstraints = {
     audio: true,
     video: false
@@ -56,6 +59,8 @@ export const closeVideoCall = () => {
     incomingVideo.style.background = `none`;
     // document.querySelector("#hangup-button").disabled = true;
     videoContainer.classList.add("d-none")
+    callingState.innerHTML = ""
+    userCallInfo.innerHTML = ""
     mediaConstraints["video"] = false;
 }
 
@@ -91,6 +96,9 @@ export const invite = async(type) => {
 
             // Make the user video element visible.
             videoContainer.classList.remove("d-none")
+                // Set the name of the user you are calling in the html
+            userCallInfo.innerHTML = targetUsername
+            callingState.innerHTML = "calling..."
             incomingVideo.srcObject = myStream;
             if (type === "voice-call") {
                 incomingVideo.style.background = `url(${friendDisplayPicture}) no-repeat center center`;
@@ -152,6 +160,11 @@ export var handleVideoOfferMsg = async(msg) => {
     createPeerConnection();
     videoContainer.classList.remove("d-none")
 
+    // Set the name and calling state of the caller
+    userCallInfo.innerHTML = targetUsername
+    callingState.innerHTML = "calling..."
+
+
     // This conditions checks if the incoming call is a video call or a voice call.
     // If the incoming call is a voice call, the background of the incoming video 
     // element is set to the caller's display picture.
@@ -162,10 +175,23 @@ export var handleVideoOfferMsg = async(msg) => {
         mediaConstraints["video"] = true;
     }
 
+
     // Opens the camera and microphone of the calle
     myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
     // Add the stream to the video element
     incomingVideo.srcObject = myStream;
+
+
+
+    // Notify the other user that the phone is ringing
+    if (myPeerConnection) {
+        callWebSocket.send(JSON.stringify({
+            caller: user,
+            target: targetUsername,
+            type: "ringing",
+        }))
+    }
+
 
     //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
@@ -176,16 +202,18 @@ export var handleVideoOfferMsg = async(msg) => {
         let answer = await myPeerConnection.createAnswer();
         await myPeerConnection.setLocalDescription(answer);
         await callWebSocket.send(JSON.stringify({
-                caller: user,
-                target: targetUsername,
-                type: "answer",
-                sdp: myPeerConnection.localDescription
-            }))
+            caller: user,
+            target: targetUsername,
+            type: "answer",
+            sdp: myPeerConnection.localDescription
+        }))
+        callingState.innerHTML = ""
             //makes the accept and reject button disappear
         callControlContainer.classList.add('d-none')
         hangupButton.classList.remove("d-none")
     })
 
+    //User Rejects the call
     rejectCall.addEventListener('click', (e) => {
         hangUpCall()
     })
@@ -193,6 +221,9 @@ export var handleVideoOfferMsg = async(msg) => {
 }
 
 export var handleVideoAnswerMsg = (msg) => {
+    // Remove the ringing calling state
+    callingState.innerHTML = ""
+
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
     let desc = new RTCSessionDescription(msg.sdp);
@@ -242,6 +273,10 @@ export const handleICEConnectionStateChangeEvent = (event) => {
         case "failed":
             closeVideoCall();
             break;
+        case "disconnected":
+            // The user reloads page thereby closing the peer connection
+            callingState.innerHTML = "Reconnecting..."
+            break;
         default:
             break;
     }
@@ -284,6 +319,10 @@ const createPeerConnection = () => {
     myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
     myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
     myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
+}
+
+export var setCallingState = () => {
+    callingState.innerHTML = "ringing..."
 }
 
 // Start the call if the user clicks the "call" button.

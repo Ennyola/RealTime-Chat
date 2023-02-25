@@ -3,7 +3,8 @@ import {
     handleVideoAnswerMsg,
     handleNewICECandidateMsg,
     handleHangUpMsg,
-    hangUpCall
+    hangUpCall,
+    setCallingState
 } from "/static/chat/js/videoCall.js";
 
 import { callWebSocket } from "/static/js/webSocket.js";
@@ -29,6 +30,9 @@ callWebSocket.addEventListener('message', (e) => {
             break;
         case "new-ice-candidate":
             handleNewICECandidateMsg(msg)
+            break;
+        case "ringing":
+            setCallingState()
             break;
         case "hang-up":
             handleHangUpMsg(msg)
