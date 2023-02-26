@@ -30,32 +30,36 @@
         </div>
     </div>
     <div class="messages">
-        {% for message in messages %}
-            {% if message.sender == request.user %}
-                <div class="outgoing-message">
-                    <div class="chat-bubble">
-                        <div class="msg">{{message.content}}</div>
-                        <span class ="msg-metadata">
-                            <span class = "msg-time">{{message.time.time}}</span> 
-                            <span class="chat-status">
-                                <i class="fas fa-check"></i>
+        {% for message_group in message_groups %}
+            <div class="message-date">
+                <span>{{message_group.date}}</span>
+            </div>
+            {% for message in message_group.messages  %}
+                {% if message.sender == request.user %}
+                    <div class="outgoing-message">
+                        <div class="chat-bubble">
+                            <div class="msg">{{message.content}}</div>
+                            <span class ="msg-metadata">
+                                <span class = "msg-time">{{message.time.time}}</span> 
+                                <span class="chat-status">
+                                    <i class="fas fa-check"></i>
+                                </span>
                             </span>
-                        </span>
-                    </div>
-                </div>
-            {% else %}
-                <div class="incoming-message">
-                    <div class="chat-bubble">
-                        <div class="msg">
-                            {{message.content}}
                         </div>
-                        <span class ="msg-metadata">
-                            <span class = "msg-time">{{message.time.time}}</span> 
-                        </span>
                     </div>
-                </div>    
-            {% endif %}
-        
+                {% else %}
+                    <div class="incoming-message">
+                        <div class="chat-bubble">
+                            <div class="msg">
+                                {{message.content}}
+                            </div>
+                            <span class ="msg-metadata">
+                                <span class = "msg-time">{{message.time.time}}</span> 
+                            </span>
+                        </div>
+                    </div>    
+                {% endif %}
+            {% endfor %}    
         {% endfor %}   
         
     </div> 
