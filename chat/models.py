@@ -33,13 +33,18 @@ class Room(models.Model):
                 room_name = room.name
             friend = User.objects.get(username=room_name)
             display_picture = friend.userprofile.get_image
-            last_message = room.messages.last()
+            if room.messages.last():
+                last_message = room.messages.last() # Get the last message in the room
+                last_message_time = last_message.time.strftime("%H:%M")
+            else:
+                last_message = ""
+                last_message_time = ""
             list_info.append(
                 {
                     "room_id": room.id,
                     "room_name": room_name,
-                    "last_message": last_message.content,
-                    "last_message_time": last_message.time.strftime("%H:%M"),
+                    "last_message": last_message,
+                    "last_message_time": last_message_time,
                     "friend_display_picture": display_picture,
                 }
             )
