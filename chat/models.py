@@ -38,7 +38,7 @@ class Room(models.Model):
                 {
                     "room_id": room.id,
                     "room_name": room_name,
-                    "last_message": last_message,
+                    "last_message": last_message.content,
                     "last_message_time": last_message.time.strftime("%H:%M"),
                     "friend_display_picture": display_picture,
                 }

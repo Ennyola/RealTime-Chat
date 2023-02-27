@@ -35,7 +35,7 @@ class ChatRoomView(RoomListMixin, View):
         messages = Message.objects.filter(room_id=kwargs["room_id"])
         # Group messages by date so it'll be rendered accordingly on the webpage
         grouped_messages = groupby(messages, lambda message: message.time.date())
-        message_groups = [{"date": date.strftime("%A,%B %d"), "messages": list(messages)} for date, messages in grouped_messages]
+        message_groups = [{"date": date.strftime("%A, %B %d"), "messages": list(messages)} for date, messages in grouped_messages]
         room = Room.objects.get(id=kwargs["room_id"])
         
         if room.room_type == "private":

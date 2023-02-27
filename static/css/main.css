@@ -27,11 +27,11 @@ body {
     border-radius: 5px;
 }
 
-.settings-icon {
+.nav-controls {
     float: right;
 }
 
-.settings-icon i {
+.nav-controls i {
     margin: 8px 10px;
     font-weight: 600;
     padding: 5px;
@@ -40,11 +40,11 @@ body {
     font-size: 18px;
 }
 
-.header-settings .settings-icon a {
+.header-settings .nav-controls a {
     color: white
 }
 
-.settings-icon i:hover {
+.nav-controls i:hover {
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.3);
 }
@@ -198,7 +198,7 @@ body {
     margin-bottom: 2px;
 }
 
-.col-md-8 .settings-icon i {
+.col-md-8 .call-center i {
     margin: 8px 10px;
     font-weight: 600;
     padding: 5px;

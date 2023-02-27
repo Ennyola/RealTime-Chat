@@ -5,5 +5,6 @@ let settingsPopover = new bootstrap.Popover(document.querySelector('#settings-ic
         return document.querySelector('.settings-popover-list').innerHTML
     },
     placement: 'right',
+    trigger: 'focus',
     delay: { "show": 500, "hide": 100 }
 })
