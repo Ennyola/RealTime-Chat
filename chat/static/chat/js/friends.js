@@ -1,10 +1,12 @@
 import { notificationSocket } from "/static/js/webSocket.js"
 
-let friendList = Array.from(document.querySelectorAll(".friends-list .single-friend"));
-const parent = document.querySelector('.friends-list');
-console.log(parent)
-    // Go to a particular room when you click on a friend's name
-export const goToPage = (friends = friendList) => {
+const roomListParent = document.querySelector('.friends-list');
+// let roomList = Array.from(document.querySelectorAll(".friends-list .single-friend"));
+
+let newRoomList = Array.from(roomListParent.children)
+
+// Go to a particular room when you click on a friend's name
+export const goToPage = (friends = newRoomList) => {
     friends.forEach((item) => {
         item.addEventListener('click', (e) => {
             window.location.href = `${window.location.origin}/chat/${item.id}/`
@@ -12,10 +14,10 @@ export const goToPage = (friends = friendList) => {
     })
 }
 
-// returns the index of the room in the friendList
-const checkForIdInFriendList = (id, friendList) => {
-    for (let i = 0; i < friendList.length; i++) {
-        if (parseInt(friendList[i].id) === id) {
+// returns the index of the room in the roomList
+const checkForIdInRoomList = (id, roomList) => {
+    for (let i = 0; i < roomList.length; i++) {
+        if (parseInt(roomList[i].id) === id) {
             return i
         }
     }
@@ -27,15 +29,14 @@ notificationSocket.addEventListener('message', (e => {
     switch (msg.type) {
         case "new_message":
             let position = 0
-            let roomIndex = checkForIdInFriendList(msg.room_id, friendList)
-            console.log(roomIndex)
+            let roomIndex = checkForIdInRoomList(msg.room_id, newRoomList)
             if (roomIndex > -1) {
-                friendList[roomIndex].querySelector("#latest_message").innerHTML = msg.message
-                friendList[roomIndex].querySelector(".time").innerHTML = msg.message_time
+                newRoomList[roomIndex].querySelector("#latest_message").innerHTML = msg.message
+                newRoomList[roomIndex].querySelector(".time").innerHTML = msg.message_time
                 position = roomIndex;
 
                 // Move the new message to the top of the list
-                friendList[position].parentNode.insertBefore(friendList[position], friendList[0])
+                roomListParent.insertBefore(newRoomList[position], roomListParent.firstChild)
             } else {
 
                 // If the room is not listed in the sidebar room_list
@@ -49,9 +50,16 @@ notificationSocket.addEventListener('message', (e => {
                                     <span class="time">${msg.message_time}</span>
                                 </div>
                                 `;
+
                 let newRoomElement = document.createRange().createContextualFragment(room).firstChild
-                friendList.unshift(newRoomElement);
-                friendList[1].parentNode.insertBefore(friendList[0], friendList[1])
+                newRoomList.unshift(newRoomElement);
+
+                // iF room exists, insert the new room at the top of the list else, append the new room to the parent element
+                if (newRoomList.length > 0) {
+                    roomListParent.insertBefore(newRoomElement, roomListParent.firstChild)
+                } else {
+                    roomListParent.appendChild(newRoomElement)
+                }
             }
             break;
         default:
