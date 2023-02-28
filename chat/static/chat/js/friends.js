@@ -1,7 +1,9 @@
 import { notificationSocket } from "/static/js/webSocket.js"
-let friendList = document.querySelectorAll(".friends-list .single-friend")
 
-// Go to a particular room when you click on a friend's name
+let friendList = Array.from(document.querySelectorAll(".friends-list .single-friend"));
+const parent = document.querySelector('.friends-list');
+console.log(parent)
+    // Go to a particular room when you click on a friend's name
 export const goToPage = (friends = friendList) => {
     friends.forEach((item) => {
         item.addEventListener('click', (e) => {
@@ -10,33 +12,47 @@ export const goToPage = (friends = friendList) => {
     })
 }
 
-let room = `<div class="single-friend" id={{room.room_id}}>
-                <img src="{{room.friend_display_picture}}" class="display-picture" alt="friend-picture"/>
-                    <div class="text">
-                        <h6>{{room.room_name}}</h6>
-                        {% if room.last_message %}
-                            <p id="latest_message">{{room.last_message}}</p>
-                    </div>
-                <span class="time">{{room.last_message_time}}</span>
-            </div>
-            `
+// returns the index of the room in the friendList
+const checkForIdInFriendList = (id, friendList) => {
+    for (let i = 0; i < friendList.length; i++) {
+        if (parseInt(friendList[i].id) === id) {
+            return i
+        }
+    }
+    return -1
+}
 
 notificationSocket.addEventListener('message', (e => {
     const msg = JSON.parse(e.data)
     switch (msg.type) {
         case "new_message":
             let position = 0
-            let roomInList = false
-            friendList.forEach((item, id) => {
-                if (parseInt(item.id) === msg.room_id) {
-                    item.querySelector("#latest_message").innerHTML = msg.message
-                    item.querySelector(".time").innerHTML = msg.message_time
-                    position = id;
-                }
-            })
+            let roomIndex = checkForIdInFriendList(msg.room_id, friendList)
+            console.log(roomIndex)
+            if (roomIndex > -1) {
+                friendList[roomIndex].querySelector("#latest_message").innerHTML = msg.message
+                friendList[roomIndex].querySelector(".time").innerHTML = msg.message_time
+                position = roomIndex;
 
-            // Move the new message to the top of the list
-            friendList[position].parentNode.insertBefore(friendList[position], friendList[0])
+                // Move the new message to the top of the list
+                friendList[position].parentNode.insertBefore(friendList[position], friendList[0])
+            } else {
+
+                // If the room is not listed in the sidebar room_list
+                // Add the room to the sidebar room_list
+                let room = `<div class="single-friend" id=${msg.room_id}>
+                                    <img src="" class="display-picture" alt="friend-picture"/>
+                                        <div class="text">
+                                            <h6>${msg.sender}</h6>
+                                            <p id="latest_message">${msg.message}</p>
+                                        </div>
+                                    <span class="time">${msg.message_time}</span>
+                                </div>
+                                `;
+                let newRoomElement = document.createRange().createContextualFragment(room).firstChild
+                friendList.unshift(newRoomElement);
+                friendList[1].parentNode.insertBefore(friendList[0], friendList[1])
+            }
             break;
         default:
             console.log("Unknown message type")
