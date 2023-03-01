@@ -18,6 +18,7 @@ def send_notification(sender, **kwargs):
             "type": "new_message",
             "event": "New Message",
             "sender": message.sender.username,
+            "sender_image": message.sender.userprofile.get_image,
             "message": message.content,
             "message_time": message.time.strftime("%H:%M"),
             "receiver": get_room_name(message.room.name, message.sender.username),

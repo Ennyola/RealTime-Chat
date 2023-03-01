@@ -23,6 +23,7 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                         "message": event["message"],
                         "message_time":event["message_time"],
                         "room_id": event["room_id"],
+                        "sender_image":event["sender_image"]
                     }
                 )
             )
