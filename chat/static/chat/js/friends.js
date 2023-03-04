@@ -62,7 +62,7 @@ notificationSocket.addEventListener('message', (e => {
             }
             break;
         default:
-            console.log("Unknown message type")
+            break;
     }
 }))
 

@@ -40,8 +40,24 @@ body {
     font-size: 18px;
 }
 
+.nav-controls .friend-request-icon {
+    position: relative;
+}
+
+.nav-controls .notification-dot {
+    position: absolute;
+    right: 58%;
+    left: 42%;
+    width: 8px;
+    height: 8px;
+    bottom: 17px;
+    border-radius: 50%;
+    background-color: #ff0000;
+}
+
 .header-settings .nav-controls a {
-    color: white
+    color: white;
+    text-decoration: none;
 }
 
 .nav-controls i:hover {

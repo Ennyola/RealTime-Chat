@@ -1,7 +1,6 @@
 import { notificationSocket } from "/static/js/webSocket.js"
 
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-const user = JSON.parse(document.querySelector("#username").textContent);
 const friendRequestsContainer = document.querySelector(".friend-requests");
 const users = document.querySelector(".friend-requests .users");
 let userInfo
@@ -40,7 +39,8 @@ notificationSocket.addEventListener('message', (e => {
             let senders = users.querySelectorAll(".user")
             senders.forEach((user) => {
                 let sendersName = user.querySelector(".user-name")
-                    // Remove user from dom if he/she cancels the request
+
+                // Remove user from dom if he/she cancels the request
                 if (sendersName.textContent === msg.from) {
                     user.remove()
                 }

@@ -2,11 +2,16 @@
 <div class="header-settings-wrapper">
     <div class="header-settings">
         <a href="{% url 'user_profile' request.user.username %}"><img src="{{request.user.userprofile.get_image}}" class="display-picture" alt="display-picture"></a> 
-        <span class="nav-controls">
-            <a href= {% url 'find_friends:index' %} ><i class="fas fa-user-plus"></i></a> 
+        <div class="nav-controls">
+            <a href= {% url 'find_friends:index' %} class="friend-request-icon">
+                <i class="fas fa-user-plus">
+                </i> 
+                <span class="notification-dot d-none">
+                </span>
+            </a> 
             <a href={% url 'friends' %}> <i class="fas fa-comment-alt"></i></a>
             <i tabindex="0" class="fas fa-ellipsis-v" id="settings-icon"></i>
-        </span>
+        </div>
     </div>
     {% comment %} <div class="search-box">
         <div class="wrapper">
