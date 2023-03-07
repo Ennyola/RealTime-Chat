@@ -1,10 +1,7 @@
-const friends = document.querySelectorAll('.friends .friend')
-const goToPage = (friends) => {
-    friends.forEach((item) => {
-        item.addEventListener('click', (e) => {
-            window.location.href = `${window.location.origin}/chat/${item.id}/`
-        })
-    })
-}
+const friends = document.querySelectorAll('.friends .single-friend')
 
-goToPage(friends)
+friends.forEach((friend) => {
+    friend.addEventListener('click', (e) => {
+        window.location.href = `${window.location.origin}/chat/${friend.id}/`
+    })
+})

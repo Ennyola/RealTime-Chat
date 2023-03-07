@@ -117,7 +117,7 @@ body {
 }
 
 .friends-list {
-    margin-top: 30px;
+    /* margin-top: 30px; */
     height: 600px;
     overflow-y: auto;
 }
@@ -126,7 +126,15 @@ body {
     display: flex;
     border-bottom: 1px solid #3c444b;
     transition: 0.5s;
-    padding: 5px;
+    padding: 10px 0px 10px 10px;
+    height: 80px;
+    word-break: break-all;
+    overflow: auto;
+}
+
+.single-friend .text p {
+    color: grey;
+    font-size: 14px;
 }
 
 .single-friend:hover {
@@ -144,11 +152,7 @@ body {
     position: relative;
     top: 3px;
     margin-bottom: 5px;
-}
-
-.single-friend .text p {
-    color: grey;
-    font-size: 16px;
+    font-size: 17px;
 }
 
 .stories {
