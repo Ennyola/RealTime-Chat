@@ -3,7 +3,7 @@
     {% for room in rooms %}
         <div class="single-friend" id={{room.room_id}}>
             <img src="{{room.friend_display_picture}}" class="display-picture" alt="friend-picture"/>
-            <div class="text">
+            <div class="message-text">
                 <h6>{{room.room_name}}</h6>
                 {% if room.last_message %}
                     <p id="latest_message">{{room.last_message}}</p>

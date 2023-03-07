@@ -128,13 +128,14 @@ body {
     transition: 0.5s;
     padding: 10px 0px 10px 10px;
     height: 80px;
-    word-break: break-all;
-    overflow: auto;
 }
 
-.single-friend .text p {
+.single-friend .message-text p {
     color: grey;
     font-size: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .single-friend:hover {
@@ -143,12 +144,12 @@ body {
     color: black !important;
 }
 
-.single-friend .text {
+.single-friend .message-text {
     margin: 0px 15px;
     width: 80%;
 }
 
-.single-friend .text h6 {
+.single-friend .message-text h6 {
     position: relative;
     top: 3px;
     margin-bottom: 5px;
