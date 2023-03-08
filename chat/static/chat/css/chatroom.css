@@ -20,14 +20,6 @@
 }
 
 
-/* .room_name_status .online-status {
-    position: relative;
-    z-index: 12;
-    color: #808F99;
-    font-size: 14px;
-} */
-
-
 /* .online-status {
     color: #808F99;
     font-size: 14px;
@@ -87,33 +79,34 @@
     justify-content: end;
 }
 
-.msg-time {
-    margin: 2px 5px;
-    font-size: 14px;
-}
-
-.message-box {
+.input-box {
     position: fixed;
     bottom: 20px;
-    width: 100%;
+    width: 66.7%;
     background-color: #373E4E;
-    padding: 20px 0px;
-    /* padding: 10px;
-    margin: 10px;
-    border: 1px solid grey; */
+    padding: 20px
 }
 
-.icons {
-    color: #808F99;
-    font-size: 25px;
-    cursor: pointer;
-}
-
-.message-box .input-wrapper {
+.input-box .input-wrapper {
     position: relative;
     display: flex;
     width: 100%;
-    margin: 0px 10px;
+    padding-right: 30px;
+}
+
+.input-box .icons {
+    color: #808F99;
+    font-size: 25px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.input-box .form-control {
+    border-radius: 45px;
+    padding: 0.4em 1em;
+    outline: none;
+    /* display: inline; */
+    width: 100%;
 }
 
 .emoji-attachment {
@@ -124,22 +117,6 @@
     position: relative;
     margin-left: 12px;
     top: 3px;
-}
-
-.text-input {
-    width: 60%;
-}
-
-.text-input .icons {
-    margin: 0 10px;
-}
-
-.message-box .form-control {
-    border-radius: 45px;
-    padding: 0.4em 1em;
-    outline: none;
-    display: inline;
-    width: 80%;
 }
 
 @media screen and (max-width: 768px) {
@@ -178,5 +155,8 @@
     }
     .right-section {
         display: block;
+    }
+    .input-box {
+        width: 100%;
     }
 }

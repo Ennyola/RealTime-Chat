@@ -117,8 +117,7 @@ body {
 }
 
 .friends-list {
-    /* margin-top: 30px; */
-    height: 600px;
+    height: 90vh;
     overflow-y: auto;
 }
 
@@ -128,6 +127,7 @@ body {
     transition: 0.5s;
     padding: 15px 10px 15px 15px;
     height: 90px;
+    overflow: hidden;
 }
 
 .single-friend .message-text p {
@@ -201,29 +201,6 @@ body {
     padding-left: 0;
 }
 
-.col-md-8 .single-friend {
-    border-bottom: none;
-    margin: 0;
-    padding: 0;
-}
-
-.col-md-8 .header-settings {
-    padding: 5px 15px;
-}
-
-.col-md-8 .single-friend:hover {
-    background-color: transparent;
-    color: white !important;
-    cursor: default;
-}
-
-.col-md-8 .text {
-    width: 70%;
-}
-
-.col-md-8 .text p {
-    margin-bottom: 2px;
-}
 
 .col-md-8 .call-center i {
     margin: 8px 10px;
@@ -322,13 +299,6 @@ body {
     bottom: 10px;
     left: 50%;
 }
-
-
-/* #hangup-button i {
-text-align: center;
-display: block;
-margin: 0 auto;
-} */
 
 .call-control {
     display: flex;

@@ -51,7 +51,7 @@ chatSocket.addEventListener('message', (e) => {
                 <div class="chat-bubble">
                     <div class="msg">${msg.message_content}</div>
                         <span class ="msg-metadata">
-                            <span class = "msg-time">${formatAMPM(new Date)}</span> 
+                            <span class = "time">${formatAMPM(new Date)}</span> 
                             <span class="chat-status">
                             ${currentUser === msg.sender?'<i class="fas fa-check"></i>':""}
                         </span>

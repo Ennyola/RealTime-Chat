@@ -54,7 +54,7 @@
                                 {{message.content}}
                             </div>
                             <span class ="msg-metadata">
-                                <span class = "time">{{message.time.time}}</span> 
+                                <span class="time">{{message.time.time}}</span> 
                             </span>
                         </div>
                     </div>    
@@ -63,17 +63,14 @@
         {% endfor %}   
         
     </div> 
-    <div class="message-box">
+    <div class="input-box">
         <div class="input-wrapper">
-            <div class="emoji-attachment">
-                <span class="icons" ><i class="far fa-smile"></i></span> 
-                <span class="icons" ><i class="fas fa-paperclip"></i></i></span>
-            </div>  
-            <div class="text-input">
-                <input class="form-control" id = "input-message" type="text" placeholder="type message" name="" id="">
+                <input class="form-control" id = "input-message" type="text" placeholder="type message">
                 <span class="icons" ><i class="fas fa-paper-plane" id ="send-button"></i></span>
-            </div>
         </div>
+        {% comment %} 
+                <span class="icons" ><i class="fas fa-paperclip"></i></i></span>
+            {% endcomment %}
     </div>
     {{room_name|json_script:"room-name"}}
 {% endblock  %}
