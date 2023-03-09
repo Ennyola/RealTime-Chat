@@ -1,7 +1,6 @@
 import { notificationSocket } from "/static/js/webSocket.js"
 
 const roomListParent = document.querySelector('.friends-list');
-
 let roomList = Array.from(roomListParent.children)
 
 // Go to a particular room when you click on a friend's name

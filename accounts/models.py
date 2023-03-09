@@ -18,7 +18,7 @@ class UserProfile(models.Model):
     bio = models.TextField(blank=True)
     display_picture = models.ImageField(
         upload_to="profile_pictures",
-        null = True,
+        null=True,
         blank=True,
     )
 
@@ -32,6 +32,6 @@ class UserProfile(models.Model):
         if the user has not uploaded a display picture.
         """
         if not self.display_picture:
-            return staticfiles_storage.url('accounts/img/user-icon.png')
+            return staticfiles_storage.url("accounts/img/user-icon.png")
         else:
             return self.display_picture.url

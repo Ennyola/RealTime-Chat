@@ -7,7 +7,6 @@ from django.conf.urls.static import static
 from chat.views import ChatIndexView
 
 from find_friends.views import show_friends
-
 from accounts.views import user_profile
 
 urlpatterns = [

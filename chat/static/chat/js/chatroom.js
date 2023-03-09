@@ -1,8 +1,9 @@
 import { getChatSocket } from '/static/js/webSocket.js'
+
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
+const currentUser = JSON.parse(document.querySelector("#username").textContent);
 let chatSocket = getChatSocket(friendName)
 let chatHolder = document.querySelector(".messages");
-const currentUser = JSON.parse(document.querySelector("#username").textContent);
 let inputBox = document.querySelector("#input-message")
 let sendButton = document.querySelector("#send-button")
 

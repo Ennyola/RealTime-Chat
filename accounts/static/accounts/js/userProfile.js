@@ -17,7 +17,7 @@ let confirmationWrapper = document.querySelector(".confirmation-wrapper");
 let cancelDelete = document.querySelector("#delete-confirmation__no");
 let confirmDelete = document.querySelector("#delete-confirmation__yes");
 let stream;
-let canvasContext
+let canvasContext;
 
 
 // Defining the default allow list for bootstrap popover
