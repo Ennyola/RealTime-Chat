@@ -14,15 +14,17 @@
 
 {% block friends %}
     <div class="friends height">
-        {% for friend in friends %}
-            <div class="single-friend" id="{{friend.room_id}}">
-                <img src="{{friend.friend.userprofile.get_image}}" class="display-picture" alt="display-picture">
-                <div class="message-text">
-                    <h6>{{friend.friend.username}}</h6>
-                    <p>{{friend.friend.userprofile.bio}} </p>
-                    {% comment %} <p>{{friend.friend.userprofile.bio|truncatechars:80|default:"..."}} </p>        {% endcomment %}
+        {% for friend_group in friend_groups %}
+            <div>{{friend_group.alphabet}}</div>
+            {% for friend in friend_group.friend_and_room_id  %}
+                <div class="single-friend" id="{{friend.room_id}}">
+                    <img src="{{friend.user.userprofile.get_image}}" class="display-picture" alt="display-picture">
+                    <div class="message-text">
+                        <h6>{{friend.user.username}}</h6>
+                        <p>{{friend.user.userprofile.bio}} </p>
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
         {% endfor %} 
     </div>
 {% endblock %}

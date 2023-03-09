@@ -3,8 +3,8 @@ const friendName = JSON.parse(document.getElementById('room-name').textContent);
 let chatSocket = getChatSocket(friendName)
 let chatHolder = document.querySelector(".messages");
 const currentUser = JSON.parse(document.querySelector("#username").textContent);
-let inputBox = document.querySelector("#input-message"),
-    sendButton = document.querySelector("#send-button")
+let inputBox = document.querySelector("#input-message")
+let sendButton = document.querySelector("#send-button")
 
 // Go to the last message on page load
 window.onload = () => {
@@ -15,7 +15,7 @@ window.onload = () => {
 const formatAMPM = (date) => {
     let hours = date.getHours();
     let minutes = date.getMinutes();
-    let ampm = hours >= 12 ? 'pm' : 'am';
+    let ampm = hours >= 12 ? 'p.m.' : 'a.m.';
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
@@ -32,6 +32,7 @@ inputBox.addEventListener('keyup', (e => {
 }))
 
 sendButton.addEventListener('click', (e) => {
+    console.log("hi")
     if (inputBox.value === "") return
     chatSocket.send(JSON.stringify({
         type: "message",

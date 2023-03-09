@@ -15,7 +15,7 @@
 }
 
 .room_name_status h6 {
-    position: absolute;
+    position: relative;
     top: 9px;
 }
 

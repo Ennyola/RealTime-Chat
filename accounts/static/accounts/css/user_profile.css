@@ -51,17 +51,19 @@
 .user-profile__photo_option__section {
     position: absolute;
     bottom: 10px;
-    left: 58%;
-    right: 35%;
+    left: 57%;
+    
 }
 
-.user-profile__photo_option__section i {
+#camera-icon {
     font-size: 22px;
     color: #ffffff;
     cursor: pointer;
     padding: 10px;
     background-color: #646e91;
     border-radius: 50%;
+    position: relative;
+    
 }
 
 .user-profile__info {
@@ -179,7 +181,7 @@
     border-width: 0;
     width: 100%;
     padding: 2px;
-    padding-right: 45px;
+    padding-right: 30px;
     color: white;
     margin-top: 10px;
     font-size: 17px;
@@ -189,11 +191,11 @@
     border-color: #c3cae2;
 }
 
-#edit-bio {
+.bio-edit {
     cursor: pointer;
     position: relative;
     top: 20px;
-    right: 40px;
+    right: 20px;
 }
 
 #take-photo {
@@ -293,6 +295,11 @@
     cursor: pointer;
 }
 
+@media screen and (max-width: 449px){
+    .user-profile__photo_option__section{
+        left: 65%;
+    }
+}
 @media screen and (max-width: 768px) {
     .user-profile__heading {
         width: 100%;
@@ -302,6 +309,17 @@
         width: 100% !important;
         height: 100%;
     }
+    
+}
+@media screen and (min-width: 450px) and (max-width: 768px){
+    .user-profile__photo_option__section{
+        left: 58% ;
+    }
+}
+@media screen and (min-width: 769px) and (max-width: 1250px){
+    .user-profile__photo_option__section{
+        left: 62%;
+    }
 }
 
 @media screen and (max-width:1250px) {
@@ -309,4 +327,5 @@
     .take-photo-section .picture-preview {
         width: 70%;
     }
+    
 }

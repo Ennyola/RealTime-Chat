@@ -1,3 +1,5 @@
+from itertools import groupby
+
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
 from django.db.models import Q
@@ -118,15 +120,28 @@ def show_friends(request):
         .exclude(username=request.user.username)
         .order_by("username")
     )
+    # Grouping the friends by the first letter of their name
+    grouped_friends = groupby(friends, lambda x: x.username[0])
+    friend_groups = [
+        {"alphabet": alphabet, "friends": list(friends)}
+        for alphabet, friends in grouped_friends
+    ]
+
     friends_and_room_id = []
-    for friend in friends:
-        room = Room.objects.filter(
-            Q(name=f"{friend.username}_{request.user}")
-            | Q(name=f"{request.user}_{friend.username}")
-        ).values("id")
-        friends_and_room_id.append({"friend": friend, "room_id": room[0].get("id")})
+    for friends in friend_groups:
+        for friend in friends["friends"]:
+            # Getting the room id the user and friend shares
+            room = Room.objects.filter(
+                Q(name=f"{friend.username}_{request.user}")
+                | Q(name=f"{request.user}_{friend.username}")
+            ).values("id")
+            friends_and_room_id.append({"user": friend, "room_id": room[0].get("id")})
+        # Deleting the friends dictionary used in getting the room id to avoid redundant data
+        del friends["friends"]
+        friends["friend_and_room_id"] = friends_and_room_id
+        friends_and_room_id = []
     context = {
-        "friends": friends_and_room_id,
+        "friend_groups": friend_groups,
     }
 
     return render(request, "find_friends/show_friends.html", context)

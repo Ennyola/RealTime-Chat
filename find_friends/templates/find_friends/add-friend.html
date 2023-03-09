@@ -57,36 +57,41 @@
             {% endif %}
         
         <div class="send-requests">
-            <h5 class="send-request-header">Add Friends</h5>
-            {% for user in random_users %}
-                <div class="users">
-                    <div class="user">
-                        <div class="user-info">
-                            <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
-                            <span class="user-name">{{user.username}}</span>
-                        </div>
-                        <div class="add-remove">
-                            {% if user in recipients %}
-                                <form action="{% url 'find_friends:send_or_cancel_request' user.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button name="cancel-request">
-                                        <i class="fas fa-user-check"></i>
-                                        Added
-                                    </button>
-                                </form>
-                            {% else %}
-                                <form action="{% url 'find_friends:send_or_cancel_request' user.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button name="send-request">
-                                        <i class="fas fa-user-plus"></i>
-                                        Add friend
-                                    </button>
-                                </form>
-                            {% endif %} 
-                        </div>   
-                    </div>        
-                </div>
-            {% endfor %}
+            {% if random_users %}
+                <h5 class="send-request-header">Add Friends</h5>
+                {% for user in random_users %}
+                    <div class="users">
+                        <div class="user">
+                            <div class="user-info">
+                                <img src="{{user.userprofile.get_image}}" class="display-picture" alt="display-picture">
+                                <span class="user-name">{{user.username}}</span>
+                            </div>
+                            <div class="add-remove">
+                                {% if user in recipients %}
+                                    <form action="{% url 'find_friends:send_or_cancel_request' user.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button name="cancel-request">
+                                            <i class="fas fa-user-check"></i>
+                                            Added
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <form action="{% url 'find_friends:send_or_cancel_request' user.id %}" method="post">
+                                        {% csrf_token %}
+                                        <button name="send-request">
+                                            <i class="fas fa-user-plus"></i>
+                                            Add friend
+                                        </button>
+                                    </form>
+                                {% endif %} 
+                            </div>   
+                        </div>        
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h5 class="send-request-header text-center">No Friends To Add</h5>
+            {% endif %}
+            
         </div>      
     </div>
 {% endblock  %}

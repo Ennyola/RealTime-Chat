@@ -4,9 +4,7 @@ from django.shortcuts import render
 from django.views import View
 from django.contrib.auth import get_user_model
 
-from emoji import Emoji
-
-from .models import Room, Message, Participants
+from .models import Room, Message
 from .helpers import get_room_name
 
 # Create your views here.
