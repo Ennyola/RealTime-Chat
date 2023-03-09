@@ -15,7 +15,9 @@
 {% block friends %}
     <div class="friends height">
         {% for friend_group in friend_groups %}
-            <div>{{friend_group.alphabet}}</div>
+            <div class="alphabet-group">
+                <p>{{friend_group.alphabet}}</p> 
+            </div>
             {% for friend in friend_group.friend_and_room_id  %}
                 <div class="single-friend" id="{{friend.room_id}}">
                     <img src="{{friend.user.userprofile.get_image}}" class="display-picture" alt="display-picture">

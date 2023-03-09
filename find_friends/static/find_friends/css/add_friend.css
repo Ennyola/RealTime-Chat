@@ -82,3 +82,14 @@
     margin: 5px;
     padding: 5px;
 }
+
+.friends .alphabet-group {
+    margin: 15px 0px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.friends .alphabet-group p {
+    text-transform: uppercase;
+    color: #808F99;
+}

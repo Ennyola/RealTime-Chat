@@ -124,7 +124,7 @@ body {
 
 .single-friend {
     display: flex;
-    border-bottom: 1px solid #393b3b;
+    border-top: 1px solid #393b3b;
     transition: 0.5s;
     padding: 15px 10px 15px 15px;
     height: 90px;
