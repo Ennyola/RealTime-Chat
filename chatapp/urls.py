@@ -11,9 +11,9 @@ from accounts.views import user_profile
 
 urlpatterns = [
     path("", login_required(ChatIndexView.as_view()), name="homepage"),
-    path("accounts/", include("accounts.urls")),
-    path("add-friend/", include("find_friends.urls")),
-    path("friends/", show_friends, name="friends"),
+    path("accounts/", include("accounts.urls", namespace="accounts")),
+    path("add-friend/", include("find_friends.urls", namespace="find_friends")),
+    path("friends/", login_required(show_friends), name="friends"),
     path("admin/", admin.site.urls),
     path("chat/", include("chat.urls", namespace="chat")),
     path("<str:username>/", user_profile, name="user_profile"),

@@ -6,7 +6,7 @@ from .models import UserProfile
 
 class RegisterForm(forms.Form):
     username = forms.CharField(label=_("Username"), max_length=100, widget=forms.TextInput(attrs={"placeholder": "Username"}))
-    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput)
+    password = forms.CharField(label=_("Password"), widget=forms.PasswordInput(attrs={"placeholder": "Password"}))
     confirm_password = forms.CharField(label=_("Confirm Password"), widget=forms.PasswordInput(attrs={"placeholder": "Confirm Password"}))
 
 class LoginForm(forms.Form):

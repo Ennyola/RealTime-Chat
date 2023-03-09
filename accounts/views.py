@@ -1,6 +1,5 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib import messages
@@ -11,10 +10,25 @@ from .forms import LoginForm, RegisterForm, UpdateProfileForm
 
 # Create your views here.
 
+USER = get_user_model()
 
 def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            confirm_password = form.cleaned_data["confirm_password"]
+            if password != confirm_password:
+                messages.error(request, "Passwords do not match")
+                return redirect("accounts:register")
+            if USER.objects.filter(username__iexact=username).exists():
+                messages.error(request, "Username already taken")
+                return redirect("accounts:register")
+            user = USER.objects.create_user(username=username,password=password)
+            login(request, user)
+            return redirect("homepage")
     form = RegisterForm()
-    
     context = {"form": form}
     return render(request, "accounts/registration.html", context)
 
