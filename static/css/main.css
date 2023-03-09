@@ -25,11 +25,11 @@ body {
     background-color: #272A35;
     padding: var(--padding);
     display: flex;
-    flex-wrap:nowrap;
+    flex-wrap: nowrap;
 }
 
 .nav-controls {
-    margin-left:auto;
+    margin-left: auto;
 }
 
 .nav-controls i {
@@ -202,7 +202,6 @@ body {
     padding-left: 0;
 }
 
-
 .col-md-8 .call-center i {
     margin: 8px 10px;
     font-weight: 600;
@@ -229,23 +228,29 @@ body {
     display: none
 }
 
+.fa-phone {
+    transform: rotate(90deg);
+}
+
 .video-container {
     position: fixed;
     z-index: +12;
-    width: 55%;
-    height: 80%;
-    left: 400px;
-}
-
-.video-box {
-    position: relative;
     height: 100%;
     width: 100%;
 }
 
+.video-box {
+    position: relative;
+    width: 60%;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .video-box .call-info {
     position: absolute;
-    left: 50%;
+    left: 40%;
     top: 40px;
     color: #260f52;
 }
@@ -266,7 +271,6 @@ body {
     height: 100%;
     object-fit: cover;
     border-radius: 10px;
-    box-shadow: #272A35;
 }
 
 .user-video {
@@ -276,7 +280,6 @@ body {
     object-fit: cover;
     right: 0;
     bottom: 20px;
-    /* border-bottom-right-radius: 10px; */
     padding: 0;
 }
 
@@ -298,7 +301,7 @@ body {
     background-color: rgb(170, 9, 9);
     position: absolute;
     bottom: 10px;
-    left: 50%;
+    left: 45%;
 }
 
 .call-control {
@@ -323,38 +326,18 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-    /* .video-container {
-        position: fixed;
-        z-index: +12;
+    .video-container {
         width: 100%;
         height: 100%;
         left: 0;
         top: 0;
     }
     .video-box {
-        position: relative;
         height: 100%;
         width: 100%;
     }
-    .incoming-video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 10px;
-        box-shadow: #272A35;
-    }
-    .user-video {
-        position: absolute;
-        width: 300px;
-        height: 200px;
-        object-fit: cover;
-        right: 0;
-        bottom: 20px;
-        /* border-bottom-right-radius: 10px; */
-    /* padding: 0; */
-    /* } */
     .col-md-4 {
-        border-right: none; 
+        border-right: none;
     }
     .right-section {
         display: none;
