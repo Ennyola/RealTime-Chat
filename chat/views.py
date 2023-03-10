@@ -3,6 +3,7 @@ from itertools import groupby
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 
 from .models import Room, Message
 from .helpers import get_room_name
@@ -34,7 +35,9 @@ class ChatRoomView(RoomListMixin, View):
         # Group messages by date so it'll be rendered accordingly on the webpage
         grouped_messages = groupby(messages, lambda message: message.time.date())
         message_groups = [{"date": date.strftime("%A, %B %d"), "messages": list(messages)} for date, messages in grouped_messages]
-        room = Room.objects.get(id=kwargs["room_id"])
+        # Get the room a user belongs to.
+        # Returns a 404 error if the room doesn't exist
+        room = get_object_or_404(Room, id=kwargs["room_id"], chats__users=request.user)
         
         if room.room_type == "private":
             context["room_name"] = get_room_name(room.name, request.user.username)
