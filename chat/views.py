@@ -46,4 +46,4 @@ class ChatRoomView(RoomListMixin, View):
         friend = get_user_model().objects.get(username=context["room_name"])
         context["message_groups"] = message_groups
         context["display_picture"] = friend.userprofile.get_image
-        return render(request, "chat/chat-room.html", context)
+        return render(request, "chat/chat_room.html", context)

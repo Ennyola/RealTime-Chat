@@ -28,6 +28,7 @@ notificationSocket.addEventListener('message', (e => {
         case "new_message":
             let position = 0
             let roomIndex = checkForIdInRoomList(msg.room_id, roomList)
+                // If the room is listed in the sidebar room_list
             if (roomIndex > -1) {
                 roomList[roomIndex].querySelector("#latest_message").innerHTML = msg.message
                 roomList[roomIndex].querySelector(".time").innerHTML = msg.message_time

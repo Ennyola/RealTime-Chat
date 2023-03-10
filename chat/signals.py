@@ -20,7 +20,7 @@ def send_notification(sender, **kwargs):
             "sender": message.sender.username,
             "sender_image": message.sender.userprofile.get_image,
             "message": message.content,
-            "message_time": message.time.strftime("%H:%M"),
+            "message_time": message.time.strftime("%I:%M %p"),
             "receiver": get_room_name(message.room.name, message.sender.username),
             "room_id": message.room.id,
         },

@@ -35,7 +35,7 @@ class Room(models.Model):
             display_picture = friend.userprofile.get_image
             if room.messages.last():
                 last_message = room.messages.last() # Get the last message in the room
-                last_message_time = last_message.time.strftime("%H:%M")
+                last_message_time = last_message.time.strftime("%I:%M %p")
             else:
                 last_message = ""
                 last_message_time = ""
