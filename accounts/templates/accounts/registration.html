@@ -18,11 +18,14 @@
         {{form.confirm_password}}
         {{form.confirm_password.errors}}
         <input type="submit" value="Register">
+        
         {% if messages %}
-            {% for message in messages  %}
-                {{message}}
-            {% endfor %}
-        {% endif %}
+                {% for message in messages  %}
+                    <div class="error-message">
+                       <p class="text-center">{{message}}</p> 
+                    </div>
+                {% endfor %}
+            {% endif %}
         <p class="text-center">Already have an account? <a href="{% url 'accounts:login' %}" class="nav_link">Login here</a></p>
     </form>
 </div>

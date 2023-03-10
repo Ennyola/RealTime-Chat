@@ -45,7 +45,7 @@ def user_login(request):
                 return redirect("homepage")
             else:
                 messages.error(
-                    request, "Invalid credentials. Are you sure you are signed up?"
+                    request, "Invalid credentials. Do you have an account?"
                 )
     form = LoginForm()
     context = {"form": form}

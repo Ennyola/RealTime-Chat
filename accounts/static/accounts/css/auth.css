@@ -72,3 +72,15 @@ form {
 .nav_link:hover {
     color: #6084e9;
 }
+
+.error-message {
+    color: #7a7373;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+@media screen and (max-width: 360px) {
+    form {
+        width: auto;
+    }
+}
