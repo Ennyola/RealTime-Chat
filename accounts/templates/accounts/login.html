@@ -3,21 +3,27 @@
 {% block title %} <title>Login</title> {% endblock  %}
 
 {% block content %}
-<h4> Login Form</h4>
-<form  action="{% url 'accounts:login' %}" method="POST">
-    {% csrf_token %}
-    {{form.username.errors}}
-    {{form.username}}
-    {{form.password}}
-    {{form.password.errors}}
-    <input type="submit" value="Login">
-    {% if messages %}
-        {% for message in messages  %}
-            {{message}}
-        {% endfor %}
-    {% endif %}
-    <p>Don't have an account?<a href="{% url 'accounts:register' %}">Register here</a></p>
-    
-</form>
-
+    <div class="login">
+        <form  action="{% url 'accounts:login' %}" method="POST">
+            <div class="auth-header text-center">
+                <i class="fas fa-paper-plane"></i>
+                <h4> Login Here</h4>
+            </div>
+            {% csrf_token %}
+            {{form.username.errors}}
+            {{form.username}}
+            {{form.password}}
+            {{form.password.errors}}
+            <input type="submit" value="Login">
+            
+            {% if messages %}
+                {% for message in messages  %}
+                    <div class="error-message">
+                        {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <p class="text-center">Don't have an account? <a href="{% url 'accounts:register' %}" class="nav_link">Register here</a></p>
+        </form>
+    </div>
 {% endblock  %}

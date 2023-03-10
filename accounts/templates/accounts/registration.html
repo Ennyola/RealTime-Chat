@@ -3,16 +3,28 @@
 {% block title %} <title>Register</title> {% endblock  %}
 
 {% block content %}
-<h4> Register Here</h4>
-<form  action="{% url 'accounts:register' %}" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Register">
-    {% if messages %}
-        {% for message in messages  %}
-            {{message}}
-        {% endfor %}
-    {% endif %}
-    <p>Already have an account?<a href="{% url 'accounts:login' %}">Login here</a></p>
-</form>
+<div class="register">
+    
+    <form  action="{% url 'accounts:register' %}" method="POST">
+        <div class="auth-header text-center">
+            <i class="fas fa-paper-plane"></i>
+            <h4> Register</h4>
+        </div>
+        {% csrf_token %}
+        {{form.username.errors}}
+        {{form.username}}
+        {{form.password}}
+        {{form.password.errors}}
+        {{form.confirm_password}}
+        {{form.confirm_password.errors}}
+        <input type="submit" value="Register">
+        {% if messages %}
+            {% for message in messages  %}
+                {{message}}
+            {% endfor %}
+        {% endif %}
+        <p class="text-center">Already have an account? <a href="{% url 'accounts:login' %}" class="nav_link">Login here</a></p>
+    </form>
+</div>
+
 {% endblock  %}
