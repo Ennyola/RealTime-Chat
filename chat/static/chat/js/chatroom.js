@@ -33,11 +33,12 @@ inputBox.addEventListener('keyup', (e => {
 }))
 
 sendButton.addEventListener('click', (e) => {
-    console.log("hi")
+    let timeStamp = new Date().getTime();
     if (inputBox.value === "") return
     chatSocket.send(JSON.stringify({
         type: "message",
         messageContent: inputBox.value,
+        time: timeStamp,
         sender: currentUser
     }));
     inputBox.value = ""
@@ -53,7 +54,7 @@ chatSocket.addEventListener('message', (e) => {
                 <div class="chat-bubble">
                     <div class="msg">${msg.message_content}</div>
                         <span class ="msg-metadata">
-                            <span class = "time">${formatAMPM(new Date)}</span> 
+                            <span class = "time">${formatAMPM(new Date(msg.time))}</span> 
                             <span class="chat-status">
                             ${currentUser === msg.sender?'<i class="fas fa-check"></i>':""}
                         </span>

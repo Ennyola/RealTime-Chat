@@ -61,7 +61,7 @@ class Participants(models.Model):
 
 class Message(models.Model):
     content = models.TextField()
-    time = models.DateTimeField(default=timezone.localtime)
+    time = models.DateTimeField(default=timezone.now)
     message_type = models.CharField(
         db_column="type", max_length=50, blank=True, null=True
     )
