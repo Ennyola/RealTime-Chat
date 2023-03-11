@@ -1,3 +1,5 @@
+from datetime import datetime,timedelta
+
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
@@ -34,8 +36,15 @@ class Room(models.Model):
             friend = User.objects.get(username=room_name)
             display_picture = friend.userprofile.get_image
             if room.messages.last():
-                last_message = room.messages.last() # Get the last message in the room
-                last_message_time = last_message.time.strftime("%I:%M %p")
+                last_message = room.messages.last()  # Get the last message in the room
+                if last_message.time.date() == datetime.today().date():   
+                    last_message_time = last_message.time.strftime("%I:%M %p") # returns the time of the message if it was sent today
+                elif last_message.time.date() == datetime.today().date() - timedelta(days=1):
+                    last_message_time = "Yesterday"
+                elif last_message.time.date() == datetime.today().date() - timedelta(days=2):
+                    last_message_time = "2 days ago"
+                else:
+                    last_message_time = last_message.time.strftime(f"%d/%m/%Y")  # returns the date of the message if it was sent more than 2 days ago      
             else:
                 last_message = ""
                 last_message_time = ""
