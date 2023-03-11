@@ -1,14 +1,14 @@
-export const callWebSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/call/`);
-
-export const getChatSocket = (friendName) => {
-    return new ReconnectingWebSocket(`ws://${window.location.host}/ws/chat/${friendName}/`);
+const endpoint = `ws://${window.location.host}/ws`;
+if (window.location.protocol == "https:") {
+    endpoint = `wss://${window.location.host}/ws`;
 }
 
-export const friendRequestWebSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/friend-request/`);
+export const callWebSocket = new ReconnectingWebSocket(`${endpoint}/call/`);
 
-export const notificationSocket = new ReconnectingWebSocket(`ws://${window.location.host}/ws/notification/`)
+export const getChatSocket = (friendName) => {
+    return new ReconnectingWebSocket(`${endpoint}/chat/${friendName}/`);
+}
 
+export const friendRequestWebSocket = new ReconnectingWebSocket(`${endpoint}/friend-request/`);
 
-// export const getGroupChatSocket = (groupName) => {
-//     return new ReconnectingWebSocket(`ws://${window.location.host}/ws/group_chat/${groupName}/`);
-// }
+export const notificationSocket = new ReconnectingWebSocket(`${endpoint}/notification/`)

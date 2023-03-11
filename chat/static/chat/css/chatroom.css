@@ -12,11 +12,15 @@
 .room_name_status {
     margin-left: 20px;
     position: relative;
+    width: 70%;
+    transition: 0.3s all;
+    cursor: pointer;
 }
 
 .room_name_status h6 {
     position: relative;
     top: 9px;
+    left: 10px;
 }
 
 
@@ -29,8 +33,11 @@
     margin-left: auto;
     position: relative;
     top: -3px;
+    display: flex;
+    flex-wrap: nowrap;
 }
-.call-center i{
+
+.call-center i {
     font-size: 20px;
     cursor: pointer;
 }
