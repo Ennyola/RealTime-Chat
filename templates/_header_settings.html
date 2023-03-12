@@ -1,7 +1,7 @@
 {% load static %}
 <div class="header-settings-wrapper">
     <div class="header-settings">
-        <a href="{% url 'user_profile' request.user.username %}"><img src="{{request.user.userprofile.get_image}}" class="display-picture" alt="display-picture"></a> 
+        <a href="{% url 'homepage'  %}"><img src="{{request.user.userprofile.get_image}}" class="display-picture" alt="display-picture"></a> 
         <div class="nav-controls">
             <a href= {% url 'find_friends:index' %} class="friend-request-icon">
                 <i class="fas fa-user-plus">
@@ -25,7 +25,7 @@
 <div class="settings-popover-list d-none">
     <ul class="settings-options">
         <li class="list-item"><a href="{% url 'user_profile' request.user.username %}">Profile</a></li>
-        <li class="list-item"><a href="{% url 'user_profile' request.user.username %}">Settings</a></li>
+        {% comment %} <li class="list-item"><a href="{% url 'user_profile' request.user.username %}">Settings</a></li> {% endcomment %}
         <li class="list-item"><a href="{% url 'accounts:logout' %}">Logout</a></li>
     </ul>
 </div>

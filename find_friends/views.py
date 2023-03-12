@@ -1,4 +1,4 @@
-from itertools import groupby
+from itertools import groupby, chain
 
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
@@ -22,23 +22,36 @@ def change_friendship_status(queryset, status):
 def index(request):
     sent_friend_requests = FriendRequest.objects.filter(from_user=request.user)
     received_friend_requests = FriendRequest.objects.filter(to_user=request.user)
-    # Getting all the friendships that the current user has
+
+    # Getting all the friends that the current user has
     friend_list = Friendship.objects.filter(
         Q(Q(from_user=request.user) | Q(to_user=request.user)) & Q(status="ACC")
     )
+
     # This ensures the current user, the users that have sent a friend request,
     # and the users that are already friends are not
     # shown in the list of people to be added
     # It also orders them by adding the sent requests to the top of the list and
     # randomly orders the remaining users
+    # It also excludes the users
+    # that have been sent request for the purpose of randomly returning other users
     users = User.objects.exclude(
         Q(username=request.user)
         | Q(friend_requests_sent__in=received_friend_requests)
         | Q(friendships_received__in=friend_list)
         | Q(friendships_sent__in=friend_list)
-    ).order_by("?")[:10]
+        | Q(friend_requests_received__in=sent_friend_requests)
+    ).order_by("?")[:5]
 
-    recipients = User.objects.filter(friend_requests_received__in=sent_friend_requests)
+    recipients = User.objects.filter(
+        friend_requests_received__in=sent_friend_requests
+    ).order_by("-friend_requests_received__created_at")
+
+    # This chains the recipients or the users that have been sent friend
+    # requests to the list of users above
+    # just to make sure the list of friend
+    # requests sent would always appear on top - before any other user
+    users = list(chain(recipients, users))
     senders = User.objects.filter(
         friend_requests_sent__in=received_friend_requests
     ).order_by("-friend_requests_sent__created_at")
