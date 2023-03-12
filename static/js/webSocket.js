@@ -9,6 +9,6 @@ export const getChatSocket = (friendName) => {
     return new ReconnectingWebSocket(`${endpoint}/chat/${friendName}/`);
 }
 
-export const friendRequestWebSocket = new ReconnectingWebSocket(`${endpoint}/friend-request/`);
+// export const friendRequestWebSocket = new ReconnectingWebSocket(`${endpoint}/friend-request/`);
 
 export const notificationSocket = new ReconnectingWebSocket(`${endpoint}/notification/`)

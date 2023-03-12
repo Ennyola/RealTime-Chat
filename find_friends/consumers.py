@@ -8,7 +8,6 @@ class FriendRequestConsumer(AsyncWebsocketConsumer):
         
     async def receive(self, text_data):
         print("friend request received")
-        print(text_data)
         await self.channel_layer.group_send(
             "friend_requests",
             {

@@ -130,12 +130,13 @@
     top: 3px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 890px) {
     .left-section {
         display: none;
     }
     .right-section {
         display: block;
+        width: 100%;
     }
     .input-box {
         width: 100%;
