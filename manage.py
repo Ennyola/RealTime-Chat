@@ -6,7 +6,10 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chatapp.settings')
+    if os.environ.get("DEBUG"):
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.development')
+    else:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.production')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
