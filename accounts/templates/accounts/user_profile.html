@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block title %}
+    | {{user.username}}'s Profile
+{% endblock  %}
+
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'accounts/css/user_profile.css' %}">
 {% endblock  %} 

@@ -219,6 +219,31 @@ body {
     font-size: 18px;
 }
 
+.preview {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview div {
+    position: relative;
+    bottom: 140px;
+}
+
+.preview .app-logo {
+    font-size: 60px;
+    color: #F5F5F5;
+    transform: rotate(30deg);
+    background-color: #1b2542;
+    padding: 40px;
+    border-radius: 50%;
+    margin: 30px;
+    position: relative;
+    left: 20px;
+}
+
 
 /* Popover general style */
 

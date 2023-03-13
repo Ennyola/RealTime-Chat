@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}
+    | ChatRoom
+{% endblock  %}
+
 {% block friends %}
     {% include 'chat/snippets/_friends.html' %}
 {% endblock  %}
