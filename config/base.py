@@ -37,7 +37,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "chatapp.urls"
+ROOT_URLCONF = "root_folder_dir.urls"
 
 TEMPLATES = [
     {
@@ -55,7 +55,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "chatapp.wsgi.application"
+WSGI_APPLICATION = "root_folder_dir.wsgi.application"
 
 
 # Database
@@ -116,5 +116,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-ASGI_APPLICATION = "chatapp.asgi.application"
+ASGI_APPLICATION = "root_folder_dir.asgi.application"
 
