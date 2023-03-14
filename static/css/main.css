@@ -227,11 +227,6 @@ body {
     align-items: center;
 }
 
-.preview div {
-    position: relative;
-    bottom: 140px;
-}
-
 .preview .app-logo {
     font-size: 60px;
     color: #F5F5F5;
@@ -240,8 +235,6 @@ body {
     padding: 40px;
     border-radius: 50%;
     margin: 30px;
-    position: relative;
-    left: 20px;
 }
 
 
