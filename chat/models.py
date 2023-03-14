@@ -44,7 +44,8 @@ class Room(models.Model):
                 elif last_message.time.date() == datetime.today().date() - timedelta(days=2):
                     last_message_time = "2 days ago"
                 else:
-                    last_message_time = last_message.time.strftime(f"%d/%m/%Y")  # returns the date of the message if it was sent more than 2 days ago      
+                    last_message_time = last_message.time.strftime(f"%d/%m/%Y")  # returns the date of the message if it was sent more than 2 days ago 
+                last_message = room.messages.last().content     
             else:
                 last_message = ""
                 last_message_time = ""

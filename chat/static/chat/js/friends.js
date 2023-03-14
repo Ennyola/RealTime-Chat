@@ -4,13 +4,13 @@ const roomListParent = document.querySelector('.friends-list');
 let roomList = Array.from(roomListParent.children)
 
 // Go to a particular room when you click on a friend's name
-export const goToPage = (friends = roomList) => {
-    friends.forEach((item) => {
-        item.addEventListener('click', (e) => {
-            window.location.href = `${window.location.origin}/chat/${item.id}/`
-        })
+
+roomList.forEach((item) => {
+    item.addEventListener('click', (e) => {
+        window.location.href = `${window.location.origin}/chat/${item.id}/`
     })
-}
+})
+
 
 // returns the index of the room in the roomList
 const checkForIdInRoomList = (id, roomList) => {
@@ -26,18 +26,14 @@ notificationSocket.addEventListener('message', (e => {
     const msg = JSON.parse(e.data)
     switch (msg.type) {
         case "new_message":
-            let position = 0
             let roomIndex = checkForIdInRoomList(msg.room_id, roomList)
                 // If the room is listed in the sidebar room_list
             if (roomIndex > -1) {
                 roomList[roomIndex].querySelector("#latest_message").innerHTML = msg.message
                 roomList[roomIndex].querySelector(".time").innerHTML = msg.message_time
-                position = roomIndex;
-
-                // Move the new message to the top of the list
-                roomListParent.insertBefore(roomList[position], roomListParent.firstChild)
+                    // Move the new message to the top of the list
+                roomListParent.insertBefore(roomList[roomIndex], roomListParent.firstChild)
             } else {
-
                 // If the room is not listed in the sidebar room_list
                 // Add the room to the sidebar room_list
                 let room = `<div class="single-friend" id=${msg.room_id}>
@@ -61,9 +57,9 @@ notificationSocket.addEventListener('message', (e => {
                 }
             }
             break;
+        case "new_room":
+            break;
         default:
             break;
     }
 }))
-
-goToPage()

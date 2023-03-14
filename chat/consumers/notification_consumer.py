@@ -63,3 +63,28 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                     "to": event["to_user"] 
                 })
             )
+    async def new_room(self, event):
+        if self.scope["user"].username == event["other_user"]["username"]:
+           await self.send(
+                json.dumps(
+                    {
+                        "type": "new_room",
+                        "room_id": event["room_id"],
+                        "room_name": event["created_by"]["username"],
+                        "room_image": event["created_by"]["image"],
+                    }
+                )
+            )
+        if self.scope["user"].username == event["created_by"]["username"]:
+            await self.send(
+                json.dumps(
+                    {
+                        "type": "new_room",
+                        "room_id": event["room_id"],
+                        "room_name": event["other_user"]["username"],
+                        "room_image": event["other_user"]["image"],
+                    }
+                )
+            )
+    
+    
