@@ -13,6 +13,7 @@ window.onload = () => {
     chatHolder.scrollTop = chatHolder.scrollHeight;
 }
 
+// Go to a friends profile page
 headerNav.addEventListener('click', () => {
     headerNav.style.backgroundColor = "rgba(255, 255, 255, 0.2)"
     window.location.href = `${window.location.origin}/${friendName}`

@@ -20,14 +20,10 @@ class RoomListMixin:
         rooms = self.get_rooms(user=user)
         context = {"rooms": rooms}
         return context
-
-
 class ChatIndexView(RoomListMixin, View):
     def get(self, request, *args, **kwargs):
         context = super().get_context_data(user=request.user)
         return render(request, "chat/index.html", context)
-
-
 class ChatRoomView(RoomListMixin, View):
     def get(self, request, **kwargs):
         context = super().get_context_data(user=request.user)

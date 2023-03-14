@@ -41,7 +41,7 @@ def index(request):
         | Q(friendships_received__in=friend_list)
         | Q(friendships_sent__in=friend_list)
         | Q(friend_requests_received__in=sent_friend_requests)
-    ).order_by("?")[:5]
+    ).order_by("?")[:7]
 
     recipients = User.objects.filter(
         friend_requests_received__in=sent_friend_requests
@@ -131,7 +131,7 @@ def show_friends(request):
             | Q(friendships_sent__in=friend_list)
         )
         .exclude(username=request.user.username)
-        .order_by("username")
+        .order_by("username").distinct()
     )
     # Grouping the friends by the first letter of their name
     grouped_friends = groupby(friends, lambda x: x.username[0])
