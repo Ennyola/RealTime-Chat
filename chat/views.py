@@ -34,7 +34,7 @@ class ChatRoomView(RoomListMixin, View):
         messages = Message.objects.filter(room_id=kwargs["room_id"])
         # Group messages by date so it'll be rendered accordingly on the webpage
         grouped_messages = groupby(messages, lambda message: message.time.date())
-        message_groups = [{"date": date.strftime("%A, %B %d"), "messages": list(messages)} for date, messages in grouped_messages]
+        message_groups = [{"date": date.strftime("%A, %B %d, %Y"), "messages": list(messages)} for date, messages in grouped_messages]
         # Get the room a user belongs to.
         # Returns a 404 error if the room doesn't exist
         room = get_object_or_404(Room, id=kwargs["room_id"], chats__users=request.user)

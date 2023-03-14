@@ -30,6 +30,12 @@ const formatAMPM = (date) => {
     return strTime;
 }
 
+const formatToDateString = (timestamp) => {
+    const date = new Date(timestamp);
+    const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
 inputBox.focus()
 inputBox.addEventListener('keyup', (e => {
     if (e.keyCode === 13) { // enter, return
@@ -54,20 +60,45 @@ chatSocket.addEventListener('message', (e) => {
     const msg = JSON.parse(e.data)
     switch (msg.type) {
         case "message":
-            //If the current user is the sender, then the message is sent to the right side, else, the left
+            const MsgDates = chatHolder.querySelectorAll(".message-date span");
             const messageType = currentUser === msg.sender ? "outgoing-message" : "incoming-message";
-            let text = `<div class=${messageType}>
-                <div class="chat-bubble">
-                    <div class="msg">${msg.message_content}</div>
-                        <span class ="msg-metadata">
-                            <span class = "time">${formatAMPM(new Date(msg.time))}</span> 
-                            <span class="chat-status">
-                            ${currentUser === msg.sender?'<i class="fas fa-check"></i>':""}
-                        </span>
-                    </span>
-                </div>
-            </div>`
-            chatHolder.innerHTML += text
+
+            // Gets the date of the last message sent to the room
+            // If the room is empty, then the last message date becomes 0
+            let lastMsgDate = MsgDates.length && MsgDates[MsgDates.length - 1].textContent;
+            let HtmlMessageString;
+            if (formatToDateString(msg.time) === (lastMsgDate)) {
+                //If the current user is the sender, then the message is sent to the right side, else, the left
+                HtmlMessageString = `<div class=${messageType}>
+                            <div class="chat-bubble">
+                                <div class="msg">${msg.message_content}</div>
+                                    <span class ="msg-metadata">
+                                        <span class = "time">${formatAMPM(new Date(msg.time))}</span> 
+                                        <span class="chat-status">
+                                        ${currentUser === msg.sender?'<i class="fas fa-check"></i>':""}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>`
+            } else {
+                HtmlMessageString = `
+                    <div class="message-date">
+                        <span>${formatToDateString(msg.time)}</span>
+                    </div>
+                    <div class=${messageType}>
+                            <div class="chat-bubble">
+                                <div class="msg">${msg.message_content}</div>
+                                    <span class ="msg-metadata">
+                                        <span class = "time">${formatAMPM(new Date(msg.time))}</span> 
+                                        <span class="chat-status">
+                                        ${currentUser === msg.sender?'<i class="fas fa-check"></i>':""}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                     `
+            }
+            chatHolder.insertAdjacentHTML('beforeend', HtmlMessageString);
             chatHolder.scrollTop = chatHolder.scrollHeight;
         default:
             break;

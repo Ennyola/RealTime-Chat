@@ -81,4 +81,4 @@ class Message(models.Model):
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{self.content}"
+        return f"{self.content} by {self.sender.username} in {self.room.name}"

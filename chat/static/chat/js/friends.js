@@ -53,7 +53,7 @@ notificationSocket.addEventListener('message', (e => {
                 let newRoomElement = document.createRange().createContextualFragment(room).firstChild
                 roomList.unshift(newRoomElement);
 
-                // iF room exists, insert the new room at the top of the list else, append the new room to the parent element
+                // If a room already exists in the sidebar, insert the new room at the top of the list else, append the new room to the parent element.
                 if (roomList.length > 0) {
                     roomListParent.insertBefore(newRoomElement, roomListParent.firstChild)
                 } else {
