@@ -9,10 +9,13 @@
     padding: 0 15px;
 }
 
+.go-back {
+    display: none;
+}
+
 .go-back:active {
-    transform: scale(0.95);
     background-color: rgba(255, 255, 255, 0.2);
-    animation: pulse 0.5s;
+    border-radius: 5px;
 }
 
 .go-back i {
@@ -20,7 +23,7 @@
     font-size: 20px;
     top: 10px;
     cursor: pointer;
-    padding-right: 15px;
+    padding-right: 7px;
 }
 
 .room_name_status {
@@ -29,7 +32,7 @@
     width: 70%;
     transition: 0.3s all;
     cursor: pointer;
-    padding: 0 7px;
+    padding: 0 10px;
 }
 
 .room_name_status:active {
@@ -79,8 +82,8 @@
 .chat-bubble {
     background-color: #373E4E;
     padding: 10px 15px;
-    margin: 5px 10px;
-    width: 40%;
+    margin: 7px 10px;
+    max-width: 80%;
     border-radius: 20px;
 }
 
@@ -110,7 +113,7 @@
 
 .input-box {
     position: fixed;
-    bottom: 20px;
+    bottom: 10px;
     width: 66.7%;
     background-color: #373E4E;
     padding: 20px
@@ -161,5 +164,11 @@
     }
     .header-info {
         padding: 0 5px;
+    }
+    .go-back {
+        display: inherit;
+    }
+    .header-info>.display-picture {
+        display: none;
     }
 }

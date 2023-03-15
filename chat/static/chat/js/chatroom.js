@@ -15,15 +15,14 @@ window.onload = () => {
 }
 
 // Go back to the friend list page
-// goBack.addEventListener('click', (e) => {
-//     window.location.href = `${window.location.origin}/`
-// })
+goBack.addEventListener('click', (e) => {
+    window.location.href = `${window.location.origin}/`
+})
 
 // Go to a friends profile page
-// headerNav.addEventListener('click', () => {
-//     headerNav.style.backgroundColor = "rgba(255, 255, 255, 0.2)"
-//     window.location.href = `${window.location.origin}/${friendName}`
-// })
+headerNav.addEventListener('click', () => {
+    window.location.href = `${window.location.origin}/${friendName}`
+})
 
 // Converts the Javascript datetime object in a time string format
 const formatAMPM = (date) => {
