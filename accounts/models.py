@@ -32,6 +32,6 @@ class UserProfile(models.Model):
         if the user has not uploaded a display picture.
         """
         if not self.display_picture:
-            return staticfiles_storage.url("accounts/img/user-icon.png")
+            return staticfiles_storage.url("accounts/img/user-image.png")
         else:
             return self.display_picture.url

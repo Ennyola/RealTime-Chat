@@ -81,14 +81,15 @@
 
 .chat-bubble {
     background-color: #373E4E;
-    padding: 10px 15px;
-    margin: 7px 10px;
+    padding: 10px;
+    margin: 5px 10px;
     max-width: 80%;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .incoming-message {
     position: relative;
+    display: flex;
 }
 
 .outgoing-message {
@@ -104,11 +105,14 @@
 .msg {
     word-wrap: break-word;
     padding: 5px;
+    display: inline;
 }
 
 .msg-metadata {
-    display: flex;
-    justify-content: end;
+    position: relative;
+    margin-top: 10px;
+    margin-left: 5px;
+    float: right;
 }
 
 .input-box {
