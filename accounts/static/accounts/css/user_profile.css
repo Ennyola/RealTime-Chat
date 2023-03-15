@@ -32,6 +32,7 @@
     position: relative;
     font-size: 20px;
     top: 3px;
+    cursor: pointer;
 }
 
 .user-profile__avatar {

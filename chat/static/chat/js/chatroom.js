@@ -3,6 +3,7 @@ import { getChatSocket } from '/static/js/webSocket.js'
 const friendName = JSON.parse(document.getElementById('room-name').textContent);
 const currentUser = JSON.parse(document.querySelector("#username").textContent);
 const headerNav = document.querySelector(".room_name_status");
+const goBack = document.querySelector(".go-back");
 let chatSocket = getChatSocket(friendName);
 let chatHolder = document.querySelector(".messages");
 let inputBox = document.querySelector("#input-message");
@@ -13,11 +14,16 @@ window.onload = () => {
     chatHolder.scrollTop = chatHolder.scrollHeight;
 }
 
+// Go back to the friend list page
+// goBack.addEventListener('click', (e) => {
+//     window.location.href = `${window.location.origin}/`
+// })
+
 // Go to a friends profile page
-headerNav.addEventListener('click', () => {
-    headerNav.style.backgroundColor = "rgba(255, 255, 255, 0.2)"
-    window.location.href = `${window.location.origin}/${friendName}`
-})
+// headerNav.addEventListener('click', () => {
+//     headerNav.style.backgroundColor = "rgba(255, 255, 255, 0.2)"
+//     window.location.href = `${window.location.origin}/${friendName}`
+// })
 
 // Converts the Javascript datetime object in a time string format
 const formatAMPM = (date) => {

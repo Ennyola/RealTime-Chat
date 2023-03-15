@@ -9,18 +9,37 @@
     padding: 0 15px;
 }
 
+.go-back:active {
+    transform: scale(0.95);
+    background-color: rgba(255, 255, 255, 0.2);
+    animation: pulse 0.5s;
+}
+
+.go-back i {
+    position: relative;
+    font-size: 20px;
+    top: 10px;
+    cursor: pointer;
+    padding-right: 15px;
+}
+
 .room_name_status {
-    margin-left: 20px;
+    margin-left: 5px;
     position: relative;
     width: 70%;
     transition: 0.3s all;
     cursor: pointer;
+    padding: 0 7px;
+}
+
+.room_name_status:active {
+    transform: scale(0.95);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .room_name_status h6 {
     position: relative;
     top: 9px;
-    left: 10px;
 }
 
 
@@ -139,5 +158,8 @@
     }
     .input-box {
         width: 100%;
+    }
+    .header-info {
+        padding: 0 5px;
     }
 }

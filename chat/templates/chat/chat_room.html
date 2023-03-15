@@ -22,7 +22,10 @@
 {% block chat-room %}
     <div class="chatroom-header">
         <div class="header-info">
-           <a href="{% url 'user_profile' room_name %}"><img src="{{display_picture}}" id="friend-display-picture" class="display-picture" alt="friend-picture"></a> 
+            <span class="go-back">  
+                <i class="fas fa-arrow-left"></i>
+            </span>
+            <a href="{% url 'user_profile' room_name %}"><img src="{{display_picture}}" id="friend-display-picture" class="display-picture" alt="friend-picture"></a> 
             <div class="room_name_status">
                 <h6> {{room_name}}</h6>
                 {% comment %} <p class="online-status">Online</p> {% endcomment %}
