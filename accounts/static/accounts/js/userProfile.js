@@ -5,6 +5,7 @@ const closeCamera = document.querySelector("#close-camera");
 const editBio = document.querySelector("#edit-bio");
 const editBioForm = document.querySelector(".bio-form__section form")
 const cameraIcon = document.querySelector("#camera-icon");
+const goBack = document.querySelector(".go-back");
 let changeDpVideo = document.querySelector("#change-dp-video");
 let capture = document.querySelector("#capture");
 let canvas = document.querySelector("#canvas");
@@ -19,6 +20,9 @@ let confirmDelete = document.querySelector("#delete-confirmation__yes");
 let stream;
 let canvasContext;
 
+goBack.addEventListener("click", (e) => {
+    window.history.back();
+})
 
 // Defining the default allow list for bootstrap popover
 let myDefaultAllowList = bootstrap.Tooltip.Default.allowList
