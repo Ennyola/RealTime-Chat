@@ -1,0 +1,1 @@
+web: gunicorn root_folder_dir.wsgi
