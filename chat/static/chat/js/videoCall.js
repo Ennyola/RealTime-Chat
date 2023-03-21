@@ -31,11 +31,6 @@ if (friendDisplayPicture) {
 let targetUsername = friendName;
 
 export const closeVideoCall = () => {
-    userVideo.srcObject.getTracks().forEach(track => track.stop());
-    incomingVideo.srcObject.getTracks().forEach(track => track.stop());
-    userVideo.srcObject = null;
-    incomingVideo.srcObject = null;
-
     if (myPeerConnection) {
         myPeerConnection.ontrack = null;
         myPeerConnection.onicecandidate = null;
@@ -44,11 +39,18 @@ export const closeVideoCall = () => {
         myPeerConnection.onicegatheringstatechange = null;
         myPeerConnection.onnegotiationneeded = null;
         myPeerConnection.onremovetrack = null;
-    }
 
-    myPeerConnection.close();
-    myPeerConnection = null;
-    myStream = null;
+        if (userVideo.srcObject) {
+            userVideo.srcObject.getTracks().forEach(track => track.stop());
+        }
+        if (incomingVideo.srcObject) {
+            incomingVideo.srcObject.getTracks().forEach(track => track.stop());
+        }
+
+        myPeerConnection.close();
+        myPeerConnection = null;
+        myStream = null;
+    }
 
     incomingVideo.removeAttribute("src");
     incomingVideo.removeAttribute("srcObject");
