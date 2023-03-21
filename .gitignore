@@ -4,3 +4,4 @@ pipfile
 pipfile.lock
 profile_pictures/
 migrations
+db.sqlite3
