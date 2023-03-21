@@ -6,7 +6,7 @@ import dj_database_url
 from .base import *
 
 DEBUG = os.environ.get("DEBUG")
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".herokuapp.com"]
 DATABASES = {
     'default': dj_database_url.parse(
         os.environ.get("DATABASE_URL"),
