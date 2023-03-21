@@ -1,16 +1,14 @@
-import os
-
 from django.db import models
-from django.conf import settings
+from django.contrib.auth import get_user_model
 
 from django.contrib.staticfiles.storage import staticfiles_storage
 
 # Create your models here.
 
-
+USER = get_user_model()
 class UserProfile(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
+        USER,
         on_delete=models.CASCADE,
         primary_key=True,
         related_name="userprofile",
