@@ -4,7 +4,7 @@ import os
 
 from .base import *
 
-DEBUG = os.environ.get("DEBUG")
+DEBUG = True
 ALLOWED_HOSTS = []
 DATABASES = {
     "default": {
