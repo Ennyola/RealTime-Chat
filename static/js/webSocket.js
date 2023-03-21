@@ -1,4 +1,4 @@
-const endpoint = `ws://${window.location.host}/ws`;
+let endpoint = `ws://${window.location.host}/ws`;
 if (window.location.protocol == "https:") {
     endpoint = `wss://${window.location.host}/ws`;
 }
