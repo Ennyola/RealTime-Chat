@@ -26,7 +26,7 @@ class Room(models.Model):
         # Order the rooms by their last message
         rooms = rooms.annotate(last_message_time=Max("messages__time")).order_by(
             "-last_message_time"
-        )
+        ).distinct()
         list_info = []
         for room in rooms:
             if room.room_type == "private":
