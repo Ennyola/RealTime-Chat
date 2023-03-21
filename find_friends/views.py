@@ -45,7 +45,7 @@ def index(request):
 
     recipients = User.objects.filter(
         friend_requests_received__in=sent_friend_requests
-    ).order_by("-friend_requests_received__created_at")
+    ).order_by("-friend_requests_received__created_at").distinct()
 
     # This chains the recipients or the users that have been sent friend
     # requests to the list of users above
@@ -54,7 +54,7 @@ def index(request):
     users = list(chain(recipients, users))
     senders = User.objects.filter(
         friend_requests_sent__in=received_friend_requests
-    ).order_by("-friend_requests_sent__created_at")
+    ).order_by("-friend_requests_sent__created_at").distinct()
     loop_count = range(2)
     context = {
         "random_users": users,
