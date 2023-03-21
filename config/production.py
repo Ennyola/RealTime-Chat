@@ -7,6 +7,7 @@ from .base import *
 
 DEBUG = False
 ALLOWED_HOSTS = [".herokuapp.com"]
+CSRF_TRUSTED_ORIGINS = ['https://talkbox.herokuapp.com']
 DATABASES = {
     'default': dj_database_url.parse(
         os.environ.get("DATABASE_URL"),
