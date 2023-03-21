@@ -58,10 +58,12 @@ export const closeVideoCall = () => {
     incomingVideo.removeAttribute("srcObject");
     incomingVideo.style.background = `none`;
     // document.querySelector("#hangup-button").disabled = true;
-    videoContainer.classList.add("d-none")
     callingState.innerHTML = ""
     userCallInfo.innerHTML = ""
+    incomingVideo.muted = true
+    userVideo.muted = false
     mediaConstraints["video"] = false;
+    videoContainer.classList.add("d-none")
 }
 
 const handleGetUserMediaError = (e) => {
@@ -251,6 +253,9 @@ export const handleTrackEvent = (event) => {
     if (incomingVideo.srcObject.id !== event.streams[0].id) {
         userVideo.srcObject = myStream
         incomingVideo.srcObject = event.streams[0];
+        // Mutting the user video and unmuting the incoming video so the user does not echo
+        incomingVideo.muted = false;
+        userVideo.muted = true;
     }
     // document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
