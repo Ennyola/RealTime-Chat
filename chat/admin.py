@@ -1,8 +1,8 @@
-from tkinter.font import ROMAN
 from django.contrib import admin
 from .models import Room, Message, Participants
 # Register your models here.
 
+admin.site.site_header = "TalkBox"
 
 admin.site.register(Room)
 admin.site.register(Message)

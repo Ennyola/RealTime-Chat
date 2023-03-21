@@ -1,1 +1,1 @@
-web: gunicorn root_folder_dir.wsgi
+web: daphne -b 0.0.0.0 -p 8001 root_folder_dir.asgi:application
