@@ -5,15 +5,19 @@ attrs==21.4.0
 autobahn==21.11.1
 Automat==20.2.0
 beautifulsoup4==4.10.0
+certifi==2022.12.7
 cffi==1.15.0
 channels==3.0.4
 channels-redis==3.3.1
+charset-normalizer==3.1.0
+cloudinary==1.32.0
 constantly==15.1.0
 cryptography==36.0.1
 daphne==3.0.2
 Deprecated==1.2.13
 dj-database-url==1.2.0
 Django==4.0.1
+django-cloudinary-storage==0.3.0
 django-heroku==0.3.1
 django-livereload-server==0.4
 django-redis==5.2.0
@@ -23,7 +27,7 @@ hyperlink==21.0.0
 idna==3.3
 incremental==21.3.0
 msgpack==1.0.3
-packaging==22.0
+packaging==23.0
 Pillow==9.4.0
 psycopg2==2.9.5
 pyasn1==0.4.8
@@ -32,7 +36,9 @@ pycparser==2.21
 pyOpenSSL==21.0.0
 pyparsing==3.0.6
 python-dateutil==2.8.2
+python-magic==0.4.27
 redis==4.1.1
+requests==2.28.2
 service-identity==21.1.0
 six==1.16.0
 soupsieve==2.3.1
@@ -42,6 +48,7 @@ Twisted==21.7.0
 txaio==21.2.1
 typing_extensions==4.0.1
 tzdata==2021.5
+urllib3==1.26.15
 watchdog==2.1.6
 websocket-client==1.2.3
 whitenoise==6.4.0
