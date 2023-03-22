@@ -19,6 +19,9 @@ def register(request):
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
             confirm_password = form.cleaned_data["confirm_password"]
+            if "-" in username:
+                messages.error(request, " The charactrt '-' should not be in username")
+                return redirect("accounts:register")
             if password != confirm_password:
                 messages.error(request, "Passwords do not match")
                 return redirect("accounts:register")

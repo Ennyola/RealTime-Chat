@@ -37,8 +37,8 @@ def create_room_in_client(sender, **kwargs):
     if kwargs["created"]:
         participant = kwargs["instance"]
         room = participant.room
-        created_by = USER.objects.get(username=room.name.split("_")[0])
-        other_user = USER.objects.get(username=room.name.split("_")[1])
+        created_by = USER.objects.get(username=room.name.split("-")[0])
+        other_user = USER.objects.get(username=room.name.split("-")[1])
         async_to_sync(channel_layer.group_send)(
             "notifications",
             {

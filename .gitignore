@@ -4,3 +4,4 @@ pipfile
 pipfile.lock
 migrations
 db.sqlite3
+media/

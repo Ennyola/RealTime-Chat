@@ -21,13 +21,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Gets the room name from friend username and user username.
         self.room = await sync_to_async(Room.objects.get)(
-            Q(name=f'{self.friend_username}_{self.scope["user"]}')
-            | Q(name=f'{self.scope["user"]}_{self.friend_username}')
+            Q(name=f'{self.friend_username}-{self.scope["user"]}')
+            | Q(name=f'{self.scope["user"]}-{self.friend_username}')
         )
         self.room_group_name = self.room.name
 
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
+        
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)

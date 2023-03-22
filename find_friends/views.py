@@ -101,7 +101,7 @@ def accept_or_reject_request(request, id):
             from_user=potential_friend, to_user=request.user
         ).delete()
         # Create a room for the two users
-        room = Room.objects.create(name=f"{request.user}_{potential_friend.username}")
+        room = Room.objects.create(name=f"{request.user}-{potential_friend.username}")
         participants = Participants.objects.create(room=room)
         participants.users.add(request.user, potential_friend)
 
@@ -145,8 +145,8 @@ def show_friends(request):
         for friend in friends["friends"]:
             # Getting the room id the user and friend shares
             room = Room.objects.filter(
-                Q(name=f"{friend.username}_{request.user}")
-                | Q(name=f"{request.user}_{friend.username}")
+                Q(name=f"{friend.username}-{request.user}")
+                | Q(name=f"{request.user}-{friend.username}")
             ).values("id")
             friends_and_room_id.append({"user": friend, "room_id": room[0].get("id")})
         # Deleting the friends dictionary used in getting the room id to avoid redundant data
