@@ -21,6 +21,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "cloudinary_storage",
+    "cloudinary",
     "chat.apps.ChatConfig",
     "find_friends.apps.FindFriendsConfig",
     "accounts",
@@ -80,7 +82,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -98,6 +100,7 @@ STATIC_ROOT = "staticfiles"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = "media"
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -114,3 +117,5 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+CLOUDINARY_URL = os.environ.get("CLOUDINARY_URL")
