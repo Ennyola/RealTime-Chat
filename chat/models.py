@@ -1,4 +1,4 @@
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 
 from django.db import models
 from django.utils import timezone
@@ -24,9 +24,11 @@ class Room(models.Model):
     def get_rooms_and_related_info(cls, user):
         rooms = cls.objects.filter(chats__users=user)
         # Order the rooms by their last message
-        rooms = rooms.annotate(last_message_time=Max("messages__time")).order_by(
-            "-last_message_time"
-        ).distinct()
+        rooms = (
+            rooms.annotate(last_message_time=Max("messages__time"))
+            .order_by("-last_message_time")
+            .distinct()
+        )
         list_info = []
         for room in rooms:
             if room.room_type == "private":
@@ -37,15 +39,23 @@ class Room(models.Model):
             display_picture = friend.userprofile.get_image
             if room.messages.last():
                 last_message = room.messages.last()  # Get the last message in the room
-                if last_message.time.date() == datetime.today().date():   
-                    last_message_time = last_message.time.strftime("%I:%M %p") # returns the time of the message if it was sent today
-                elif last_message.time.date() == datetime.today().date() - timedelta(days=1):
+                if last_message.time.date() == datetime.today().date():
+                    last_message_time = last_message.time.strftime(
+                        "%I:%M %p"
+                    )  # returns the time of the message if it was sent today
+                elif last_message.time.date() == datetime.today().date() - timedelta(
+                    days=1
+                ):
                     last_message_time = "Yesterday"
-                elif last_message.time.date() == datetime.today().date() - timedelta(days=2):
+                elif last_message.time.date() == datetime.today().date() - timedelta(
+                    days=2
+                ):
                     last_message_time = "2 days ago"
                 else:
-                    last_message_time = last_message.time.strftime(f"%d/%m/%Y")  # returns the date of the message if it was sent more than 2 days ago 
-                last_message = room.messages.last().content     
+                    last_message_time = last_message.time.strftime(
+                        f"%d/%m/%Y"
+                    )  # returns the date of the message if it was sent more than 2 days ago
+                last_message = room.messages.last().content
             else:
                 last_message = ""
                 last_message_time = ""
@@ -75,7 +85,10 @@ class Message(models.Model):
     message_type = models.CharField(
         db_column="type", max_length=50, blank=True, null=True
     )
-    status = models.CharField(max_length=20, blank=True, null=True)
+    STATUS_CHOICES = (("sent", "Sent"), ("read", "Read"))
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default="sent", blank=True, null=True
+    )
     sender = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="sent_message"
     )

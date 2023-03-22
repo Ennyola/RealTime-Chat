@@ -158,9 +158,24 @@ body {
     font-size: 15px;
 }
 
-.single-friend .time {
+.single-friend .time_unread_message {
     margin-left: auto;
     font-size: 12px;
+}
+
+.single-friend .unread_message {
+    display: block;
+    position: relative;
+}
+
+.single-friend .unread_message span {
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #535768;
+    padding: 2px 5px;
+    border-radius: 50%;
 }
 
 .time,

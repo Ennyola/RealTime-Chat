@@ -11,7 +11,12 @@
                     <p id="latest_message">New Message</p>
                 {% endif %}
             </div>
-            <span class="time">{{room.last_message_time}}</span>
+            <div class="time_unread_message">
+                <span class="time">{{room.last_message_time}}</span>
+                <span class="unread_message">
+                    <span>11</span>
+                </span>
+            </div>
         </div>
     {% endfor %}  
 </div>
