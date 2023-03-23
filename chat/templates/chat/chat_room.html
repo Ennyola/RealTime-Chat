@@ -52,7 +52,11 @@
                             <span class ="msg-metadata">
                                 <span class = "time">{{message.time.time}}</span> 
                                 <span class="chat-status">
-                                    <i class="fas fa-check"></i>
+                                    {% if message.status == 'sent' %}
+                                        <i class="fas fa-check"></i>
+                                    {% elif message.status == 'read' %}
+                                        <i class="fas fa-check-double"></i>
+                                    {% endif %}
                                 </span>
                             </span>
                         </div>

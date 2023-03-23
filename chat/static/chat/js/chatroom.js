@@ -110,12 +110,14 @@ chatSocket.addEventListener('message', (e) => {
             chatHolder.scrollTop = chatHolder.scrollHeight;
             if (currentUser !== msg.sender) {
                 chatSocket.send(JSON.stringify({
-                        type: "seen",
-                        id: msg.id,
-                    }))
-                    // const chatStatus = document.querySelectorAll(".chat-status");
-                    // chatStatus[chatStatus.length - 1].innerHTML = '<i class="fas fa-check-double"></i>';
+                    type: "seen",
+                    id: msg.id,
+                }))
             }
+            break;
+        case "seen":
+            const chatStatus = document.querySelectorAll(".chat-status");
+            chatStatus[chatStatus.length - 1].innerHTML = '<i class="fas fa-check-double"></i>';
             break;
         default:
             break;
