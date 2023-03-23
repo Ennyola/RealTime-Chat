@@ -20,9 +20,9 @@ let confirmDelete = document.querySelector("#delete-confirmation__yes");
 let stream;
 let canvasContext;
 
-goBack.addEventListener("click", (e) => {
-    window.history.back();
-})
+// goBack.addEventListener("click", (e) => {
+//     window.history.back();
+// })
 
 // Defining the default allow list for bootstrap popover
 let myDefaultAllowList = bootstrap.Tooltip.Default.allowList

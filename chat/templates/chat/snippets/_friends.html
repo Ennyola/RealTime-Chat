@@ -11,11 +11,15 @@
                     <p id="latest_message">New Message</p>
                 {% endif %}
             </div>
+            
             <div class="time_unread_message">
                 <span class="time">{{room.last_message_time}}</span>
-                <span class="unread_message">
-                    <span>11</span>
-                </span>
+                {% comment %} display the unread message count if the message sender is not the curren authenticated user {% endcomment %}
+                {% if room.unread_messages and room.last_message_sender != request.user.username %}
+                    <span class="unread_message">
+                        <span>{{room.unread_messages}}</span>
+                    </span>
+                {% endif %}
             </div>
         </div>
     {% endfor %}  

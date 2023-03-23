@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.db.models import Max
+from django.db.models import Max, Count, Q
 
 from .helpers import get_room_name
 
@@ -23,18 +23,23 @@ class Room(models.Model):
     @classmethod
     def get_rooms_and_related_info(cls, user):
         rooms = cls.objects.filter(chats__users=user)
-        # Order the rooms by their last message
+        # Count the number of unread messages in each room
+        unread_messages_count = Count("messages", filter=Q(messages__status="sent"))
+        # Order the rooms by their last message and annotate the unread messages
         rooms = (
             rooms.annotate(last_message_time=Max("messages__time"))
+            .annotate(unread_messages_count=unread_messages_count)
             .order_by("-last_message_time")
             .distinct()
         )
         list_info = []
         for room in rooms:
-            if room.room_type == "private":
-                room_name = get_room_name(room.name, user.username)
-            else:
-                room_name = room.name
+            room_info = {}
+            room_name = (
+                get_room_name(room.name, user.username)
+                if room.room_type == "private"
+                else room.name
+            )
             friend = User.objects.get(username=room_name)
             display_picture = friend.userprofile.get_image
             if room.messages.last():
@@ -55,19 +60,14 @@ class Room(models.Model):
                     last_message_time = last_message.time.strftime(
                         f"%d/%m/%Y"
                     )  # returns the date of the message if it was sent more than 2 days ago
-                last_message = room.messages.last().content
-            else:
-                last_message = ""
-                last_message_time = ""
-            list_info.append(
-                {
-                    "room_id": room.id,
-                    "room_name": room_name,
-                    "last_message": last_message,
-                    "last_message_time": last_message_time,
-                    "friend_display_picture": display_picture,
-                }
-            )
+                room_info["last_message"] = last_message.content
+                room_info["last_message_time"] = last_message_time
+                room_info["last_message_sender"] = last_message.sender.username
+            room_info["room_id"] = room.id
+            room_info["room_name"] = room_name
+            room_info["friend_display_picture"] = display_picture
+            room_info["unread_messages"] = room.unread_messages_count
+            list_info.append(room_info)
         return list_info
 
 

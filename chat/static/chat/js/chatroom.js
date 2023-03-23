@@ -21,7 +21,7 @@ goBack.addEventListener('click', (e) => {
 
 // Go to a friends profile page
 headerNav.addEventListener('click', () => {
-    window.location.href = `${window.location.origin}/${friendName}`
+    window.location.href = `${window.location.origin}/${friendName}/`
 })
 
 // Converts the Javascript datetime object in a time string format

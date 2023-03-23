@@ -20,21 +20,33 @@ class RoomListMixin:
         rooms = self.get_rooms(user=user)
         context = {"rooms": rooms}
         return context
+
+
 class ChatIndexView(RoomListMixin, View):
     def get(self, request, *args, **kwargs):
         context = super().get_context_data(user=request.user)
         return render(request, "chat/index.html", context)
+
+
 class ChatRoomView(RoomListMixin, View):
     def get(self, request, **kwargs):
-        context = super().get_context_data(user=request.user)
         messages = Message.objects.filter(room_id=kwargs["room_id"])
+        unread_messages = messages.filter(status="sent")
+        if unread_messages.exists():
+            unread_messages_sender = unread_messages.last().sender.username
+            if unread_messages_sender != request.user.username:
+                unread_messages.update(status="read")
         # Group messages by date so it'll be rendered accordingly on the webpage
         grouped_messages = groupby(messages, lambda message: message.time.date())
-        message_groups = [{"date": date.strftime("%A, %B %d, %Y"), "messages": list(messages)} for date, messages in grouped_messages]
+        message_groups = [
+            {"date": date.strftime("%A, %B %d, %Y"), "messages": list(messages)}
+            for date, messages in grouped_messages
+        ]
         # Get the room a user belongs to.
         # Returns a 404 error if the room doesn't exist
         room = get_object_or_404(Room, id=kwargs["room_id"], chats__users=request.user)
-        
+
+        context = super().get_context_data(user=request.user)
         if room.room_type == "private":
             context["room_name"] = get_room_name(room.name, request.user.username)
         else:

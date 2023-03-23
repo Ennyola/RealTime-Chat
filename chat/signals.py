@@ -6,8 +6,10 @@ from channels.layers import get_channel_layer
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
+from django.core.signals import request_started
+from django.urls import resolve
 
-from .models import Message, Participants
+from .models import Message, Participants, Room
 from .helpers import get_room_name
 
 channel_layer = get_channel_layer()
@@ -45,7 +47,13 @@ def create_room_in_client(sender, **kwargs):
                 "type": "new_room",
                 "event": "Create Room",
                 "room_id": room.id,
-                "created_by": {"username": created_by.username, "image": created_by.userprofile.get_image},
-                "other_user": {"username": other_user.username, "image": other_user.userprofile.get_image},
+                "created_by": {
+                    "username": created_by.username,
+                    "image": created_by.userprofile.get_image,
+                },
+                "other_user": {
+                    "username": other_user.username,
+                    "image": other_user.userprofile.get_image,
+                },
             },
         )
