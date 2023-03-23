@@ -42,17 +42,23 @@ const formatToDateString = (timestamp) => {
     return date.toLocaleDateString('en-US', options);
 }
 
-inputBox.focus()
 inputBox.addEventListener('keyup', (e => {
     if (e.keyCode === 13) { // enter, return
         if (inputBox.value === "") return
         sendButton.click();
     }
+    // if (inputBox.value === "") console.log("hir")
+    // chatSocket.send(JSON.stringify({
+    //     type: "typing",
+    //     sender: currentUser,
+    //     receiver: friendName,
+    // }))
+
 }))
 
 sendButton.addEventListener('click', (e) => {
     let timeStamp = new Date().getTime();
-    if (inputBox.value === "") return
+    let userStatus = document.querySelector(".user-status");
     chatSocket.send(JSON.stringify({
         type: "message",
         messageContent: inputBox.value,
@@ -116,8 +122,22 @@ chatSocket.addEventListener('message', (e) => {
             }
             break;
         case "seen":
+            // Change the status of the newly sent message to seen
             const chatStatus = document.querySelectorAll(".chat-status");
             chatStatus[chatStatus.length - 1].innerHTML = '<i class="fas fa-check-double"></i>';
+            break;
+        case "change_messages_status":
+            // Change the status of all unread messages to seen
+            const chatStatuses = document.querySelectorAll(".outgoing-message .chat-status .fa-check");
+            chatStatuses.forEach(status => {
+                status.classList.remove("fa-check");
+                status.classList.add("fa-check-double");
+            })
+            break;
+        case "typing":
+            let userStatus = document.querySelector(".user-status");
+            userStatus.classList.add("typing-status");
+            userStatus.textContent = "Typing...";
             break;
         default:
             break;

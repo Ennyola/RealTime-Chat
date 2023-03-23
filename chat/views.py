@@ -1,5 +1,8 @@
 from itertools import groupby
 
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth import get_user_model
@@ -8,7 +11,9 @@ from django.shortcuts import get_object_or_404
 from .models import Room, Message
 from .helpers import get_room_name
 
-# Create your views here.
+channel_layer = get_channel_layer()
+
+
 class RoomListMixin:
     def get_rooms(self, **kwargs):
         user = kwargs.get("user")
@@ -30,10 +35,19 @@ class ChatIndexView(RoomListMixin, View):
 
 class ChatRoomView(RoomListMixin, View):
     def get(self, request, **kwargs):
+
         messages = Message.objects.filter(room_id=kwargs["room_id"])
+        # Get the room a user belongs to.
+        # Returns a 404 error if the room doesn't exist
+        room = get_object_or_404(Room, id=kwargs["room_id"], chats__users=request.user)
         unread_messages = messages.filter(status="sent")
         if unread_messages.exists():
             unread_messages_sender = unread_messages.last().sender.username
+            async_to_sync(channel_layer.group_send)(room.name, {
+                "type": "change_messages_status",
+                "messages_sender": unread_messages_sender,
+            })
+            # Mark all unread messages as read
             if unread_messages_sender != request.user.username:
                 unread_messages.update(status="read")
         # Group messages by date so it'll be rendered accordingly on the webpage
@@ -42,9 +56,6 @@ class ChatRoomView(RoomListMixin, View):
             {"date": date.strftime("%A, %B %d, %Y"), "messages": list(messages)}
             for date, messages in grouped_messages
         ]
-        # Get the room a user belongs to.
-        # Returns a 404 error if the room doesn't exist
-        room = get_object_or_404(Room, id=kwargs["room_id"], chats__users=request.user)
 
         context = super().get_context_data(user=request.user)
         if room.room_type == "private":

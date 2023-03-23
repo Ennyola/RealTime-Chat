@@ -64,6 +64,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "message_sender": sender,
                 },
             )
+        if message_type == "typing":
+            sender = text_data_json["sender"]
+            receiver = text_data_json["receiver"]
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "typing",
+                    "sender": sender,
+                    "receiver": receiver,
+                },
+            )
 
     # Receive message from room group
     async def chat_message(self, event):
@@ -87,13 +98,35 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 )
             )
 
-    async def seen(self, event):  
+    async def seen(self, event):
         if self.scope["user"].username == event["message_sender"]:
             await self.send(
                 text_data=json.dumps(
                     {
                         "type": "seen",
                         "message_sender": event["message_sender"],
+                    }
+                )
+            )
+
+    async def change_messages_status(self, event):
+        if self.scope["user"].username == event["messages_sender"]:
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "type": "change_messages_status",
+                        "messages_sender": event["messages_sender"],
+                    }
+                )
+            )
+
+    async def typing(self, event):
+        if self.scope["user"].username == event["receiver"]:
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "type": "typing",
+                        "sender": event["sender"],
                     }
                 )
             )

@@ -45,11 +45,14 @@
     top: 9px;
 }
 
-
-/* .online-status {
+.user-status {
     color: #808F99;
-    font-size: 14px;
-} */
+    font-size: 10px;
+}
+
+.typing-status {
+    font-style: italic;
+}
 
 .call-center {
     margin-left: auto;

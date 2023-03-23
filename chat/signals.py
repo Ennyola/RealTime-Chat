@@ -6,10 +6,8 @@ from channels.layers import get_channel_layer
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
-from django.core.signals import request_started
-from django.urls import resolve
 
-from .models import Message, Participants, Room
+from .models import Message, Participants
 from .helpers import get_room_name
 
 channel_layer = get_channel_layer()
