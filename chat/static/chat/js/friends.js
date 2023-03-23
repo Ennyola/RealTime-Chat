@@ -2,7 +2,7 @@ import { notificationSocket } from "/static/js/webSocket.js"
 
 const roomListParent = document.querySelector('.friends-list');
 let roomList = Array.from(roomListParent.children);
-let unreadMessage
+let unreadMessage;
 
 // Handle click events on room elements using event delegation
 roomListParent.addEventListener('click', (event) => {
@@ -33,17 +33,25 @@ notificationSocket.addEventListener('message', (e => {
         case "new_message":
             roomList[roomIndex].querySelector("#latest_message").innerHTML = msg.message
             roomList[roomIndex].querySelector(".time").innerHTML = msg.message_time
-            let unreadMessage = roomList[roomIndex].querySelector(".unread_message")
-            console.log(unreadMessage)
-            if (unreadMessage) {
-                console.log("it is here")
-                console.log(unreadMessage.querySelector("span").textContent)
-                unreadMessage.querySelector("span").textContent = parseInt(unreadMessage.querySelector("span").textContent) + 1
-            } else {
-                let unreadMessage = document.createElement("div")
-                unreadMessage.classList.add("unread_message")
-                unreadMessage.innerHTML = `<span>1</span>`
-                roomList[roomIndex].querySelector(".message-text").appendChild(unreadMessage)
+            unreadMessage = roomList[roomIndex].querySelector(".unread_message")
+
+            // If the message is not from the current user, then the unread message count should be there
+            if (msg.sender) {
+                // If there is already an unread message count, increment it by 1 else, create a new unread message count element
+                if (unreadMessage) {
+
+                    unreadMessage.querySelector("span").textContent = parseInt(unreadMessage.querySelector("span").textContent) + 1
+                } else {
+                    unreadMessage = document.createElement("span")
+                    unreadMessage.classList.add("unread_message")
+                    unreadMessage.insertAdjacentHTML("afterbegin", `<span>1</span>`)
+                    roomList[roomIndex].querySelector(".time_unread_message").appendChild(unreadMessage)
+                }
+                if (window.location.pathname == `/chat/${msg.room_id}/`) {
+                    setTimeout(() => {
+                        unreadMessage.remove()
+                    }, 3000)
+                }
             }
             // Move the new message to the top of the list
             roomListParent.insertBefore(roomList[roomIndex], roomListParent.firstChild)
