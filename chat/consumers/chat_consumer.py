@@ -28,45 +28,89 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
         await self.accept()
-        
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json["messageContent"]
-        sender = text_data_json["sender"]
-        time = text_data_json["time"]
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                "type": "chat_message",
-                "message": message,
-                "sender": sender,
-                "time": time,
-            },
-        )
+        message_type = text_data_json["type"]
+        if message_type == "message":
+            message = text_data_json["messageContent"]
+            sender = text_data_json["sender"]
+            time = text_data_json["time"]
+            receiver = text_data_json["receiver"]
+            message = await self.save_message(sender, message, self.room, time)
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "chat_message",
+                    "message": {
+                        "id": message.id,
+                        "sender": message.sender.username,
+                        "time": time,
+                        "content": message.content,
+                    },
+                    "receiver": receiver,
+                },
+            )
+        if message_type == "seen":
+            message_id = text_data_json["id"]
+            sender = await self.mark_message_as_read(message_id)
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    "type": "seen",
+                    "message_sender": sender,
+                },
+            )
 
     # Receive message from room group
     async def chat_message(self, event):
         message = event["message"]
-        sender = event["sender"]
-        time = event["time"]
+        receiver = event["receiver"]
 
-        # If the currently logged in user is not the sender, do not save the message sent to the server.
-        # This logic is useful because we do not want to save the message twice in the database.
-        if self.scope["user"].username == sender:
-            await self.save_message(self.scope["user"], message, self.room, time)
-
-        await self.send(
-            text_data=json.dumps(
-                {"type": "message", "message_content": message, "sender": sender, "time": time}
+        # Send the message to the receiver and the sender only.
+        if (
+            self.scope["user"].username == message["sender"]
+            or self.scope["user"].username == receiver
+        ):
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "type": "message",
+                        "id": message["id"],
+                        "content": message["content"],
+                        "sender": message["sender"],
+                        "time": message["time"],
+                    }
+                )
             )
+
+    async def seen(self, event):  
+        if self.scope["user"].username == event["message_sender"]:
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "type": "seen",
+                        "message_sender": event["message_sender"],
+                    }
+                )
+            )
+
+    @sync_to_async
+    def save_message(self, username, content, room, timestamp):
+        timestamp = (
+            timestamp // 1000
+        )  # Convert the timestamp to seconds from milliseconds
+        time = datetime.datetime.fromtimestamp(timestamp)
+        user = USER.objects.get(username=username)
+        return Message.objects.create(
+            sender=user, room=room, content=content, time=time
         )
 
     @sync_to_async
-    def save_message(self, user, content, room, timestamp):
-        timestamp = timestamp//1000 # Convert the timestamp to seconds from milliseconds
-        time = datetime.datetime.fromtimestamp(timestamp)
-        Message.objects.create(sender=user, room=room, content=content, time=time)
+    def mark_message_as_read(self, id):
+        message = Message.objects.filter(id=id)
+        message.update(status="read")
+        return message[0].sender.username

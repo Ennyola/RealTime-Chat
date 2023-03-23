@@ -57,7 +57,8 @@ sendButton.addEventListener('click', (e) => {
         type: "message",
         messageContent: inputBox.value,
         time: timeStamp,
-        sender: currentUser
+        sender: currentUser,
+        receiver: friendName
     }));
     inputBox.value = ""
 })
@@ -73,11 +74,12 @@ chatSocket.addEventListener('message', (e) => {
             // If the room is empty, then the last message date becomes 0
             let lastMsgDate = MsgDates.length && MsgDates[MsgDates.length - 1].textContent;
             let HtmlMessageString;
+            // If the last message date is the same as the current message date, insert the message otherwise, insert the date and the message
             if (formatToDateString(msg.time) === (lastMsgDate)) {
                 //If the current user is the sender, then the message is sent to the right side, else, the left
                 HtmlMessageString = `<div class=${messageType}>
                             <div class="chat-bubble">
-                                <div class="msg">${msg.message_content}</div>
+                                <div class="msg">${msg.content}</div>
                                     <span class ="msg-metadata">
                                         <span class = "time">${formatAMPM(new Date(msg.time))}</span> 
                                         <span class="chat-status">
@@ -93,7 +95,7 @@ chatSocket.addEventListener('message', (e) => {
                     </div>
                     <div class=${messageType}>
                             <div class="chat-bubble">
-                                <div class="msg">${msg.message_content}</div>
+                                <div class="msg">${msg.content}</div>
                                     <span class ="msg-metadata">
                                         <span class = "time">${formatAMPM(new Date(msg.time))}</span> 
                                         <span class="chat-status">
@@ -106,6 +108,15 @@ chatSocket.addEventListener('message', (e) => {
             }
             chatHolder.insertAdjacentHTML('beforeend', HtmlMessageString);
             chatHolder.scrollTop = chatHolder.scrollHeight;
+            if (currentUser !== msg.sender) {
+                chatSocket.send(JSON.stringify({
+                        type: "seen",
+                        id: msg.id,
+                    }))
+                    // const chatStatus = document.querySelectorAll(".chat-status");
+                    // chatStatus[chatStatus.length - 1].innerHTML = '<i class="fas fa-check-double"></i>';
+            }
+            break;
         default:
             break;
     }

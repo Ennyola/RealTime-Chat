@@ -39,7 +39,6 @@ notificationSocket.addEventListener('message', (e => {
             if (msg.sender) {
                 // If there is already an unread message count, increment it by 1 else, create a new unread message count element
                 if (unreadMessage) {
-
                     unreadMessage.querySelector("span").textContent = parseInt(unreadMessage.querySelector("span").textContent) + 1
                 } else {
                     unreadMessage = document.createElement("span")
@@ -47,7 +46,8 @@ notificationSocket.addEventListener('message', (e => {
                     unreadMessage.insertAdjacentHTML("afterbegin", `<span>1</span>`)
                     roomList[roomIndex].querySelector(".time_unread_message").appendChild(unreadMessage)
                 }
-                if (window.location.pathname == `/chat/${msg.room_id}/`) {
+                // If the user is in the chat room, remove the unread message count after 3 seconds
+                if (window.location.pathname === `/chat/${msg.room_id}/`) {
                     setTimeout(() => {
                         unreadMessage.remove()
                     }, 3000)
