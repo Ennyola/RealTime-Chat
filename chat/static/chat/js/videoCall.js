@@ -38,7 +38,7 @@ export const closeVideoCall = () => {
         myPeerConnection.onsignalingstatechange = null;
         myPeerConnection.onicegatheringstatechange = null;
         myPeerConnection.onnegotiationneeded = null;
-        myPeerConnection.onremovetrack = null;
+        // myPeerConnection.onremovetrack = null;
 
         if (userVideo.srcObject) {
             userVideo.srcObject.getTracks().forEach(track => track.stop());
@@ -194,8 +194,7 @@ export var handleVideoOfferMsg = async(msg) => {
         await myPeerConnection.setRemoteDescription(msg.sdp);
         // console.log(myPeerConnection.getSender())
         // Add the stream to the peer connection
-        myStream.getTracks().forEach(track => console.log(track));
-        // myPeerConnection.addTrack(track, myStream)
+        myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
 
         let answer = await myPeerConnection.createAnswer();
         await myPeerConnection.setLocalDescription(answer);
@@ -257,15 +256,15 @@ export const handleTrackEvent = (event) => {
     document.querySelector("#hangup-button").disabled = false;
 }
 
-export const handleRemoveTrackEvent = (event) => {
-    let stream = incomingVideo.srcObject;
-    // let stream = document.querySelector("#received_video").srcObject;
-    let trackList = stream.getTracks();
+// export const handleRemoveTrackEvent = (event) => {
+//     let stream = incomingVideo.srcObject;
+//     // let stream = document.querySelector("#received_video").srcObject;
+//     let trackList = stream.getTracks();
 
-    if (trackList.length == 0) {
-        closeVideoCall();
-    }
-}
+//     if (trackList.length == 0) {
+//         closeVideoCall();
+//     }
+// }
 
 export const handleICEConnectionStateChangeEvent = (event) => {
     switch (myPeerConnection.iceConnectionState) {
@@ -315,7 +314,7 @@ const createPeerConnection = () => {
     myPeerConnection.onicecandidate = handleICECandidateEvent;
     myPeerConnection.ontrack = handleTrackEvent;
     myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
-    myPeerConnection.onremovetrack = handleRemoveTrackEvent;
+    // myPeerConnection.onremovetrack = handleRemoveTrackEvent;
     myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
     myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
     myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
