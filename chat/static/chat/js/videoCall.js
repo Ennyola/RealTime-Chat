@@ -67,7 +67,11 @@ export const closeVideoCall = () => {
     incomingVideo.muted = true
     userVideo.muted = false
     mediaConstraints["video"] = false;
+    console.log(userVideo)
+    console.log(incomingVideo)
     videoContainer.classList.add("d-none")
+    console.log(userVideo)
+    console.log(incomingVideo)
 }
 
 const handleGetUserMediaError = (e) => {
