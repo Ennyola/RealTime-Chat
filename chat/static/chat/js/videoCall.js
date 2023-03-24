@@ -46,10 +46,13 @@ export const closeVideoCall = () => {
         if (incomingVideo.srcObject) {
             incomingVideo.srcObject.getTracks().forEach(track => track.stop());
         }
+        console.log(myPeerConnection);
 
         myPeerConnection.close();
+        console.log(myPeerConnection)
         myPeerConnection = null;
         myStream = null;
+        console.log(myStream)
     }
 
     incomingVideo.removeAttribute("src");
@@ -87,7 +90,7 @@ const handleGetUserMediaError = (e) => {
 // The caller initiating the call
 export const invite = async(type) => {
     if (myPeerConnection) {
-        alert("You can't start a call because you already have one open!");
+        return;
     } else {
         createPeerConnection();
         try {
@@ -177,13 +180,10 @@ export var handleVideoOfferMsg = async(msg) => {
         mediaConstraints["video"] = true;
     }
 
-
     // Opens the camera and microphone of the calle
     myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
     // Add the stream to the video element
     incomingVideo.srcObject = myStream;
-
-
 
     // Notify the other user that the phone is ringing
     if (myPeerConnection) {
@@ -193,8 +193,6 @@ export var handleVideoOfferMsg = async(msg) => {
             type: "ringing",
         }))
     }
-
-
     //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
         await myPeerConnection.setRemoteDescription(msg.sdp);
