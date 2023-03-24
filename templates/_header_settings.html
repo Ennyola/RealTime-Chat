@@ -5,9 +5,12 @@
         <div class="nav-controls">
             <a href= {% url 'find_friends:index' %} class="friend-request-icon">
                 <i class="fas fa-user-plus">
-                </i> 
-                <span class="notification-dot d-none">
-                </span>
+                </i>
+                {% if  unseen_friend_requests_count > 0 %}
+                    <span class="notification-dot"></span>
+                {% else %}
+                    <span   class="notification-dot d-none"></span>
+                {% endif %}  
             </a> 
             <a href={% url 'friends' %}> <i class="fas fa-comment-alt"></i></a>
             <i tabindex="0" class="fas fa-ellipsis-v" id="settings-icon"></i>

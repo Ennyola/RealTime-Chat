@@ -43,18 +43,22 @@ def index(request):
         | Q(friend_requests_received__in=sent_friend_requests)
     ).order_by("?")[:7]
 
-    recipients = User.objects.filter(
-        friend_requests_received__in=sent_friend_requests
-    ).order_by("-friend_requests_received__created_at").distinct()
+    recipients = (
+        User.objects.filter(friend_requests_received__in=sent_friend_requests)
+        .order_by("-friend_requests_received__created_at")
+        .distinct()
+    )
 
     # This chains the recipients or the users that have been sent friend
     # requests to the list of users above
     # just to make sure the list of friend
     # requests sent would always appear on top - before any other user
     users = list(chain(recipients, users))
-    senders = User.objects.filter(
-        friend_requests_sent__in=received_friend_requests
-    ).order_by("-friend_requests_sent__created_at").distinct()
+    senders = (
+        User.objects.filter(friend_requests_sent__in=received_friend_requests)
+        .order_by("-friend_requests_sent__created_at")
+        .distinct()
+    )
     loop_count = range(2)
     context = {
         "random_users": users,
@@ -131,7 +135,8 @@ def show_friends(request):
             | Q(friendships_sent__in=friend_list)
         )
         .exclude(username=request.user.username)
-        .order_by("username").distinct()
+        .order_by("username")
+        .distinct()
     )
     # Grouping the friends by the first letter of their name
     grouped_friends = groupby(friends, lambda x: x.username[0])

@@ -2,6 +2,11 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
+
+class RequestManager(models.Manager):
+    def filter(self, username: str):
+        return super().filter(to_user__username=username, seen=False)
 class Friendship(models.Model):
     ACCEPTED = "ACC"
     REJECTED = "REJ"
@@ -23,7 +28,7 @@ class Friendship(models.Model):
         max_length=10,
         choices=STATUS_CHOICES,
     )
-    
+
     def __str__(self):
         return f"{self.from_user} to {self.to_user} - {self.status}"
 
@@ -36,10 +41,13 @@ class FriendRequest(models.Model):
         User, on_delete=models.CASCADE, related_name="friend_requests_received"
     )
     created_at = models.DateTimeField(auto_now_add=True)
-    
+    seen = models.BooleanField(default=False)
+    objects = models.Manager()
+    unseen_requests = RequestManager()
+
     class Meta:
         ordering = ["-created_at"]
-        
+
     def __str__(self):
         return f"{self.from_user} to {self.to_user}"
 

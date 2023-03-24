@@ -8,13 +8,30 @@ from django.views import View
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 
+from find_friends.models import FriendRequest
 from .models import Room, Message
 from .helpers import get_room_name
 
 channel_layer = get_channel_layer()
 
 
-class RoomListMixin:
+class UnseenFriendRequestMixin(object):
+    def get_unseen_friend_requests_count(self, username):
+        unseen_friend_requests_count = FriendRequest.unseen_requests.filter(
+            username=username
+        ).count()
+        return unseen_friend_requests_count
+
+    def get_context_data(self, **kwargs):
+        username = kwargs.get("username")
+        unseen_friend_requests_count = self.get_unseen_friend_requests_count(
+            username=username
+        )
+        context = {"unseen_friend_requests_count": unseen_friend_requests_count}
+        return context
+
+
+class RoomListMixin(UnseenFriendRequestMixin):
     def get_rooms(self, **kwargs):
         user = kwargs.get("user")
         rooms = Room.get_rooms_and_related_info(user)
@@ -22,14 +39,16 @@ class RoomListMixin:
 
     def get_context_data(self, **kwargs):
         user = kwargs.get("user")
+        context = super().get_context_data(username=user.username)
         rooms = self.get_rooms(user=user)
-        context = {"rooms": rooms}
+        context["rooms"] = rooms
         return context
 
 
 class ChatIndexView(RoomListMixin, View):
     def get(self, request, *args, **kwargs):
-        context = super().get_context_data(user=request.user)
+        context = super().get_context_data(user=request.user)  
+        print(context)
         return render(request, "chat/index.html", context)
 
 
@@ -43,10 +62,13 @@ class ChatRoomView(RoomListMixin, View):
         unread_messages = messages.filter(status="sent")
         if unread_messages.exists():
             unread_messages_sender = unread_messages.last().sender.username
-            async_to_sync(channel_layer.group_send)(room.name, {
-                "type": "change_messages_status",
-                "messages_sender": unread_messages_sender,
-            })
+            async_to_sync(channel_layer.group_send)(
+                room.name,
+                {
+                    "type": "change_messages_status",
+                    "messages_sender": unread_messages_sender,
+                },
+            )
             # Mark all unread messages as read
             if unread_messages_sender != request.user.username:
                 unread_messages.update(status="read")
@@ -58,6 +80,7 @@ class ChatRoomView(RoomListMixin, View):
         ]
 
         context = super().get_context_data(user=request.user)
+        print(context)
         if room.room_type == "private":
             context["room_name"] = get_room_name(room.name, request.user.username)
         else:
