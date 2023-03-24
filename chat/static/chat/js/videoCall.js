@@ -51,6 +51,7 @@ export const closeVideoCall = () => {
         myPeerConnection.close();
         console.log(myPeerConnection)
         myPeerConnection = null;
+        console.log(myPeerConnection)
         myStream = null;
         console.log(myStream)
     }
