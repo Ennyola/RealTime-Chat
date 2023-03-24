@@ -2,13 +2,6 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
-
-
-class RequestManager(models.Manager):
-    def filter(self, username: str):
-        return super().filter(to_user__username=username, seen=False)
-
-
 class Friendship(models.Model):
     ACCEPTED = "ACC"
     REJECTED = "REJ"
@@ -34,6 +27,9 @@ class Friendship(models.Model):
     def __str__(self):
         return f"{self.from_user} to {self.to_user} - {self.status}"
 
+class RequestManager(models.Manager):
+    def filter(self, username: str):
+        return super().filter(to_user__username=username, seen=False)
 
 class FriendRequest(models.Model):
     from_user = models.ForeignKey(
