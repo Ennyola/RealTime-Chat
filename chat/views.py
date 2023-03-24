@@ -80,7 +80,6 @@ class ChatRoomView(RoomListMixin, View):
         ]
 
         context = super().get_context_data(user=request.user)
-        print(context)
         if room.room_type == "private":
             context["room_name"] = get_room_name(room.name, request.user.username)
         else:

@@ -46,14 +46,9 @@ export const closeVideoCall = () => {
         if (incomingVideo.srcObject) {
             incomingVideo.srcObject.getTracks().forEach(track => track.stop());
         }
-        console.log(myPeerConnection);
-
         myPeerConnection.close();
-        console.log(myPeerConnection)
         myPeerConnection = null;
-        console.log(myPeerConnection)
         myStream = null;
-        console.log(myStream)
     }
 
     incomingVideo.removeAttribute("src");
@@ -67,11 +62,7 @@ export const closeVideoCall = () => {
     incomingVideo.muted = true
     userVideo.muted = false
     mediaConstraints["video"] = false;
-    console.log(userVideo)
-    console.log(incomingVideo)
     videoContainer.classList.add("d-none")
-    console.log(userVideo)
-    console.log(incomingVideo)
 }
 
 const handleGetUserMediaError = (e) => {
@@ -201,8 +192,10 @@ export var handleVideoOfferMsg = async(msg) => {
     //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
         await myPeerConnection.setRemoteDescription(msg.sdp);
+        // console.log(myPeerConnection.getSender())
         // Add the stream to the peer connection
-        myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+        myStream.getTracks().forEach(track => console.log(track));
+        // myPeerConnection.addTrack(track, myStream)
 
         let answer = await myPeerConnection.createAnswer();
         await myPeerConnection.setLocalDescription(answer);
