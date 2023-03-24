@@ -20,6 +20,7 @@ def change_friendship_status(queryset, status):
 
 
 def index(request):
+    context = {}
     sent_friend_requests = FriendRequest.objects.filter(from_user=request.user)
     received_friend_requests = FriendRequest.objects.filter(to_user=request.user)
 
@@ -60,12 +61,18 @@ def index(request):
         .distinct()
     )
     loop_count = range(2)
-    context = {
-        "random_users": users,
-        "friend_requests": senders,
-        "recipients": recipients,
-        "loop_count": loop_count,
-    }
+
+    unseen_friend_requests = FriendRequest.unseen_requests.filter(
+        username=request.user.username
+    )
+    # Change the unseen friend requests status to seen if there exists any.
+    if unseen_friend_requests.exists():
+        unseen_friend_requests.update(seen=True)
+        context["unseen_friend_requests_count"] = unseen_friend_requests.count()
+    context["random_users"] = users
+    context["friend_requests"] = senders
+    context["recipients"] = recipients
+    context["loop_count"] = loop_count
     return render(request, "find_friends/add-friend.html", context)
 
 
@@ -158,8 +165,12 @@ def show_friends(request):
         del friends["friends"]
         friends["friend_and_room_id"] = friends_and_room_id
         friends_and_room_id = []
+    unseen_friend_requests_count = FriendRequest.unseen_requests.filter(
+        username=request.user.username
+    ).count()
     context = {
         "friend_groups": friend_groups,
+        "unseen_friend_requests_count": unseen_friend_requests_count,
     }
 
     return render(request, "find_friends/show_friends.html", context)

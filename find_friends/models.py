@@ -7,6 +7,8 @@ User = get_user_model()
 class RequestManager(models.Manager):
     def filter(self, username: str):
         return super().filter(to_user__username=username, seen=False)
+
+
 class Friendship(models.Model):
     ACCEPTED = "ACC"
     REJECTED = "REJ"
