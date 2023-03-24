@@ -16,6 +16,7 @@ def send_friend_request(sender, **kwargs):
         {
             "type": "friend_request",
             "event": "New Friend Request",
+            "friend_request_id": friend_request.id,
             "sender_id": friend_request.from_user.id,
             "sender": friend_request.from_user.username,
             "receiver": friend_request.to_user.username,

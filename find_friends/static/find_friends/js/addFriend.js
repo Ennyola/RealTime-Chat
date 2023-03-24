@@ -34,6 +34,10 @@ notificationSocket.addEventListener('message', (e => {
                             </div>`;
             // Add the user to the beginning of the list.
             users.insertAdjacentHTML("afterbegin", userInfo);
+            notificationSocket.send(JSON.stringify({
+                "type": "friend_request_seen",
+                "friend_request_id": msg.friend_request_id
+            }))
             break;
         case "cancel_friend_request":
             let senders = users.querySelectorAll(".user")

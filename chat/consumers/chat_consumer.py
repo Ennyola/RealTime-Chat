@@ -7,7 +7,7 @@ from django.db.models import Q
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from chat.models import Message, Room, Participants
+from chat.models import Message, Room
 
 USER = get_user_model()
 
