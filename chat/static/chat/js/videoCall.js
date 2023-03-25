@@ -163,10 +163,8 @@ export const hangUpCall = () => {
 
 
 export var handleVideoOfferMsg = async(msg) => {
-    console.log(myPeerConnection)
     targetUsername = msg.caller;
     createPeerConnection();
-    console.log(myPeerConnection)
     videoContainer.classList.remove("d-none")
 
     // Set the name and calling state of the caller
@@ -200,28 +198,32 @@ export var handleVideoOfferMsg = async(msg) => {
         }))
     }
     //User accepts the call
-    // 
-    await myPeerConnection.setRemoteDescription(msg.sdp);
-    // console.log(myPeerConnection.getSender())
-    // Add the stream to the peer connection
-    console.log(myPeerConnection.getSenders())
-    console.log(myStream.getTracks())
+    acceptCall.addEventListener('click', async(e) => {
+        await myPeerConnection.setRemoteDescription(msg.sdp);
         // Add the local stream to the peer connection.
-    myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
-    console.log(myPeerConnection.getSenders())
-    let answer = await myPeerConnection.createAnswer();
-    await myPeerConnection.setLocalDescription(answer);
-    await callWebSocket.send(JSON.stringify({
-        caller: user,
-        target: targetUsername,
-        type: "answer",
-        sdp: myPeerConnection.localDescription
-    }))
-    callingState.innerHTML = ""
-        //makes the accept and reject button disappear
-    callControlContainer.classList.add('d-none')
-    hangupButton.classList.remove("d-none")
+        for (const track of myStream.getTracks()) {
+            let sender = myPeerConnection.getSenders().find(s => s.track === track);
+            console.log(sender)
+            if (sender) {
+                myPeerConnection.removeTrack(sender);
+            }
+            sender = myPeerConnection.addTrack(track);
+        }
 
+        console.log(myPeerConnection.getSenders())
+        let answer = await myPeerConnection.createAnswer();
+        await myPeerConnection.setLocalDescription(answer);
+        await callWebSocket.send(JSON.stringify({
+            caller: user,
+            target: targetUsername,
+            type: "answer",
+            sdp: myPeerConnection.localDescription
+        }))
+        callingState.innerHTML = ""
+            //makes the accept and reject button disappear
+        callControlContainer.classList.add('d-none')
+        hangupButton.classList.remove("d-none")
+    })
 
     //User Rejects the call
     rejectCall.addEventListener('click', (e) => {
