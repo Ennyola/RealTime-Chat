@@ -17,7 +17,6 @@ let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
 let myPeerConnection = null;
 let myStream = null;
-let transceiver = null;
 
 let mediaConstraints = {
     audio: true,
@@ -40,11 +39,6 @@ export const closeVideoCall = () => {
         myPeerConnection.onicegatheringstatechange = null;
         myPeerConnection.onnegotiationneeded = null;
         myPeerConnection.onremovetrack = null;
-
-        // Stop all transceivers on the connection
-        myPeerConnection.getTransceivers().forEach(transceiver => {
-            transceiver.stop();
-        });
 
         if (userVideo.srcObject) {
             userVideo.srcObject.getTracks().forEach(track => track.stop());
@@ -115,15 +109,9 @@ export const invite = async(type) => {
             }
 
             // Add the local stream to the peer connection.
-            try {
-                myStream.getTracks().forEach(
-                    transceiver = track => myPeerConnection.addTransceiver(track, { streams: [myStream] })
-                );
-            } catch (err) {
-                handleGetUserMediaError(err);
-            }
 
-            // myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+
+            myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
         } catch (error) {
             handleGetUserMediaError(error)
         }
@@ -159,7 +147,7 @@ export const handleNegotiationNeededEvent = async() => {
             }));
         }
     } catch (e) {
-        reportError(e)
+        console.log(e)
     }
 
 }
@@ -212,35 +200,28 @@ export var handleVideoOfferMsg = async(msg) => {
         }))
     }
     //User accepts the call
-    acceptCall.addEventListener('click', async(e) => {
-        await myPeerConnection.setRemoteDescription(msg.sdp);
-        // console.log(myPeerConnection.getSender())
-        // Add the stream to the peer connection
-        console.log(myPeerConnection.getSenders())
-        console.log(myStream.getTracks())
-            // Add the local stream to the peer connection.
-        try {
-            myStream.getTracks().forEach(
-                transceiver = track => myPeerConnection.addTransceiver(track, { streams: [myStream] })
-            );
-        } catch (err) {
-            handleGetUserMediaError(err);
-        }
-        // myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
-        console.log(myPeerConnection.getSenders())
-        let answer = await myPeerConnection.createAnswer();
-        await myPeerConnection.setLocalDescription(answer);
-        await callWebSocket.send(JSON.stringify({
-            caller: user,
-            target: targetUsername,
-            type: "answer",
-            sdp: myPeerConnection.localDescription
-        }))
-        callingState.innerHTML = ""
-            //makes the accept and reject button disappear
-        callControlContainer.classList.add('d-none')
-        hangupButton.classList.remove("d-none")
-    })
+    // 
+    await myPeerConnection.setRemoteDescription(msg.sdp);
+    // console.log(myPeerConnection.getSender())
+    // Add the stream to the peer connection
+    console.log(myPeerConnection.getSenders())
+    console.log(myStream.getTracks())
+        // Add the local stream to the peer connection.
+    myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+    console.log(myPeerConnection.getSenders())
+    let answer = await myPeerConnection.createAnswer();
+    await myPeerConnection.setLocalDescription(answer);
+    await callWebSocket.send(JSON.stringify({
+        caller: user,
+        target: targetUsername,
+        type: "answer",
+        sdp: myPeerConnection.localDescription
+    }))
+    callingState.innerHTML = ""
+        //makes the accept and reject button disappear
+    callControlContainer.classList.add('d-none')
+    hangupButton.classList.remove("d-none")
+
 
     //User Rejects the call
     rejectCall.addEventListener('click', (e) => {
@@ -258,7 +239,7 @@ export var handleVideoAnswerMsg = async(msg) => {
     try {
         await myPeerConnection.setRemoteDescription(msg.sdp);
     } catch (error) {
-        reportError(error)
+        console.log(error)
     }
 
 }
@@ -273,10 +254,15 @@ export const handleICECandidateEvent = (event) => {
     };
 }
 
-export var handleNewICECandidateMsg = (msg) => {
+export var handleNewICECandidateMsg = async(msg) => {
     let candidate = new RTCIceCandidate(msg.candidate);
-    myPeerConnection.addIceCandidate(candidate)
-        .catch(reportError);
+    try {
+        await myPeerConnection.addIceCandidate(candidate)
+    } catch (error) {
+        console.log(error)
+    }
+
+
 }
 
 export const handleTrackEvent = (event) => {
