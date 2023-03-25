@@ -211,6 +211,8 @@ export var handleVideoOfferMsg = async(msg) => {
             }
             let answer = await myPeerConnection.createAnswer();
             await myPeerConnection.setLocalDescription(answer);
+            console.log(answer)
+            console.log(myPeerConnection.localDescription)
             callWebSocket.send(JSON.stringify({
                 caller: user,
                 target: targetUsername,
