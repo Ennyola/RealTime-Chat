@@ -203,17 +203,14 @@ export var handleVideoOfferMsg = async(msg) => {
         // Add the local stream to the peer connection.
         for (const track of myStream.getTracks()) {
             let sender = myPeerConnection.getSenders().find(s => s.track === track);
-            console.log(sender)
             if (sender) {
                 myPeerConnection.removeTrack(sender);
             }
             sender = myPeerConnection.addTrack(track);
         }
-
-        console.log(myPeerConnection.getSenders())
         let answer = await myPeerConnection.createAnswer();
         await myPeerConnection.setLocalDescription(answer);
-        await callWebSocket.send(JSON.stringify({
+        callWebSocket.send(JSON.stringify({
             caller: user,
             target: targetUsername,
             type: "answer",
