@@ -17,6 +17,7 @@ let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
 let myPeerConnection = null;
 let myStream = null;
+let transceiver = null;
 
 let mediaConstraints = {
     audio: true,
@@ -39,6 +40,11 @@ export const closeVideoCall = () => {
         myPeerConnection.onicegatheringstatechange = null;
         myPeerConnection.onnegotiationneeded = null;
         myPeerConnection.onremovetrack = null;
+
+        // Stop all transceivers on the connection
+        myPeerConnection.getTransceivers().forEach(transceiver => {
+            transceiver.stop();
+        });
 
         if (userVideo.srcObject) {
             userVideo.srcObject.getTracks().forEach(track => track.stop());
@@ -101,12 +107,23 @@ export const invite = async(type) => {
             userCallInfo.innerHTML = targetUsername
             callingState.innerHTML = "calling..."
             incomingVideo.srcObject = myStream;
+            // Make the user video element hidden to prevent blank video from showing since no stream is attached to it yet.
             userVideo.style.visibility = "hidden";
             if (type === "voice-call") {
                 incomingVideo.style.background = `url(${friendDisplayPicture}) no-repeat center center`;
                 incomingVideo.style.backgroundSize = "cover";
             }
-            myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+
+            // Add the local stream to the peer connection.
+            try {
+                myStream.getTracks().forEach(
+                    transceiver = track => myPeerConnection.addTransceiver(track, { streams: [myStream] })
+                );
+            } catch (err) {
+                handleGetUserMediaError(err);
+            }
+
+            // myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
         } catch (error) {
             handleGetUserMediaError(error)
         }
@@ -158,8 +175,10 @@ export const hangUpCall = () => {
 
 
 export var handleVideoOfferMsg = async(msg) => {
+    console.log(myPeerConnection)
     targetUsername = msg.caller;
     createPeerConnection();
+    console.log(myPeerConnection)
     videoContainer.classList.remove("d-none")
 
     // Set the name and calling state of the caller
@@ -181,6 +200,7 @@ export var handleVideoOfferMsg = async(msg) => {
     myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
     // Add the stream to the video element
     incomingVideo.srcObject = myStream;
+    // Make the user video element hidden to prevent blank video from showing since no stream is attached to it yet.
     userVideo.style.visibility = "hidden";
 
     // Notify the other user that the phone is ringing
@@ -198,7 +218,15 @@ export var handleVideoOfferMsg = async(msg) => {
         // Add the stream to the peer connection
         console.log(myPeerConnection.getSenders())
         console.log(myStream.getTracks())
-        myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+            // Add the local stream to the peer connection.
+        try {
+            myStream.getTracks().forEach(
+                transceiver = track => myPeerConnection.addTransceiver(track, { streams: [myStream] })
+            );
+        } catch (err) {
+            handleGetUserMediaError(err);
+        }
+        // myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
         console.log(myPeerConnection.getSenders())
         let answer = await myPeerConnection.createAnswer();
         await myPeerConnection.setLocalDescription(answer);
