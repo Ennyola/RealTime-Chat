@@ -199,23 +199,29 @@ export var handleVideoOfferMsg = async(msg) => {
     }
     //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
-        await myPeerConnection.setRemoteDescription(msg.sdp);
-        // Add the local stream to the peer connection.
-        for (const track of myStream.getTracks()) {
-            let sender = myPeerConnection.getSenders().find(s => s.track === track);
-            if (sender) {
-                myPeerConnection.removeTrack(sender);
+        try {
+            await myPeerConnection.setRemoteDescription(msg.sdp);
+            // Add the local stream to the peer connection.
+            for (const track of myStream.getTracks()) {
+                let sender = myPeerConnection.getSenders().find(s => s.track === track);
+                if (sender) {
+                    myPeerConnection.removeTrack(sender);
+                }
+                sender = myPeerConnection.addTrack(track);
             }
-            sender = myPeerConnection.addTrack(track);
+            let answer = await myPeerConnection.createAnswer();
+            await myPeerConnection.setLocalDescription(answer);
+            callWebSocket.send(JSON.stringify({
+                caller: user,
+                target: targetUsername,
+                type: "answer",
+                sdp: myPeerConnection.localDescription
+            }))
+
+        } catch (error) {
+            console.log(error)
         }
-        let answer = await myPeerConnection.createAnswer();
-        await myPeerConnection.setLocalDescription(answer);
-        callWebSocket.send(JSON.stringify({
-            caller: user,
-            target: targetUsername,
-            type: "answer",
-            sdp: myPeerConnection.localDescription
-        }))
+
         callingState.innerHTML = ""
             //makes the accept and reject button disappear
         callControlContainer.classList.add('d-none')
