@@ -38,7 +38,7 @@ export const closeVideoCall = () => {
         myPeerConnection.onsignalingstatechange = null;
         myPeerConnection.onicegatheringstatechange = null;
         myPeerConnection.onnegotiationneeded = null;
-        // myPeerConnection.onremovetrack = null;
+        myPeerConnection.onremovetrack = null;
 
         if (userVideo.srcObject) {
             userVideo.srcObject.getTracks().forEach(track => track.stop());
@@ -101,6 +101,7 @@ export const invite = async(type) => {
             userCallInfo.innerHTML = targetUsername
             callingState.innerHTML = "calling..."
             incomingVideo.srcObject = myStream;
+            userVideo.style.visibility = "hidden";
             if (type === "voice-call") {
                 incomingVideo.style.background = `url(${friendDisplayPicture}) no-repeat center center`;
                 incomingVideo.style.backgroundSize = "cover";
@@ -180,6 +181,7 @@ export var handleVideoOfferMsg = async(msg) => {
     myStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
     // Add the stream to the video element
     incomingVideo.srcObject = myStream;
+    userVideo.style.visibility = "hidden";
 
     // Notify the other user that the phone is ringing
     if (myPeerConnection) {
@@ -219,14 +221,18 @@ export var handleVideoOfferMsg = async(msg) => {
 
 }
 
-export var handleVideoAnswerMsg = (msg) => {
+export var handleVideoAnswerMsg = async(msg) => {
     // Remove the ringing calling state
     callingState.innerHTML = ""
 
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
-    let desc = new RTCSessionDescription(msg.sdp);
-    myPeerConnection.setRemoteDescription(desc).catch(reportError);
+    try {
+        await myPeerConnection.setRemoteDescription(msg.sdp);
+    } catch (error) {
+        reportError(error)
+    }
+
 }
 
 export const handleICECandidateEvent = (event) => {
@@ -248,7 +254,8 @@ export var handleNewICECandidateMsg = (msg) => {
 export const handleTrackEvent = (event) => {
     // Switching the uservideo to the small video and the incoming video to the big video.
     if (incomingVideo.srcObject.id !== event.streams[0].id) {
-        userVideo.srcObject = myStream
+        userVideo.style.visibility = "visible";
+        userVideo.srcObject = myStream;
         incomingVideo.srcObject = event.streams[0];
         // Mutting the user video and unmuting the incoming video so the user does not echo
         incomingVideo.muted = false;
@@ -258,15 +265,15 @@ export const handleTrackEvent = (event) => {
     document.querySelector("#hangup-button").disabled = false;
 }
 
-// export const handleRemoveTrackEvent = (event) => {
-//     let stream = incomingVideo.srcObject;
-//     // let stream = document.querySelector("#received_video").srcObject;
-//     let trackList = stream.getTracks();
+export const handleRemoveTrackEvent = (event) => {
+    let stream = incomingVideo.srcObject;
+    // let stream = document.querySelector("#received_video").srcObject;
+    let trackList = stream.getTracks();
 
-//     if (trackList.length == 0) {
-//         closeVideoCall();
-//     }
-// }
+    if (trackList.length == 0) {
+        closeVideoCall();
+    }
+}
 
 export const handleICEConnectionStateChangeEvent = (event) => {
     switch (myPeerConnection.iceConnectionState) {
@@ -316,7 +323,7 @@ const createPeerConnection = () => {
     myPeerConnection.onicecandidate = handleICECandidateEvent;
     myPeerConnection.ontrack = handleTrackEvent;
     myPeerConnection.onnegotiationneeded = handleNegotiationNeededEvent;
-    // myPeerConnection.onremovetrack = handleRemoveTrackEvent;
+    myPeerConnection.onremovetrack = handleRemoveTrackEvent;
     myPeerConnection.oniceconnectionstatechange = handleICEConnectionStateChangeEvent;
     myPeerConnection.onicegatheringstatechange = handleICEGatheringStateChangeEvent;
     myPeerConnection.onsignalingstatechange = handleSignalingStateChangeEvent;
