@@ -173,10 +173,12 @@ export var handleVideoOfferMsg = async(msg) => {
     count += 1;
     console.log("offer", count)
     targetUsername = msg.caller;
-    if (myPeerConnection) {
+    if (!myPeerConnection) {
+        createPeerConnection();
+    } else {
         return;
     }
-    createPeerConnection();
+
     videoContainer.classList.remove("d-none")
 
     // Set the name and calling state of the caller
