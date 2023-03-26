@@ -229,7 +229,7 @@ export var handleVideoOfferMsg = async(msg) => {
                 await myPeerConnection.setRemoteDescription(msg.sdp);
             }
 
-
+            console.log(myPeerConnection.signalingState)
 
             // Add the local stream to the peer connection.
 
@@ -241,6 +241,7 @@ export var handleVideoOfferMsg = async(msg) => {
             //     }
             //     sender = myPeerConnection.addTrack(track);
             // }
+            console.log(myPeerConnection.signalingState)
             await myPeerConnection.setLocalDescription(await myPeerConnection.createAnswer());
             callWebSocket.send(JSON.stringify({
                 caller: user,
