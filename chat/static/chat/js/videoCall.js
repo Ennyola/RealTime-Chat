@@ -151,9 +151,10 @@ export const handleNegotiationNeededEvent = async() => {
     } catch (e) {
         console.log(e)
     } finally {
-        // myPeerConnection._negotiating = false;
+        myPeerConnection._negotiating = false;
     }
     console.log("negotiationneeded", negotiationneededCounter)
+    console.log(myPeerConnection._negotiating)
 }
 
 export const hangUpCall = () => {
