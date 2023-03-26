@@ -17,7 +17,9 @@ let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
 let myPeerConnection = null;
 let myStream = null;
-let count = 0;
+let oCount = 0;
+let hvoCount = 0;
+let hvaCount = 0;
 
 let mediaConstraints = {
     audio: true,
@@ -120,6 +122,8 @@ export const invite = async(type) => {
 }
 
 export const handleNegotiationNeededEvent = async() => {
+    oCount += 1;
+    console.log("negotiation", oCount)
     try {
         let offer = await myPeerConnection.createOffer();
 
@@ -129,7 +133,6 @@ export const handleNegotiationNeededEvent = async() => {
         if (myPeerConnection.signalingState != "stable") {
             return;
         }
-
         await myPeerConnection.setLocalDescription(offer);
         if (myStream.getTracks().length === 1 && myStream.getTracks()[0].kind === "audio") {
             callWebSocket.send(JSON.stringify({
@@ -164,8 +167,8 @@ export const hangUpCall = () => {
 
 
 export var handleVideoOfferMsg = async(msg) => {
-    count += 1;
-    console.log("offer", count)
+    hvoCount += 1;
+    console.log("offer", hvoCount)
     targetUsername = msg.caller;
     createPeerConnection();
     videoContainer.classList.remove("d-none")
@@ -244,6 +247,9 @@ export var handleVideoOfferMsg = async(msg) => {
 }
 
 export var handleVideoAnswerMsg = async(msg) => {
+    hvaCount += 1;
+    console.log("answer", hvaCount)
+
     // Remove the ringing calling state
     callingState.innerHTML = ""
     console.log(myPeerConnection.signalingState)
