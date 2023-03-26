@@ -210,6 +210,8 @@ export var handleVideoOfferMsg = async(msg) => {
             type: "ringing",
         }))
     }
+    console.log(myPeerConnection.signalingState)
+
     //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
         try {
@@ -222,9 +224,9 @@ export var handleVideoOfferMsg = async(msg) => {
                 ]);
                 return;
             } else {
-
+                await myPeerConnection.setRemoteDescription(msg.sdp);
             }
-            // await myPeerConnection.setRemoteDescription(msg.sdp);
+
 
 
             // Add the local stream to the peer connection.
