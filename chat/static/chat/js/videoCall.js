@@ -125,13 +125,15 @@ export const handleNegotiationNeededEvent = async() => {
     if (myPeerConnection._negotiating == true) return;
     myPeerConnection._negotiating = true;
     try {
-        let offer = await myPeerConnection.createOffer();
-
         // If the connection hasn't yet achieved the "stable" state,
         // return to the caller. Another negotiationneeded event
         // will be fired when the state stabilizes.
+        if (myPeerConnection.signalingState != "stable") {
+            return;
+        }
 
-        await myPeerConnection.setLocalDescription(offer);
+
+        await myPeerConnection.setLocalDescription(await myPeerConnection.createOffer());
         if (myStream.getTracks().length === 1 && myStream.getTracks()[0].kind === "audio") {
             callWebSocket.send(JSON.stringify({
                 caller: user,
@@ -179,6 +181,7 @@ export var handleVideoOfferMsg = async(msg) => {
     callingState.innerHTML = "calling..."
 
 
+
     // This conditions checks if the incoming call is a video call or a voice call.
     // If the incoming call is a voice call, the background of the incoming video 
     // element is set to the caller's display picture.
@@ -204,12 +207,24 @@ export var handleVideoOfferMsg = async(msg) => {
             type: "ringing",
         }))
     }
-
-    console.log(msg.sdp)
-        //User accepts the call
+    await myPeerConnection.setRemoteDescription(msg.sdp);
+    //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
         try {
-            await myPeerConnection.setRemoteDescription(msg.sdp);
+            // if (myPeerConnection.signalingState != "stable") {
+            //     // Set the local and remove descriptions for rollback; don't proceed
+            //     // until both return.
+            //     await Promise.all([
+            //         myPeerConnection.setLocalDescription({ type: "rollback" }),
+            //         myPeerConnection.setRemoteDescription(msg.sdp)
+            //     ]);
+            //     return;
+            // } else {
+            //     await myPeerConnection.setRemoteDescription(msg.sdp);
+            // }
+
+
+
             // Add the local stream to the peer connection.
             for (const track of myStream.getTracks()) {
                 let sender = myPeerConnection.getSenders().find(s => s.track === track);
@@ -218,11 +233,7 @@ export var handleVideoOfferMsg = async(msg) => {
                 }
                 sender = myPeerConnection.addTrack(track);
             }
-            console.log(myPeerConnection.signalingState)
-            let answer = await myPeerConnection.createAnswer();
-            await myPeerConnection.setLocalDescription(answer);
-            console.log(answer)
-            console.log(myPeerConnection.localDescription)
+            await myPeerConnection.setLocalDescription(await myPeerConnection.createAnswer());
             callWebSocket.send(JSON.stringify({
                 caller: user,
                 target: targetUsername,
@@ -250,8 +261,6 @@ export var handleVideoOfferMsg = async(msg) => {
 export var handleVideoAnswerMsg = async(msg) => {
     // Remove the ringing calling state
     callingState.innerHTML = "";
-    console.log(myPeerConnection.signalingState);
-
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
     try {
@@ -273,7 +282,6 @@ export const handleICECandidateEvent = (event) => {
 }
 
 export var handleNewICECandidateMsg = async(msg) => {
-    console.log(msg)
     let candidate = new RTCIceCandidate(msg.candidate);
     try {
         await myPeerConnection.addIceCandidate(candidate)
@@ -369,8 +377,8 @@ export var setCallingState = () => {
 // Start the call if the user clicks the "call" button.
 // This is only possible if the user is in the chatroom page hence the conditional statement
 if (videoCallIcon) videoCallIcon.addEventListener("click", () => {
-        invite("video-call")
-    })
-    // if (voiceCallIcon) voiceCallIcon.addEventListener("click", () => {
-    //     invite("voice-call")
-    // })
+    invite("video-call")
+})
+if (voiceCallIcon) voiceCallIcon.addEventListener("click", () => {
+    invite("voice-call")
+})
