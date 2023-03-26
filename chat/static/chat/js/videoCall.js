@@ -17,6 +17,7 @@ let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
 let myPeerConnection = null;
 let myStream = null;
+let count = 0;
 
 let mediaConstraints = {
     audio: true,
@@ -163,6 +164,8 @@ export const hangUpCall = () => {
 
 
 export var handleVideoOfferMsg = async(msg) => {
+    count += 1;
+    console.log("offer", count)
     targetUsername = msg.caller;
     createPeerConnection();
     videoContainer.classList.remove("d-none")
@@ -197,7 +200,9 @@ export var handleVideoOfferMsg = async(msg) => {
             type: "ringing",
         }))
     }
-    //User accepts the call
+
+    console.log(msg.sdp)
+        //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
         try {
             await myPeerConnection.setRemoteDescription(msg.sdp);
@@ -209,6 +214,7 @@ export var handleVideoOfferMsg = async(msg) => {
                 }
                 sender = myPeerConnection.addTrack(track);
             }
+            console.log(myPeerConnection.signalingState)
             let answer = await myPeerConnection.createAnswer();
             await myPeerConnection.setLocalDescription(answer);
             console.log(answer)
@@ -240,6 +246,7 @@ export var handleVideoOfferMsg = async(msg) => {
 export var handleVideoAnswerMsg = async(msg) => {
     // Remove the ringing calling state
     callingState.innerHTML = ""
+    console.log(myPeerConnection.signalingState)
 
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
@@ -262,6 +269,7 @@ export const handleICECandidateEvent = (event) => {
 }
 
 export var handleNewICECandidateMsg = async(msg) => {
+    console.log(msg)
     let candidate = new RTCIceCandidate(msg.candidate);
     try {
         await myPeerConnection.addIceCandidate(candidate)

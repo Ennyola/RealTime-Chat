@@ -48,7 +48,6 @@ class RoomListMixin(UnseenFriendRequestMixin):
 class ChatIndexView(RoomListMixin, View):
     def get(self, request, *args, **kwargs):
         context = super().get_context_data(user=request.user)  
-        print(context)
         return render(request, "chat/index.html", context)
 
 
