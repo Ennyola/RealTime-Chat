@@ -149,7 +149,7 @@ export const handleNegotiationNeededEvent = async() => {
     } catch (e) {
         console.log(e)
     }
-
+    console.log("negotiationneeded", negotiationneededCounter)
 }
 
 export const hangUpCall = () => {
