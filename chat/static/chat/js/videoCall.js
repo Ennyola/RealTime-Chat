@@ -207,21 +207,20 @@ export var handleVideoOfferMsg = async(msg) => {
             type: "ringing",
         }))
     }
-    await myPeerConnection.setRemoteDescription(msg.sdp);
     //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
         try {
-            // if (myPeerConnection.signalingState != "stable") {
-            //     // Set the local and remove descriptions for rollback; don't proceed
-            //     // until both return.
-            //     await Promise.all([
-            //         myPeerConnection.setLocalDescription({ type: "rollback" }),
-            //         myPeerConnection.setRemoteDescription(msg.sdp)
-            //     ]);
-            //     return;
-            // } else {
-            //     await myPeerConnection.setRemoteDescription(msg.sdp);
-            // }
+            if (myPeerConnection.signalingState != "stable") {
+                // Set the local and remove descriptions for rollback; don't proceed
+                // until both return.
+                await Promise.all([
+                    myPeerConnection.setLocalDescription({ type: "rollback" }),
+                    myPeerConnection.setRemoteDescription(msg.sdp)
+                ]);
+                return;
+            } else {
+                await myPeerConnection.setRemoteDescription(msg.sdp);
+            }
 
 
 
@@ -294,14 +293,17 @@ export var handleNewICECandidateMsg = async(msg) => {
 
 export const handleTrackEvent = (event) => {
     // Switching the uservideo to the small video and the incoming video to the big video.
-    if (incomingVideo.srcObject.id !== event.streams[0].id) {
-        userVideo.style.visibility = "visible";
-        userVideo.srcObject = myStream;
-        incomingVideo.srcObject = event.streams[0];
-        // Mutting the user video and unmuting the incoming video so the user does not echo
-        incomingVideo.muted = false;
-        userVideo.muted = true;
+    if (incomingVideo.srcObject.id) {
+        if (incomingVideo.srcObject.id !== event.streams[0].id) {
+            userVideo.style.visibility = "visible";
+            userVideo.srcObject = myStream;
+            incomingVideo.srcObject = event.streams[0];
+            // Mutting the user video and unmuting the incoming video so the user does not echo
+            incomingVideo.muted = false;
+            userVideo.muted = true;
+        }
     }
+
     // document.querySelector("#received_video").srcObject = event.streams[0];
     document.querySelector("#hangup-button").disabled = false;
 }
