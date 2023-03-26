@@ -213,17 +213,30 @@ export var handleVideoOfferMsg = async(msg) => {
     //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
         try {
-            await myPeerConnection.setRemoteDescription(msg.sdp);
+            if (myPeerConnection.signalingState != "stable") {
+                // Set the local and remove descriptions for rollback; don't proceed
+                // until both return.
+                await Promise.all([
+                    myPeerConnection.setLocalDescription({ type: "rollback" }),
+                    myPeerConnection.setRemoteDescription(msg.sdp)
+                ]);
+                return;
+            } else {
+
+            }
+            // await myPeerConnection.setRemoteDescription(msg.sdp);
 
 
             // Add the local stream to the peer connection.
-            for (const track of myStream.getTracks()) {
-                let sender = myPeerConnection.getSenders().find(s => s.track === track);
-                if (sender) {
-                    myPeerConnection.removeTrack(sender);
-                }
-                sender = myPeerConnection.addTrack(track);
-            }
+
+            myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+            // for (const track of myStream.getTracks()) {
+            //     let sender = myPeerConnection.getSenders().find(s => s.track === track);
+            //     if (sender) {
+            //         myPeerConnection.removeTrack(sender);
+            //     }
+            //     sender = myPeerConnection.addTrack(track);
+            // }
             await myPeerConnection.setLocalDescription(await myPeerConnection.createAnswer());
             callWebSocket.send(JSON.stringify({
                 caller: user,
