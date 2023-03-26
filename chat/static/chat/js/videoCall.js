@@ -17,9 +17,7 @@ let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
 let myPeerConnection = null;
 let myStream = null;
-let oCount = 0;
-let hvoCount = 0;
-let hvaCount = 0;
+let count = 0;
 
 let mediaConstraints = {
     audio: true,
@@ -122,8 +120,6 @@ export const invite = async(type) => {
 }
 
 export const handleNegotiationNeededEvent = async() => {
-    oCount += 1;
-    console.log("negotiation", oCount)
     try {
         let offer = await myPeerConnection.createOffer();
 
@@ -133,6 +129,7 @@ export const handleNegotiationNeededEvent = async() => {
         if (myPeerConnection.signalingState != "stable") {
             return;
         }
+
         await myPeerConnection.setLocalDescription(offer);
         if (myStream.getTracks().length === 1 && myStream.getTracks()[0].kind === "audio") {
             callWebSocket.send(JSON.stringify({
@@ -167,8 +164,8 @@ export const hangUpCall = () => {
 
 
 export var handleVideoOfferMsg = async(msg) => {
-    hvoCount += 1;
-    console.log("offer", hvoCount)
+    count += 1;
+    console.log("offer", count)
     targetUsername = msg.caller;
     createPeerConnection();
     videoContainer.classList.remove("d-none")
@@ -206,38 +203,38 @@ export var handleVideoOfferMsg = async(msg) => {
 
     console.log(msg.sdp)
         //User accepts the call
-
-    try {
-        await myPeerConnection.setRemoteDescription(msg.sdp);
-        // Add the local stream to the peer connection.
-        for (const track of myStream.getTracks()) {
-            let sender = myPeerConnection.getSenders().find(s => s.track === track);
-            if (sender) {
-                myPeerConnection.removeTrack(sender);
+    acceptCall.addEventListener('click', async(e) => {
+        try {
+            await myPeerConnection.setRemoteDescription(msg.sdp);
+            // Add the local stream to the peer connection.
+            for (const track of myStream.getTracks()) {
+                let sender = myPeerConnection.getSenders().find(s => s.track === track);
+                if (sender) {
+                    myPeerConnection.removeTrack(sender);
+                }
+                sender = myPeerConnection.addTrack(track);
             }
-            sender = myPeerConnection.addTrack(track);
+            console.log(myPeerConnection.signalingState)
+            let answer = await myPeerConnection.createAnswer();
+            await myPeerConnection.setLocalDescription(answer);
+            console.log(answer)
+            console.log(myPeerConnection.localDescription)
+            callWebSocket.send(JSON.stringify({
+                caller: user,
+                target: targetUsername,
+                type: "answer",
+                sdp: myPeerConnection.localDescription
+            }))
+
+        } catch (error) {
+            console.log(error)
         }
-        console.log(myPeerConnection.signalingState)
-        let answer = await myPeerConnection.createAnswer();
-        await myPeerConnection.setLocalDescription(answer);
-        console.log(answer)
-        console.log(myPeerConnection.localDescription)
-        callWebSocket.send(JSON.stringify({
-            caller: user,
-            target: targetUsername,
-            type: "answer",
-            sdp: myPeerConnection.localDescription
-        }))
 
-    } catch (error) {
-        console.log(error)
-    }
-
-    callingState.innerHTML = ""
-        //makes the accept and reject button disappear
-    callControlContainer.classList.add('d-none')
-    hangupButton.classList.remove("d-none")
-
+        callingState.innerHTML = ""
+            //makes the accept and reject button disappear
+        callControlContainer.classList.add('d-none')
+        hangupButton.classList.remove("d-none")
+    })
 
     //User Rejects the call
     rejectCall.addEventListener('click', (e) => {
@@ -247,12 +244,9 @@ export var handleVideoOfferMsg = async(msg) => {
 }
 
 export var handleVideoAnswerMsg = async(msg) => {
-    hvaCount += 1;
-    console.log("answer", hvaCount)
-
     // Remove the ringing calling state
-    callingState.innerHTML = ""
-    console.log(myPeerConnection.signalingState)
+    callingState.innerHTML = "";
+    console.log(myPeerConnection.signalingState);
 
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.

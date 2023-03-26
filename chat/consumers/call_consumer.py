@@ -70,6 +70,7 @@ class CallConsumer(AsyncWebsocketConsumer):
     async def offer(self, event):
         # If caller is not the currently logged in user, send the offer to the user.
         if self.scope["user"].username == event["target"]:
+            print(self.scope["user"].username, event["target"])
             await self.send(
                 json.dumps(
                     {
