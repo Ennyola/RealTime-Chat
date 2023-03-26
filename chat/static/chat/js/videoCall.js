@@ -118,17 +118,16 @@ export const invite = async(type) => {
         }
     }
 }
-
+let negotiationneededCounter = 0;
 export const handleNegotiationNeededEvent = async() => {
+    negotiationneededCounter += 1;
+    console.log("negotiationneeded", negotiationneededCounter)
     try {
         let offer = await myPeerConnection.createOffer();
 
         // If the connection hasn't yet achieved the "stable" state,
         // return to the caller. Another negotiationneeded event
         // will be fired when the state stabilizes.
-        if (myPeerConnection.signalingState != "stable") {
-            return;
-        }
 
         await myPeerConnection.setLocalDescription(offer);
         if (myStream.getTracks().length === 1 && myStream.getTracks()[0].kind === "audio") {
