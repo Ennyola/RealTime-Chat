@@ -173,6 +173,9 @@ export var handleVideoOfferMsg = async(msg) => {
     count += 1;
     console.log("offer", count)
     targetUsername = msg.caller;
+    if (myPeerConnection) {
+        return;
+    }
     createPeerConnection();
     videoContainer.classList.remove("d-none")
 
@@ -210,18 +213,7 @@ export var handleVideoOfferMsg = async(msg) => {
     //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
         try {
-            if (myPeerConnection.signalingState != "stable") {
-                // Set the local and remove descriptions for rollback; don't proceed
-                // until both return.
-                await Promise.all([
-                    myPeerConnection.setLocalDescription({ type: "rollback" }),
-                    myPeerConnection.setRemoteDescription(msg.sdp)
-                ]);
-                return;
-            } else {
-                await myPeerConnection.setRemoteDescription(msg.sdp);
-            }
-
+            await myPeerConnection.setRemoteDescription(msg.sdp);
 
 
             // Add the local stream to the peer connection.
