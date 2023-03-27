@@ -167,9 +167,6 @@ export const hangUpCall = () => {
 
 
 export var handleVideoOfferMsg = async(msg) => {
-    count += 1;
-    console.log("offer", count)
-
     targetUsername = msg.caller;
     videoContainer.classList.remove("d-none")
 
@@ -227,15 +224,9 @@ export var handleVideoOfferMsg = async(msg) => {
             // Add the local stream to the peer connection.
 
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
-            // for (const track of myStream.getTracks()) {
-            //     let sender = myPeerConnection.getSenders().find(s => s.track === track);
-            //     if (sender) {
-            //         myPeerConnection.removeTrack(sender);
-            //     }
-            //     sender = myPeerConnection.addTrack(track);
-            // }
             console.log(myPeerConnection.signalingState)
             await myPeerConnection.setLocalDescription(await myPeerConnection.createAnswer());
+            console.log(myPeerConnection.localDescription)
             callWebSocket.send(JSON.stringify({
                 caller: user,
                 target: targetUsername,
@@ -265,6 +256,8 @@ export var handleVideoAnswerMsg = async(msg) => {
     callingState.innerHTML = "";
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
+    console.log(msg.sdp)
+    console.log(myPeerConnection.signalingState)
     try {
         await myPeerConnection.setRemoteDescription(msg.sdp);
     } catch (error) {
