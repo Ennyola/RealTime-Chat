@@ -289,6 +289,7 @@ export var handleNewICECandidateMsg = async(msg) => {
 
 export const handleTrackEvent = (event) => {
     // Switching the uservideo to the small video and the incoming video to the big video.
+    console.log(event)
     if (incomingVideo.srcObject.id) {
         if (incomingVideo.srcObject.id !== event.streams[0].id) {
             userVideo.style.visibility = "visible";
