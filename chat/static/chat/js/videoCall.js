@@ -113,6 +113,7 @@ export const invite = async(type) => {
 
 
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+            console.log(myPeerConnection.getSenders())
         } catch (error) {
             handleGetUserMediaError(error)
         }
@@ -219,6 +220,7 @@ export var handleVideoOfferMsg = async(msg) => {
             //     await myPeerConnection.setRemoteDescription(msg.sdp);
             // }
             await myPeerConnection.setRemoteDescription(msg.sdp);
+            console.log(myPeerConnection.getReceivers())
 
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
             // Add the local stream to the peer connection.
