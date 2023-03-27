@@ -122,40 +122,41 @@ let negotiationneededCounter = 0;
 export const handleNegotiationNeededEvent = async() => {
     negotiationneededCounter += 1;
     console.log("negotiationneeded", negotiationneededCounter)
-    console.log(myPeerConnection._negotiating)
-    if (myPeerConnection._negotiating === true) return;
-    myPeerConnection._negotiating = true;
-    try {
-        // If the connection hasn't yet achieved the "stable" state,
-        // return to the caller. Another negotiationneeded event
-        // will be fired when the state stabilizes.
-        if (myPeerConnection.signalingState != "stable") {
-            return;
-        }
+    if (myPeerConnection._negotiating) {
+        return;
+    } else {
+        myPeerConnection._negotiating = true;
+        try {
+            // If the connection hasn't yet achieved the "stable" state,
+            // return to the caller. Another negotiationneeded event
+            // will be fired when the state stabilizes.
+            if (myPeerConnection.signalingState != "stable") {
+                return;
+            }
 
 
-        await myPeerConnection.setLocalDescription(await myPeerConnection.createOffer());
-        if (myStream.getTracks().length === 1 && myStream.getTracks()[0].kind === "audio") {
-            callWebSocket.send(JSON.stringify({
-                caller: user,
-                target: targetUsername,
-                type: "offer",
-                callerPicture: userDisplayPicture,
-                sdp: myPeerConnection.localDescription,
-            }));
-        } else {
-            callWebSocket.send(JSON.stringify({
-                caller: user,
-                target: targetUsername,
-                type: "offer",
-                sdp: myPeerConnection.localDescription
-            }));
+            await myPeerConnection.setLocalDescription(await myPeerConnection.createOffer());
+            if (myStream.getTracks().length === 1 && myStream.getTracks()[0].kind === "audio") {
+                callWebSocket.send(JSON.stringify({
+                    caller: user,
+                    target: targetUsername,
+                    type: "offer",
+                    callerPicture: userDisplayPicture,
+                    sdp: myPeerConnection.localDescription,
+                }));
+            } else {
+                callWebSocket.send(JSON.stringify({
+                    caller: user,
+                    target: targetUsername,
+                    type: "offer",
+                    sdp: myPeerConnection.localDescription
+                }));
+            }
+        } catch (e) {
+            console.log(e)
         }
-    } catch (e) {
-        console.log(e)
     }
-    console.log("negotiationneeded", negotiationneededCounter)
-    console.log(myPeerConnection._negotiating)
+
 }
 
 export const hangUpCall = () => {
