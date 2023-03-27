@@ -207,18 +207,18 @@ export var handleVideoOfferMsg = async(msg) => {
         }
 
         try {
-            if (myPeerConnection.signalingState != "stable") {
-                // Set the local and remove descriptions for rollback; don't proceed
-                // until both return.
-                await Promise.all([
-                    myPeerConnection.setLocalDescription({ type: "rollback" }),
-                    myPeerConnection.setRemoteDescription(msg.sdp)
-                ]);
-                return;
-            } else {
-                await myPeerConnection.setRemoteDescription(msg.sdp);
-            }
-
+            // if (myPeerConnection.signalingState != "stable") {
+            //     // Set the local and remove descriptions for rollback; don't proceed
+            //     // until both return.
+            //     await Promise.all([
+            //         myPeerConnection.setLocalDescription({ type: "rollback" }),
+            //         myPeerConnection.setRemoteDescription(msg.sdp)
+            //     ]);
+            //     return;
+            // } else {
+            //     await myPeerConnection.setRemoteDescription(msg.sdp);
+            // }
+            await myPeerConnection.setRemoteDescription(msg.sdp);
             console.log(myPeerConnection.signalingState)
 
             // Add the local stream to the peer connection.
@@ -256,11 +256,8 @@ export var handleVideoAnswerMsg = async(msg) => {
     callingState.innerHTML = "";
     // Configure the remote description, which is the SDP payload
     // in our "video-answer" message.
-    console.log(msg.sdp)
-    console.log(myPeerConnection.signalingState)
     try {
         await myPeerConnection.setRemoteDescription(msg.sdp);
-        console.log(myPeerConnection.remoteDescription)
     } catch (error) {
         console.log(error)
     }
