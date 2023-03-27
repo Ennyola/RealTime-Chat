@@ -219,14 +219,12 @@ export var handleVideoOfferMsg = async(msg) => {
             //     await myPeerConnection.setRemoteDescription(msg.sdp);
             // }
             await myPeerConnection.setRemoteDescription(msg.sdp);
-            console.log(myPeerConnection.signalingState)
-
-            // Add the local stream to the peer connection.
 
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
-            console.log(myPeerConnection.signalingState)
+            // Add the local stream to the peer connection.
+
+
             await myPeerConnection.setLocalDescription(await myPeerConnection.createAnswer());
-            console.log(myPeerConnection.localDescription)
             callWebSocket.send(JSON.stringify({
                 caller: user,
                 target: targetUsername,
