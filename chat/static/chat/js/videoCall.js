@@ -260,6 +260,7 @@ export var handleVideoAnswerMsg = async(msg) => {
     console.log(myPeerConnection.signalingState)
     try {
         await myPeerConnection.setRemoteDescription(msg.sdp);
+        console.log(myPeerConnection.remoteDescription)
     } catch (error) {
         console.log(error)
     }
