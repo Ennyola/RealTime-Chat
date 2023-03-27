@@ -376,8 +376,10 @@ export var setCallingState = () => {
 // Start the call if the user clicks the "call" button.
 // This is only possible if the user is in the chatroom page hence the conditional statement
 if (videoCallIcon) videoCallIcon.addEventListener("click", () => {
-    invite("video-call")
+    console.log("here")
+        // invite("video-call")
 })
 if (voiceCallIcon) voiceCallIcon.addEventListener("click", () => {
-    invite("voice-call")
+    console.log("I am")
+        // invite("voice-call")
 })
