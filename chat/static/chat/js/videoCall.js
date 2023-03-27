@@ -118,10 +118,7 @@ export const invite = async(type) => {
         }
     }
 }
-let negotiationneededCounter = 0;
 export const handleNegotiationNeededEvent = async() => {
-    negotiationneededCounter += 1;
-    console.log("negotiationneeded", negotiationneededCounter)
     if (myPeerConnection._negotiating) {
         return;
     } else {
@@ -172,20 +169,13 @@ export const hangUpCall = () => {
 export var handleVideoOfferMsg = async(msg) => {
     count += 1;
     console.log("offer", count)
-    targetUsername = msg.caller;
-    if (!myPeerConnection) {
-        createPeerConnection();
-    } else {
-        return;
-    }
 
+    targetUsername = msg.caller;
     videoContainer.classList.remove("d-none")
 
     // Set the name and calling state of the caller
     userCallInfo.innerHTML = targetUsername
     callingState.innerHTML = "calling..."
-
-
 
     // This conditions checks if the incoming call is a video call or a voice call.
     // If the incoming call is a voice call, the background of the incoming video 
@@ -205,17 +195,20 @@ export var handleVideoOfferMsg = async(msg) => {
     userVideo.style.visibility = "hidden";
 
     // Notify the other user that the phone is ringing
-    if (myPeerConnection) {
-        callWebSocket.send(JSON.stringify({
-            caller: user,
-            target: targetUsername,
-            type: "ringing",
-        }))
-    }
-    console.log(myPeerConnection.signalingState)
+    callWebSocket.send(JSON.stringify({
+        caller: user,
+        target: targetUsername,
+        type: "ringing",
+    }));
 
     //User accepts the call
     acceptCall.addEventListener('click', async(e) => {
+        if (!myPeerConnection) {
+            createPeerConnection();
+        } else {
+            return;
+        }
+
         try {
             if (myPeerConnection.signalingState != "stable") {
                 // Set the local and remove descriptions for rollback; don't proceed
