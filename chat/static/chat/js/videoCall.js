@@ -122,7 +122,8 @@ let negotiationneededCounter = 0;
 export const handleNegotiationNeededEvent = async() => {
     negotiationneededCounter += 1;
     console.log("negotiationneeded", negotiationneededCounter)
-    if (myPeerConnection._negotiating == true) return;
+    console.log(myPeerConnection._negotiating)
+    if (myPeerConnection._negotiating === true) return;
     myPeerConnection._negotiating = true;
     try {
         // If the connection hasn't yet achieved the "stable" state,
@@ -152,8 +153,6 @@ export const handleNegotiationNeededEvent = async() => {
         }
     } catch (e) {
         console.log(e)
-    } finally {
-        myPeerConnection._negotiating = false;
     }
     console.log("negotiationneeded", negotiationneededCounter)
     console.log(myPeerConnection._negotiating)
