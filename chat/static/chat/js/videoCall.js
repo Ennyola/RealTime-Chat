@@ -380,14 +380,13 @@ export var setCallingState = () => {
 if (callCenter) {
     callCenter.addEventListener("click", (e) => {
         e.stopPropagation();
-        if (e.target.id === "voice-call-icon") {
-            console.log("I am here")
-
-            // invite("voice-call")
+        e.preventDefault();
+        console.log(e)
+        if (e.target.matches("#voice-call-icon")) {
+            console.log("I am here");
         }
-        if (e.target.id === "video-call-icon") {
-            console.log("here i guess")
-                // invite("video-call")
+        if (e.target.matches("#video-call-icon")) {
+            console.log("here");
         }
     })
 }
