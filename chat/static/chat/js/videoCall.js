@@ -3,16 +3,16 @@ import { callWebSocket } from "/static/js/webSocket.js";
 const user = JSON.parse(document.querySelector("#username").textContent);
 const userDisplayPicture = JSON.parse(document.querySelector("#user-display-picture").textContent);
 const turnUsername = JSON.parse(document.querySelector("#turn-username").textContent);
-const turnPassword = JSON.parse(document.querySelector("#turn-password").textContent)
+const turnPassword = JSON.parse(document.querySelector("#turn-password").textContent);
 const videoContainer = document.querySelector('.video-container');
 const acceptCall = document.querySelector("#accept_call");
 const rejectCall = document.querySelector("#reject_call");
-const callControlContainer = document.querySelector('.call-control')
+const callControlContainer = document.querySelector('.call-control');
 const hangupButton = document.querySelector('#hangup-button');
 let friendDisplayPicture = document.querySelector("#friend-display-picture");
-let userCallInfo = document.querySelector(".call-info .user-calling")
-let callingState = document.querySelector(".call-info .calling-state")
-let userVideo = document.querySelector("#local_video")
+let userCallInfo = document.querySelector(".call-info .user-calling");
+let callingState = document.querySelector(".call-info .calling-state");
+let userVideo = document.querySelector("#local_video");
 let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
 let myPeerConnection = null;
@@ -345,24 +345,10 @@ export var handleHangUpMsg = (msg) => {
 
 const createPeerConnection = () => {
     myPeerConnection = new RTCPeerConnection({
-        iceServers: [{
-                urls: "stun:relay.metered.ca:80",
-            },
+        iceServers: [ // Information about ICE servers - Use your own!
             {
-                urls: "turn:relay.metered.ca:80",
-                username: turnUsername,
-                credential: turnPassword,
-            },
-            {
-                urls: "turn:relay.metered.ca:443",
-                username: turnUsername,
-                credential: turnPassword,
-            },
-            {
-                urls: "turn:relay.metered.ca:443?transport=tcp",
-                username: turnUsername,
-                credential: turnPassword,
-            },
+                urls: "stun:stun.l.google.com:19302", // A TURN server
+            }
         ],
     });
 
@@ -376,5 +362,9 @@ const createPeerConnection = () => {
 }
 
 export var setCallingState = () => {
+    callingState.innerHTML = "ringing..."
+}
+xport
+var setCallingState = () => {
     callingState.innerHTML = "ringing..."
 }
