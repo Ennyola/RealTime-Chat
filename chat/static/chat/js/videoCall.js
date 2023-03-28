@@ -381,11 +381,13 @@ if (callCenter) {
     callCenter.addEventListener("click", (e) => {
         if (e.target.id === "voice-call-icon") {
             console.log("I am here")
-                // invite("voice-call")
+            e.stopPropagation(); // prevent the event from bubbling up
+            // invite("voice-call")
         }
         if (e.target.id === "video-call-icon") {
             console.log("here")
-                // invite("video-call")
+            e.stopPropagation(); // prevent the event from bubbling up
+            // invite("video-call")
         }
     })
 }
