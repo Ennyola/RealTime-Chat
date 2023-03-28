@@ -116,40 +116,36 @@ export var invite = async(type) => {
         }
     }
 }
+
 export const handleNegotiationNeededEvent = async() => {
-    if (myPeerConnection._negotiating) {
-        return;
-    } else {
-        myPeerConnection._negotiating = true;
-        try {
-            // If the connection hasn't yet achieved the "stable" state,
-            // return to the caller. Another negotiationneeded event
-            // will be fired when the state stabilizes.
-            if (myPeerConnection.signalingState != "stable") {
-                return;
-            }
-
-
-            await myPeerConnection.setLocalDescription(await myPeerConnection.createOffer());
-            if (myStream.getTracks().length === 1 && myStream.getTracks()[0].kind === "audio") {
-                callWebSocket.send(JSON.stringify({
-                    caller: user,
-                    target: targetUsername,
-                    type: "offer",
-                    callerPicture: userDisplayPicture,
-                    sdp: myPeerConnection.localDescription,
-                }));
-            } else {
-                callWebSocket.send(JSON.stringify({
-                    caller: user,
-                    target: targetUsername,
-                    type: "offer",
-                    sdp: myPeerConnection.localDescription
-                }));
-            }
-        } catch (e) {
-            console.log(e)
+    try {
+        // If the connection hasn't yet achieved the "stable" state,
+        // return to the caller. Another negotiationneeded event
+        // will be fired when the state stabilizes.
+        if (myPeerConnection.signalingState != "stable") {
+            return;
         }
+
+
+        await myPeerConnection.setLocalDescription(await myPeerConnection.createOffer());
+        if (myStream.getTracks().length === 1 && myStream.getTracks()[0].kind === "audio") {
+            callWebSocket.send(JSON.stringify({
+                caller: user,
+                target: targetUsername,
+                type: "offer",
+                callerPicture: userDisplayPicture,
+                sdp: myPeerConnection.localDescription,
+            }));
+        } else {
+            callWebSocket.send(JSON.stringify({
+                caller: user,
+                target: targetUsername,
+                type: "offer",
+                sdp: myPeerConnection.localDescription
+            }));
+        }
+    } catch (e) {
+        console.log(e)
     }
 
 }
@@ -261,6 +257,7 @@ export var handleVideoAnswerMsg = async(msg) => {
 }
 
 export const handleICECandidateEvent = (event) => {
+    console.log(event)
     if (event.candidate) {
         callWebSocket.send(JSON.stringify({
             type: "new-ice-candidate",
@@ -309,6 +306,7 @@ export const handleRemoveTrackEvent = (event) => {
 }
 
 export const handleICEConnectionStateChangeEvent = (event) => {
+    console.log(myPeerConnection.iceConnectionState)
     switch (myPeerConnection.iceConnectionState) {
         case "closed":
         case "failed":
@@ -324,6 +322,7 @@ export const handleICEConnectionStateChangeEvent = (event) => {
 }
 
 export const handleSignalingStateChangeEvent = (event) => {
+    console.log(myPeerConnection.signalingState)
     switch (myPeerConnection.signalingState) {
         case "closed":
             closeVideoCall();
@@ -332,6 +331,7 @@ export const handleSignalingStateChangeEvent = (event) => {
 };
 
 export const handleICEGatheringStateChangeEvent = (event) => {
+    console.log(myPeerConnection.iceGatheringState)
     switch (myPeerConnection.iceGatheringState) {
         case "complete":
             break;
