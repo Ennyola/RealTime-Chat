@@ -1,3 +1,4 @@
+import os
 from itertools import groupby
 
 from asgiref.sync import async_to_sync
@@ -14,6 +15,13 @@ from .helpers import get_room_name
 
 channel_layer = get_channel_layer()
 
+class TurnCredentialsMixin(object):
+    def get_credentials(self, **kwargs):
+        turn = {
+            "username": os.environ.get("TURN_USERNAME"),
+            "password": os.environ.get("TURN_PASSWORD"),
+        }
+        return turn
 
 class UnseenFriendRequestMixin(object):
     def get_unseen_friend_requests_count(self, username):
@@ -27,7 +35,8 @@ class UnseenFriendRequestMixin(object):
         unseen_friend_requests_count = self.get_unseen_friend_requests_count(
             username=username
         )
-        context = {"unseen_friend_requests_count": unseen_friend_requests_count}
+        turn_credentials = TurnCredentialsMixin().get_credentials()
+        context = {"unseen_friend_requests_count": unseen_friend_requests_count, "turn_credentials": turn_credentials}
         return context
 
 
@@ -47,7 +56,7 @@ class RoomListMixin(UnseenFriendRequestMixin):
 
 class ChatIndexView(RoomListMixin, View):
     def get(self, request, *args, **kwargs):
-        context = super().get_context_data(user=request.user)  
+        context = super().get_context_data(user=request.user) 
         return render(request, "chat/index.html", context)
 
 

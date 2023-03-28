@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 
+from chat.views import TurnCredentialsMixin
+
 from .models import UserProfile
 from .forms import LoginForm, RegisterForm, UpdateProfileForm
 
@@ -86,5 +88,6 @@ def user_profile(request, username):
             return redirect("user_profile", username=user.username)
     else:
         form = UpdateProfileForm(initial={"bio": profile.bio})
-    context = {"user": user, "form": form}
+    turn_credentials = TurnCredentialsMixin().get_credentials()
+    context = {"user": user, "form": form, "turn_credentials": turn_credentials}
     return render(request, "accounts/user_profile.html", context)

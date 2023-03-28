@@ -2,6 +2,8 @@ import { callWebSocket } from "/static/js/webSocket.js";
 
 const user = JSON.parse(document.querySelector("#username").textContent);
 const userDisplayPicture = JSON.parse(document.querySelector("#user-display-picture").textContent);
+const turnUsername = JSON.parse(document.querySelector("#turn-username").textContent);
+const turnPassword = JSON.parse(document.querySelector("#turn-password").textContent)
 const videoContainer = document.querySelector('.video-container');
 const acceptCall = document.querySelector("#accept_call");
 const rejectCall = document.querySelector("#reject_call");
@@ -15,7 +17,6 @@ let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
 let myPeerConnection = null;
 let myStream = null;
-let count = 0;
 
 let mediaConstraints = {
     audio: true,
@@ -342,15 +343,27 @@ export var handleHangUpMsg = (msg) => {
     closeVideoCall();
 }
 
-
-
 const createPeerConnection = () => {
     myPeerConnection = new RTCPeerConnection({
-        iceServers: [ // Information about ICE servers - Use your own!
+        iceServers: [{
+                urls: "stun:relay.metered.ca:80",
+            },
             {
-                urls: "stun:stun.stunprotocol.org"
-            }
-        ]
+                urls: "turn:relay.metered.ca:80",
+                username: turnUsername,
+                credential: turnPassword,
+            },
+            {
+                urls: "turn:relay.metered.ca:443",
+                username: turnUsername,
+                credential: turnPassword,
+            },
+            {
+                urls: "turn:relay.metered.ca:443?transport=tcp",
+                username: turnUsername,
+                credential: turnPassword,
+            },
+        ],
     });
 
     myPeerConnection.onicecandidate = handleICECandidateEvent;

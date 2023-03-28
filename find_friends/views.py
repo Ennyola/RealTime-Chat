@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 
 from chat.models import Participants, Room
+from chat.views import TurnCredentialsMixin
 
 from .models import FriendRequest, Friendship
 
@@ -69,6 +70,7 @@ def index(request):
     if unseen_friend_requests.exists():
         unseen_friend_requests.update(seen=True)
         context["unseen_friend_requests_count"] = unseen_friend_requests.count()
+    context["turn_credentials"] = TurnCredentialsMixin().get_credentials()
     context["random_users"] = users
     context["friend_requests"] = senders
     context["recipients"] = recipients
@@ -171,6 +173,6 @@ def show_friends(request):
     context = {
         "friend_groups": friend_groups,
         "unseen_friend_requests_count": unseen_friend_requests_count,
+        "turn_credentials": TurnCredentialsMixin().get_credentials()
     }
-
     return render(request, "find_friends/show_friends.html", context)
