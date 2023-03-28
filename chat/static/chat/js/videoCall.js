@@ -379,15 +379,15 @@ export var setCallingState = () => {
 
 if (callCenter) {
     callCenter.addEventListener("click", (e) => {
+        e.stopPropagation();
         if (e.target.id === "voice-call-icon") {
             console.log("I am here")
-            e.stopPropagation(); // prevent the event from bubbling up
+
             // invite("voice-call")
         }
         if (e.target.id === "video-call-icon") {
-            console.log("here")
-            e.stopPropagation(); // prevent the event from bubbling up
-            // invite("video-call")
+            console.log("here i guess")
+                // invite("video-call")
         }
     })
 }
