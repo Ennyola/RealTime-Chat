@@ -374,8 +374,13 @@ export var setCallingState = () => {
     callingState.innerHTML = "ringing..."
 }
 
-// Start the call if the user clicks the "call" button.
-// This is only possible if the user is in the chatroom page hence the conditional statement
+
+const book = document.querySelector(".fa-address-book");
+book.addEventListener("click", (e) => {
+        console.log("nowm")
+    })
+    // Start the call if the user clicks the "call" button.
+    // This is only possible if the user is in the chatroom page hence the conditional statement
 
 if (callCenter) {
     callCenter.addEventListener("mousedown", (e) => {
