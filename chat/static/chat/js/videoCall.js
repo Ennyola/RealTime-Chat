@@ -15,6 +15,7 @@ let callingState = document.querySelector(".call-info .calling-state")
 let userVideo = document.querySelector("#local_video")
 let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
+let callCenter = document.querySelector(".call-center");
 let myPeerConnection = null;
 let myStream = null;
 let count = 0;
@@ -375,15 +376,28 @@ export var setCallingState = () => {
 
 // Start the call if the user clicks the "call" button.
 // This is only possible if the user is in the chatroom page hence the conditional statement
-if (videoCallIcon) videoCallIcon.addEventListener("click", (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    console.log("here")
-        // invite("video-call")
-})
-if (voiceCallIcon) voiceCallIcon.addEventListener("click", (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    console.log("I am")
-        // invite("voice-call")
-})
+
+if (callCenter) {
+    callCenter.addEventListener("click", (e) => {
+        if (e.target.id === "voice-call-icon") {
+            console.log("I am here")
+                // invite("voice-call")
+        }
+        if (e.target.id === "video-call-icon") {
+            console.log("here")
+                // invite("video-call")
+        }
+    })
+}
+// if (videoCallIcon) videoCallIcon.addEventListener("click", (e) => {
+//     e.preventDefault()
+//     e.stopPropagation()
+//     console.log("here")
+//         // invite("video-call")
+// })
+// if (voiceCallIcon) voiceCallIcon.addEventListener("click", (e) => {
+//     e.preventDefault()
+//     e.stopPropagation()
+//     console.log("I am")
+//         // invite("voice-call")
+// })
