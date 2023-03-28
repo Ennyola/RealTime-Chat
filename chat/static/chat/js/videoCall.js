@@ -345,11 +345,9 @@ export var handleHangUpMsg = (msg) => {
 
 const createPeerConnection = () => {
     myPeerConnection = new RTCPeerConnection({
-        iceServers: [ // Information about ICE servers - Use your own!
-            {
-                urls: "stun:stun.l.google.com:19302", // A TURN server
-            }
-        ],
+        iceServers: [{
+            urls: "stun:stun.l.google.com:19302", // A TURN server
+        }],
     });
 
     myPeerConnection.onicecandidate = handleICECandidateEvent;
@@ -362,9 +360,5 @@ const createPeerConnection = () => {
 }
 
 export var setCallingState = () => {
-    callingState.innerHTML = "ringing..."
-}
-xport
-var setCallingState = () => {
     callingState.innerHTML = "ringing..."
 }
