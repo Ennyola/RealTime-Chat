@@ -346,9 +346,7 @@ export var handleHangUpMsg = (msg) => {
 const createPeerConnection = () => {
     myPeerConnection = new RTCPeerConnection({
         iceServers: [{
-            urls: "turn:relay.metered.ca:443?transport=tcp",
-            username: "cfd27fbba40892b7ebba31dd",
-            credential: "dik5kVdYl8mtN/nd",
+            urls: "stun:stun.xten.com"
         }],
     });
 
