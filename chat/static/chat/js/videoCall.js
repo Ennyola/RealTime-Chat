@@ -111,7 +111,6 @@ export var invite = async(type) => {
 
 
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
-            console.log(myPeerConnection.getSenders())
         } catch (error) {
             handleGetUserMediaError(error)
         }
@@ -206,19 +205,17 @@ export var handleVideoOfferMsg = async(msg) => {
         }
 
         try {
-            // if (myPeerConnection.signalingState != "stable") {
-            //     // Set the local and remove descriptions for rollback; don't proceed
-            //     // until both return.
-            //     await Promise.all([
-            //         myPeerConnection.setLocalDescription({ type: "rollback" }),
-            //         myPeerConnection.setRemoteDescription(msg.sdp)
-            //     ]);
-            //     return;
-            // } else {
-            //     await myPeerConnection.setRemoteDescription(msg.sdp);
-            // }
-            await myPeerConnection.setRemoteDescription(msg.sdp);
-            console.log(myPeerConnection.getReceivers())
+            if (myPeerConnection.signalingState != "stable") {
+                // Set the local and remove descriptions for rollback; don't proceed
+                // until both return.
+                await Promise.all([
+                    myPeerConnection.setLocalDescription({ type: "rollback" }),
+                    myPeerConnection.setRemoteDescription(msg.sdp)
+                ]);
+                return;
+            } else {
+                await myPeerConnection.setRemoteDescription(msg.sdp);
+            }
 
             myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
             // Add the local stream to the peer connection.
@@ -256,6 +253,7 @@ export var handleVideoAnswerMsg = async(msg) => {
     // in our "video-answer" message.
     try {
         await myPeerConnection.setRemoteDescription(msg.sdp);
+        console.log(myPeerConnection.remoteDescription)
     } catch (error) {
         console.log(error)
     }
@@ -285,8 +283,6 @@ export var handleNewICECandidateMsg = async(msg) => {
 
 export const handleTrackEvent = (event) => {
     // Switching the uservideo to the small video and the incoming video to the big video.
-    console.log(event)
-    console.log(myStream)
     if (incomingVideo.srcObject.id) {
         if (incomingVideo.srcObject.id !== event.streams[0].id) {
             userVideo.style.visibility = "visible";
@@ -295,7 +291,6 @@ export const handleTrackEvent = (event) => {
             // Mutting the user video and unmuting the incoming video so the user does not echo
             incomingVideo.muted = false;
             userVideo.muted = true;
-            console.log(incomingVideo.srcObject)
         }
     }
 
