@@ -250,7 +250,6 @@ export var handleVideoAnswerMsg = async(msg) => {
     // in our "video-answer" message.
     try {
         await myPeerConnection.setRemoteDescription(msg.sdp);
-        console.log(myPeerConnection.remoteDescription)
     } catch (error) {
         console.log(error)
     }
@@ -258,7 +257,6 @@ export var handleVideoAnswerMsg = async(msg) => {
 }
 
 export const handleICECandidateEvent = (event) => {
-    console.log(event)
     if (event.candidate) {
         callWebSocket.send(JSON.stringify({
             type: "new-ice-candidate",
@@ -346,7 +344,9 @@ export var handleHangUpMsg = (msg) => {
 const createPeerConnection = () => {
     myPeerConnection = new RTCPeerConnection({
         iceServers: [{
-            urls: "stun:stun.xten.com"
+            urls: "stun:stun.xten.com",
+            username: "cfd27fbba40892b7ebba31dd",
+            credential: "dik5kVdYl8mtN/nd",
         }],
     });
 
