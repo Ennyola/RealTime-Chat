@@ -16,14 +16,13 @@ let callCenter = document.querySelector(".call-center");
 
 // Start the call if the user clicks the "call" button.
 // This is only possible if the user is in the chatroom page hence the conditional statement
-
 if (callCenter) {
     callCenter.addEventListener("click", (e) => {
         if (e.target.id === "voice-call-icon") {
-            console.log("I am here");
+            invite("voice-call");
         }
         if (e.target.id === "video-call-icon") {
-            console.log("here");
+            invite("video-call");
         }
     });
 }
