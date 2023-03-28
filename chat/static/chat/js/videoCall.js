@@ -7,15 +7,12 @@ const acceptCall = document.querySelector("#accept_call");
 const rejectCall = document.querySelector("#reject_call");
 const callControlContainer = document.querySelector('.call-control')
 const hangupButton = document.querySelector('#hangup-button');
-const videoCallIcon = document.querySelector("#video-call-icon");
-const voiceCallIcon = document.querySelector("#voice-call-icon");
 let friendDisplayPicture = document.querySelector("#friend-display-picture");
 let userCallInfo = document.querySelector(".call-info .user-calling")
 let callingState = document.querySelector(".call-info .calling-state")
 let userVideo = document.querySelector("#local_video")
 let incomingVideo = document.querySelector("#received_video");
 let friendName = document.querySelector('#room-name');
-let callCenter = document.querySelector(".call-center");
 let myPeerConnection = null;
 let myStream = null;
 let count = 0;
@@ -86,7 +83,7 @@ const handleGetUserMediaError = (e) => {
 }
 
 // The caller initiating the call
-export const invite = async(type) => {
+export var invite = async(type) => {
     if (myPeerConnection) {
         return;
     } else {
@@ -373,32 +370,3 @@ const createPeerConnection = () => {
 export var setCallingState = () => {
     callingState.innerHTML = "ringing..."
 }
-
-
-// Start the call if the user clicks the "call" button.
-// This is only possible if the user is in the chatroom page hence the conditional statement
-
-if (callCenter) {
-    callCenter.addEventListener("mousedown", (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (e.target.matches("#voice-call-icon")) {
-            console.log("I am here");
-        }
-        if (e.target.matches("#video-call-icon")) {
-            console.log("here");
-        }
-    })
-}
-// if (videoCallIcon) videoCallIcon.addEventListener("click", (e) => {
-//     e.preventDefault()
-//     e.stopPropagation()
-//     console.log("here")
-//         // invite("video-call")
-// })
-// if (voiceCallIcon) voiceCallIcon.addEventListener("click", (e) => {
-//     e.preventDefault()
-//     e.stopPropagation()
-//     console.log("I am")
-//         // invite("voice-call")
-// })

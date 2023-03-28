@@ -4,22 +4,35 @@ import {
     handleNewICECandidateMsg,
     handleHangUpMsg,
     hangUpCall,
-    setCallingState
+    setCallingState,
+    invite,
 } from "/static/chat/js/videoCall.js";
 
 import { callWebSocket } from "/static/js/webSocket.js";
 
 let hangupButton = document.querySelector('#hangup-button');
 let callControlContainer = document.querySelector('.call-control')
+let callCenter = document.querySelector(".call-center");
+
+// Start the call if the user clicks the "call" button.
+// This is only possible if the user is in the chatroom page hence the conditional statement
+
+if (callCenter) {
+    callCenter.addEventListener("click", (e) => {
+        if (e.target.id === "voice-call-icon") {
+            console.log("I am here");
+        }
+        if (e.target.id === "video-call-icon") {
+            console.log("here");
+        }
+    });
+}
 
 //End the call
 hangupButton.addEventListener("click", (e) => {
     hangUpCall()
 })
-const book = document.querySelector(".fa-address-book");
-book.addEventListener("click", (e) => {
-    console.log("nowm in base")
-})
+
 
 
 callWebSocket.addEventListener('message', (e) => {
