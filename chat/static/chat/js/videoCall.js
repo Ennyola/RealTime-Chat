@@ -377,19 +377,18 @@ export var setCallingState = () => {
 // Start the call if the user clicks the "call" button.
 // This is only possible if the user is in the chatroom page hence the conditional statement
 
-
-callCenter.addEventListener("click", (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    console.log(e)
-    if (e.target.matches("#voice-call-icon")) {
-        console.log("I am here");
-    }
-    if (e.target.matches("#video-call-icon")) {
-        console.log("here");
-    }
-})
-
+if (callCenter) {
+    callCenter.addEventListener("mousedown", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (e.target.matches("#voice-call-icon")) {
+            console.log("I am here");
+        }
+        if (e.target.matches("#video-call-icon")) {
+            console.log("here");
+        }
+    })
+}
 // if (videoCallIcon) videoCallIcon.addEventListener("click", (e) => {
 //     e.preventDefault()
 //     e.stopPropagation()
