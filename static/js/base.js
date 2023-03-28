@@ -16,6 +16,11 @@ let callControlContainer = document.querySelector('.call-control')
 hangupButton.addEventListener("click", (e) => {
     hangUpCall()
 })
+const book = document.querySelector(".fa-address-book");
+book.addEventListener("click", (e) => {
+    console.log("nowm in base")
+})
+
 
 callWebSocket.addEventListener('message', (e) => {
     const msg = JSON.parse(e.data)
