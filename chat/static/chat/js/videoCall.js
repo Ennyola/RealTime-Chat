@@ -344,15 +344,22 @@ export var handleHangUpMsg = (msg) => {
 const createPeerConnection = () => {
     myPeerConnection = new RTCPeerConnection({
         iceServers: [{
-                urls: "stun:stun.l.google.com:19302"
+                urls: "stun:relay.metered.ca:80",
             },
             {
-                urls: "stun:stun.xten.com"
+                urls: "turn:relay.metered.ca:80",
+                username: "612e699a5e1024c18d2ab7d0",
+                credential: "84rnoBZhsvIoGe0g",
+            },
+            {
+                urls: "turn:relay.metered.ca:443",
+                username: "612e699a5e1024c18d2ab7d0",
+                credential: "84rnoBZhsvIoGe0g",
             },
             {
                 urls: "turn:relay.metered.ca:443?transport=tcp",
-                username: "cfd27fbba40892b7ebba31dd",
-                credential: "dik5kVdYl8mtN/nd",
+                username: "612e699a5e1024c18d2ab7d0",
+                credential: "84rnoBZhsvIoGe0g",
             },
         ],
     });
