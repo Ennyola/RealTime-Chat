@@ -343,31 +343,25 @@ export var handleHangUpMsg = (msg) => {
 
 const createPeerConnection = () => {
     myPeerConnection = new RTCPeerConnection({
-        iceServers: [
-            // Information about ICE servers - Use your own!
+        iceServers: [{
+                urls: "stun:relay.metered.ca:80",
+            },
             {
-                urls: "stun:stun.stunprotocol.org",
+                urls: "turn:relay.metered.ca:80",
+                username: turnUsername,
+                credential: turnPassword,
+            },
+            {
+                urls: "turn:relay.metered.ca:443",
+                username: turnUsername,
+                credential: turnPassword,
+            },
+            {
+                urls: "turn:relay.metered.ca:443?transport=tcp",
+                username: turnUsername,
+                credential: turnPassword,
             },
         ],
-        // iceServers: [{
-        //         urls: "stun:relay.metered.ca:80",
-        //     },
-        //     {
-        //         urls: "turn:relay.metered.ca:80",
-        //         username: "612e699a5e1024c18d2ab7d0",
-        //         credential: "84rnoBZhsvIoGe0g",
-        //     },
-        //     {
-        //         urls: "turn:relay.metered.ca:443",
-        //         username: "612e699a5e1024c18d2ab7d0",
-        //         credential: "84rnoBZhsvIoGe0g",
-        //     },
-        //     {
-        //         urls: "turn:relay.metered.ca:443?transport=tcp",
-        //         username: "612e699a5e1024c18d2ab7d0",
-        //         credential: "84rnoBZhsvIoGe0g",
-        //     },
-        // ],
     });
 
     myPeerConnection.onicecandidate = handleICECandidateEvent;
