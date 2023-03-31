@@ -32,7 +32,7 @@ To install and run the project, follow these steps:
 5. Start the development server.
    python manage.py runserver
 
-6. Open your web browser and go to http://localhost:8000/ to view the chat application.
+6. Open your web browser and go to http://127.0.0.1:8000/ to view the chat application.
 
 ## Built With
 
