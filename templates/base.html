@@ -25,8 +25,6 @@
                 {% endcomment %}
                 {% block header_settings %}
                 {% endblock  %}
-
-
                 
                 {% block friends %}
                 {% endblock  %} 
@@ -71,6 +69,7 @@
     {{request.user.userprofile.get_image|json_script:"user-display-picture"}}
     {{turn_credentials.username|json_script:"turn-username"}}
     {{turn_credentials.password|json_script:"turn-password"}}
+    {{turn_credentials.url|json_script:"turn-url"}}
     {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.js"></script> {% endcomment %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js " integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p " crossorigin="anonymous "></script>
     {% block script %}

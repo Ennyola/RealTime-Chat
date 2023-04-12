@@ -4,6 +4,7 @@ const user = JSON.parse(document.querySelector("#username").textContent);
 const userDisplayPicture = JSON.parse(document.querySelector("#user-display-picture").textContent);
 const turnUsername = JSON.parse(document.querySelector("#turn-username").textContent);
 const turnPassword = JSON.parse(document.querySelector("#turn-password").textContent);
+const turnUrl = JSON.parse(document.querySelector("#turn-url").textContent);
 const videoContainer = document.querySelector('.video-container');
 const acceptCall = document.querySelector("#accept_call");
 const rejectCall = document.querySelector("#reject_call");
@@ -341,27 +342,15 @@ export var handleHangUpMsg = (msg) => {
     closeVideoCall();
 }
 
-const createPeerConnection = () => {
+const createPeerConnection = async() => {
+    // Calling the REST API TO fetch the TURN Server Credentials
+    const response = await fetch(turnUrl);
+
+    // Saving the response in the iceServers array
+    const iceServers = await response.json();
+
     myPeerConnection = new RTCPeerConnection({
-        iceServers: [{
-                urls: "stun:relay.metered.ca:80",
-            },
-            {
-                urls: "turn:relay.metered.ca:80",
-                username: turnUsername,
-                credential: turnPassword,
-            },
-            {
-                urls: "turn:relay.metered.ca:443",
-                username: turnUsername,
-                credential: turnPassword,
-            },
-            {
-                urls: "turn:relay.metered.ca:443?transport=tcp",
-                username: turnUsername,
-                credential: turnPassword,
-            },
-        ],
+        iceServers,
     });
 
     myPeerConnection.onicecandidate = handleICECandidateEvent;

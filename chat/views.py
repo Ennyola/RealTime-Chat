@@ -20,6 +20,7 @@ class TurnCredentialsMixin(object):
         turn = {
             "username": os.environ.get("TURN_USERNAME"),
             "password": os.environ.get("TURN_PASSWORD"),
+            "url": os.environ.get("TURN_URL"),
         }
         return turn
 
