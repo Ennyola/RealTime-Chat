@@ -2,8 +2,6 @@ import { callWebSocket } from "/static/js/webSocket.js";
 
 const user = JSON.parse(document.querySelector("#username").textContent);
 const userDisplayPicture = JSON.parse(document.querySelector("#user-display-picture").textContent);
-const turnUsername = JSON.parse(document.querySelector("#turn-username").textContent);
-const turnPassword = JSON.parse(document.querySelector("#turn-password").textContent);
 const turnUrl = JSON.parse(document.querySelector("#turn-url").textContent);
 const videoContainer = document.querySelector('.video-container');
 const acceptCall = document.querySelector("#accept_call");
@@ -306,7 +304,6 @@ export const handleRemoveTrackEvent = (event) => {
 }
 
 export const handleICEConnectionStateChangeEvent = (event) => {
-    console.log(myPeerConnection.iceConnectionState)
     switch (myPeerConnection.iceConnectionState) {
         case "closed":
         case "failed":
@@ -322,7 +319,6 @@ export const handleICEConnectionStateChangeEvent = (event) => {
 }
 
 export const handleSignalingStateChangeEvent = (event) => {
-    console.log(myPeerConnection.signalingState)
     switch (myPeerConnection.signalingState) {
         case "closed":
             closeVideoCall();
@@ -331,7 +327,6 @@ export const handleSignalingStateChangeEvent = (event) => {
 };
 
 export const handleICEGatheringStateChangeEvent = (event) => {
-    console.log(myPeerConnection.iceGatheringState)
     switch (myPeerConnection.iceGatheringState) {
         case "complete":
             break;
